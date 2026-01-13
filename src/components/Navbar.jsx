@@ -7,6 +7,59 @@ import logoImage from "../assets/logo.png"; // Adjust the path to your logo imag
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [backendPinged, setBackendPinged] = useState(false);
+
+  // Ping backend immediately when component mounts
+  useEffect(() => {
+    const pingBackend = async () => {
+      if (!backendPinged) {
+        try {
+          // Add timestamp to prevent caching
+          const timestamp = Date.now();
+          const backendUrl = `https://qfs-backend-ghuv.onrender.com/?_=${timestamp}`;
+
+          // Make the request
+          const response = await fetch(backendUrl, {
+            method: "GET",
+            mode: "cors", // Try with CORS first
+            headers: {
+              Accept: "application/json",
+              "Cache-Control": "no-cache",
+              Pragma: "no-cache",
+            },
+          });
+
+          console.log("✅ Backend woken successfully");
+          setBackendPinged(true);
+        } catch (error) {
+          // Try with no-cors mode as fallback
+          try {
+            const backendUrl = `https://qfs-backend-ghuv.onrender.com/?_=${Date.now()}`;
+            await fetch(backendUrl, {
+              method: "GET",
+              mode: "no-cors",
+            });
+            console.log("✅ Backend ping sent (no-cors mode)");
+            setBackendPinged(true);
+          } catch (noCorsError) {
+            console.log("⚠️ Backend ping attempt completed");
+            setBackendPinged(true);
+          }
+        }
+      }
+    };
+
+    // Ping immediately on mount
+    pingBackend();
+
+    // Optional: Set up periodic pings to keep backend warm
+    const intervalId = setInterval(() => {
+      // Reset pinged state every 4 minutes to allow new ping
+      setBackendPinged(false);
+    }, 4 * 60 * 1000); // Every 4 minutes
+
+    return () => clearInterval(intervalId);
+  }, [backendPinged]);
 
   // Handle scroll effect
   useEffect(() => {
