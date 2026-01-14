@@ -8,6 +8,8 @@ import {
   Wallet,
   AlertCircle,
   Shield,
+  X,
+  Send,
 } from "lucide-react";
 
 // Get token from localStorage
@@ -77,6 +79,233 @@ const filterOutAdmins = (users) => {
   return users.filter((user) => user.role !== "admin");
 };
 
+// Toast Notification Component
+const Toast = ({ message, type = "success", isVisible }) => {
+  if (!isVisible) return null;
+
+  const bgColor = type === "success" ? "bg-green-500" : "bg-red-500";
+
+  return (
+    <div
+      className={`fixed top-6 right-6 ${bgColor} text-white px-6 py-3 rounded-lg shadow-lg flex items-center gap-2 z-50 animate-in fade-in slide-in-from-right-10 duration-300`}
+    >
+      {type === "success" && (
+        <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+          <path
+            fillRule="evenodd"
+            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+            clipRule="evenodd"
+          />
+        </svg>
+      )}
+      {type === "error" && (
+        <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+          <path
+            fillRule="evenodd"
+            d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+            clipRule="evenodd"
+          />
+        </svg>
+      )}
+      <span>{message}</span>
+    </div>
+  );
+};
+
+// Fund Modal Component
+const FundModal = ({ isOpen, onClose, user, onFundSuccess, onShowToast }) => {
+  const [cryptocurrency, setCryptocurrency] = useState("bitcoin");
+  const [amount, setAmount] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(false);
+
+  const cryptoOptions = [
+    "bitcoin",
+    "ethereum",
+    "tether",
+    "binance-coin",
+    "solana",
+    "ripple",
+    "stellar",
+    "dogecoin",
+    "tron",
+  ];
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!amount || amount <= 0) {
+      setError("Please enter a valid amount");
+      return;
+    }
+
+    try {
+      setLoading(true);
+      setError(null);
+      setSuccess(false);
+
+      const token = getAuthToken();
+
+      const response = await fetch(
+        `https://qfs-backend-ghuv.onrender.com/api/admin/users/${user.id}/fund`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            cryptocurrency,
+            amount: parseFloat(amount),
+          }),
+        }
+      );
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setSuccess(true);
+        setAmount("");
+        setCryptocurrency("bitcoin");
+        if (onShowToast) {
+          onShowToast(
+            `Successfully funded ${user?.fullName} with $${amount} ${cryptocurrency}`,
+            "success"
+          );
+        }
+        if (onFundSuccess) onFundSuccess();
+        setTimeout(() => {
+          onClose();
+        }, 1500);
+      } else {
+        setError(data.message || "Failed to fund user");
+      }
+    } catch (err) {
+      setError(err.message || "Network error");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div className="bg-white rounded-lg shadow-xl max-w-md w-full mx-4">
+        {/* Header */}
+        <div className="flex items-center justify-between p-6 border-b border-gray-200">
+          <h2 className="text-xl font-bold text-gray-900">Fund User Account</h2>
+          <button
+            onClick={onClose}
+            className="text-gray-400 hover:text-gray-600 transition-colors"
+          >
+            <X className="h-6 w-6" />
+          </button>
+        </div>
+
+        {/* Content */}
+        <div className="p-6">
+          {success ? (
+            <div className="text-center py-8">
+              <div className="bg-green-100 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-4">
+                <Send className="h-6 w-6 text-green-600" />
+              </div>
+              <p className="text-green-800 font-medium">
+                Fund transfer initiated successfully!
+              </p>
+            </div>
+          ) : (
+            <>
+              {/* User Info */}
+              <div className="mb-6 p-4 bg-gray-50 rounded-lg">
+                <p className="text-sm text-gray-600 mb-1">Funding user:</p>
+                <p className="text-sm font-semibold text-gray-900">
+                  {user?.fullName}
+                </p>
+                <p className="text-xs text-gray-500">{user?.email}</p>
+              </div>
+
+              <form onSubmit={handleSubmit} className="space-y-4">
+                {/* Error */}
+                {error && (
+                  <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
+                    {error}
+                  </div>
+                )}
+
+                {/* Cryptocurrency Select */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Cryptocurrency
+                  </label>
+                  <select
+                    value={cryptocurrency}
+                    onChange={(e) => setCryptocurrency(e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
+                  >
+                    {cryptoOptions.map((crypto) => (
+                      <option key={crypto} value={crypto}>
+                        {crypto.charAt(0).toUpperCase() +
+                          crypto.slice(1).replace("-", " ")}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Amount Input */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Amount
+                  </label>
+                  <input
+                    type="number"
+                    value={amount}
+                    onChange={(e) => setAmount(e.target.value)}
+                    placeholder="Enter amount"
+                    step="0.01"
+                    min="0"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
+                  />
+                </div>
+
+                {/* Actions */}
+                <div className="flex gap-3 mt-6">
+                  <button
+                    type="button"
+                    onClick={onClose}
+                    disabled={loading}
+                    className="flex-1 px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors disabled:opacity-50"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={loading}
+                    className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+                  >
+                    {loading ? (
+                      <>
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                        Funding...
+                      </>
+                    ) : (
+                      <>
+                        <Send className="h-4 w-4" />
+                        Fund User
+                      </>
+                    )}
+                  </button>
+                </div>
+              </form>
+            </>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
 // Users Component
 const UsersManagement = () => {
   const [allUsers, setAllUsers] = useState([]);
@@ -84,6 +313,13 @@ const UsersManagement = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [pagination, setPagination] = useState({});
+  const [fundModalOpen, setFundModalOpen] = useState(false);
+  const [selectedUser, setSelectedUser] = useState(null);
+  const [toast, setToast] = useState({
+    message: "",
+    type: "success",
+    visible: false,
+  });
 
   // Fetch users - GET request
   const fetchUsers = async () => {
@@ -138,6 +374,24 @@ const UsersManagement = () => {
   useEffect(() => {
     fetchUsers();
   }, []);
+
+  const handleFundClick = (user) => {
+    setSelectedUser(user);
+    setFundModalOpen(true);
+  };
+
+  const handleFundSuccess = () => {
+    // Refresh users list after successful fund
+    fetchUsers();
+  };
+
+  const handleShowToast = (message, type = "success") => {
+    setToast({ message, type, visible: true });
+    // Auto-hide toast after 3 seconds
+    setTimeout(() => {
+      setToast({ message: "", type: "success", visible: false });
+    }, 3000);
+  };
 
   // Calculate statistics from filtered users only
   const totalUsers = filteredUsers.length;
@@ -270,12 +524,15 @@ const UsersManagement = () => {
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Last Login
                 </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Actions
+                </th>
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
               {filteredUsers.length === 0 ? (
                 <tr>
-                  <td colSpan="6" className="px-6 py-12 text-center">
+                  <td colSpan="7" className="px-6 py-12 text-center">
                     <div className="text-gray-400">
                       <Users className="h-12 w-12 mx-auto mb-4 opacity-50" />
                       <p className="text-lg font-medium text-gray-900 mb-1">
@@ -353,6 +610,15 @@ const UsersManagement = () => {
                           {formatDate(user.lastLogin)}
                         </div>
                       </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <button
+                          onClick={() => handleFundClick(user)}
+                          className="px-3 py-1.5 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-1"
+                        >
+                          <Send className="h-4 w-4" />
+                          Fund
+                        </button>
+                      </td>
                     </tr>
                   );
                 })
@@ -361,6 +627,22 @@ const UsersManagement = () => {
           </table>
         </div>
       </div>
+
+      {/* Fund Modal */}
+      <FundModal
+        isOpen={fundModalOpen}
+        onClose={() => setFundModalOpen(false)}
+        user={selectedUser}
+        onFundSuccess={handleFundSuccess}
+        onShowToast={handleShowToast}
+      />
+
+      {/* Toast Notification */}
+      <Toast
+        message={toast.message}
+        type={toast.type}
+        isVisible={toast.visible}
+      />
     </div>
   );
 };

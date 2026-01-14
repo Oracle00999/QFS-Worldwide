@@ -13,6 +13,7 @@ import {
   ShieldCheckIcon,
   CreditCardIcon,
 } from "@heroicons/react/24/outline";
+import CardLogo from "../assets/cardlogo1.jpg";
 
 const Account = () => {
   const navigate = useNavigate();
@@ -139,7 +140,10 @@ const Account = () => {
       </div>
 
       {/* User Profile Card */}
-      <div className="bg-gradient-to-br from-emerald-900 to-green-900 rounded-2xl border border-emerald-800 shadow-xl overflow-hidden mb-8">
+      <div
+        className="bg-gradient-to-br from-emerald-900 to-green-900 rounded-2xl border border-emerald-800 shadow-xl overflow-hidden mb-8 bg-cover bg-center"
+        style={{ backgroundImage: `url(${CardLogo})` }}
+      >
         <div className="p-6">
           <div className="flex flex-col md:flex-row md:items-center justify-between">
             <div className="mb-4 md:mb-0">

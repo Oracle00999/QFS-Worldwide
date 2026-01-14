@@ -94,16 +94,6 @@ const getCryptoDetails = (crypto) => {
       label: "Tether",
       short: "USDT",
     },
-    usdt: {
-      color: "bg-green-100 text-green-800",
-      label: "USDT",
-      short: "USDT",
-    },
-    litecoin: {
-      color: "bg-blue-100 text-blue-800",
-      label: "Litecoin",
-      short: "LTC",
-    },
   };
 
   return (
