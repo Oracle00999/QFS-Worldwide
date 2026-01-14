@@ -11,6 +11,16 @@ import {
   XCircleIcon,
   BellIcon,
 } from "@heroicons/react/24/outline";
+import Cardlogo from "../assets/cardlogo1.jpg";
+import BtcLogo from "../assets/btc.svg";
+import EthLogo from "../assets/eth.svg";
+import UsdtLogo from "../assets/usdt.svg";
+import BnbLogo from "../assets/bnb.svg";
+import SolLogo from "../assets/sol.svg";
+import DogeLogo from "../assets/doge.svg";
+import XrpLogo from "../assets/xrp.svg";
+import XlmLogo from "../assets/xlm.svg";
+import TrxLogo from "../assets/trx.svg";
 
 const UserDashboard = () => {
   const [userData, setUserData] = useState(null);
@@ -35,6 +45,19 @@ const UserDashboard = () => {
   const notifications = [
     { id: 1, message: "Welcome to QFS Ledger!", read: false },
   ];
+
+  // Token logo mapping (add more as assets are added)
+  const tokenLogos = {
+    bitcoin: BtcLogo,
+    ethereum: EthLogo,
+    tether: UsdtLogo,
+    "binance-coin": BnbLogo,
+    solana: SolLogo,
+    dogecoin: DogeLogo,
+    ripple: XrpLogo,
+    stellar: XlmLogo,
+    tron: TrxLogo,
+  };
 
   useEffect(() => {
     fetchUserData();
@@ -169,7 +192,15 @@ const UserDashboard = () => {
   return (
     <>
       {/* User Card - Darker Green Only */}
-      <div className="bg-gradient-to-br from-emerald-900 to-green-900 border border-emerald-800 rounded-2xl p-6 mb-9 shadow-xl relative">
+      <div
+        className="bg-gradient-to-br from-emerald-900 to-green-900 border border-emerald-800 rounded-2xl p-6 mb-9 shadow-xl relative"
+        style={{
+          backgroundImage: `url(${Cardlogo})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundBlendMode: "overlay",
+        }}
+      >
         {/* Notification Icon - Top Right */}
         <div className="absolute top-4 right-4">
           <div className="relative">
@@ -293,10 +324,18 @@ const UserDashboard = () => {
               className="flex items-center justify-between p-4 bg-emerald-50/50 rounded-xl border border-emerald-100 hover:border-emerald-200 hover:bg-emerald-50 transition-all duration-200 shadow-sm"
             >
               <div className="flex items-center">
-                <div className="h-10 w-10 rounded-full bg-gradient-to-br from-emerald-100 to-green-100 flex items-center justify-center mr-3">
-                  <span className="text-lg font-bold text-emerald-700">
-                    {token.charAt(0).toUpperCase()}
-                  </span>
+                <div className="h-10 w-10 rounded-full bg-gradient-to-br from-emerald-100 to-green-100 flex items-center justify-center mr-3 overflow-hidden">
+                  {tokenLogos[token] ? (
+                    <img
+                      src={tokenLogos[token]}
+                      alt={`${token} logo`}
+                      className="h-8 w-8"
+                    />
+                  ) : (
+                    <span className="text-lg font-bold text-emerald-700">
+                      {token.charAt(0).toUpperCase()}
+                    </span>
+                  )}
                 </div>
                 <div>
                   <div className="font-medium text-gray-900">

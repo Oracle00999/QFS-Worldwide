@@ -21,11 +21,11 @@ const SmartsuppChat = () => {
     document.head.appendChild(script);
 
     // Optional: Auto-open chat after 30 seconds if user hasn't interacted
-    setTimeout(() => {
-      if (window.smartsupp && !localStorage.getItem("smartsupp_chat_opened")) {
-        window.smartsupp("chat:open");
-      }
-    }, 30000);
+    // setTimeout(() => {
+    //   if (window.smartsupp && !localStorage.getItem("smartsupp_chat_opened")) {
+    //     window.smartsupp("chat:open");
+    //   }
+    // }, 30000);
 
     // Track if user opens chat
     const handleChatOpen = () => {
