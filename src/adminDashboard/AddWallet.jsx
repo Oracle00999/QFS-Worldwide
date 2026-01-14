@@ -132,14 +132,12 @@ const AddWalletAddresses = () => {
     "bitcoin",
     "ethereum",
     "tether",
-    "usdt",
     "binance-coin",
     "solana",
     "ripple",
     "stellar",
     "dogecoin",
     "tron",
-    "litecoin",
   ];
 
   // Handle form input changes
