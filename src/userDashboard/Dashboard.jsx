@@ -113,21 +113,39 @@ const UserDashboard = () => {
     switch (status) {
       case "verified":
         return (
-          <div className="inline-flex items-center px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 text-sm font-medium">
+          <div
+            className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium"
+            style={{
+              backgroundColor: "rgba(107, 207, 61, 0.1)",
+              color: "#6BCF3D",
+            }}
+          >
             <CheckBadgeIcon className="h-4 w-4 mr-1.5" />
             KYC Verified
           </div>
         );
       case "pending":
         return (
-          <div className="inline-flex items-center px-3 py-1 rounded-full bg-yellow-50 text-yellow-700 text-sm font-medium">
+          <div
+            className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium"
+            style={{
+              backgroundColor: "rgba(247, 147, 26, 0.1)",
+              color: "#F7931A",
+            }}
+          >
             <ClockIcon className="h-4 w-4 mr-1.5" />
             KYC Pending
           </div>
         );
       default:
         return (
-          <div className="inline-flex items-center px-3 py-1 rounded-full bg-red-50 text-red-700 text-sm font-medium">
+          <div
+            className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium"
+            style={{
+              backgroundColor: "rgba(231, 76, 60, 0.1)",
+              color: "#E74C3C",
+            }}
+          >
             <XCircleIcon className="h-4 w-4 mr-1.5" />
             KYC Required
           </div>
@@ -139,40 +157,36 @@ const UserDashboard = () => {
     return (
       <div className="flex items-center justify-center h-64">
         <div className="text-center">
-          <div className="relative h-16 w-16">
-            <div className="absolute h-full w-full rounded-full border-4 border-blue-200"></div>
-            <div className="absolute h-full w-full rounded-full border-4 border-transparent border-t-blue-600 animate-spin"></div>
+          {/* Better Loading Spinner */}
+          <div className="relative h-16 w-16 mb-4 mx-auto">
             <div
-              className="absolute h-full w-full rounded-full border-4 border-transparent border-b-purple-600 animate-spin"
-              style={{ animationDuration: "1.5s" }}
+              className="absolute h-full w-full rounded-full border-4"
+              style={{ borderColor: "#E1E6EC" }}
             ></div>
-            <div className="absolute h-8 w-8 rounded-full bg-gradient-to-br from-blue-100 to-purple-100 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"></div>
+            <div
+              className="absolute h-full w-full rounded-full border-4 border-transparent animate-spin"
+              style={{ borderTopColor: "#2F80ED", animationDuration: "1s" }}
+            ></div>
+            <div
+              className="absolute h-full w-full rounded-full border-4 border-transparent animate-spin"
+              style={{
+                borderRightColor: "#5DA9E9",
+                animationDuration: "1.2s",
+                animationDelay: "0.1s",
+              }}
+            ></div>
+            <div
+              className="absolute h-8 w-8 rounded-full top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+              style={{ backgroundColor: "#F5F7FA" }}
+            ></div>
           </div>
-          <p className="text-gray-600 mt-4 animate-pulse">Loading ...</p>
+          <p className="text-gray-600 font-medium" style={{ color: "#6B7280" }}>
+            Loading...
+          </p>
         </div>
       </div>
     );
   }
-
-  //   if (error) {
-  //     return (
-  //       <div className="bg-red-50 border border-red-200 rounded-xl p-6 text-center">
-  //         <div className="h-12 w-12 rounded-full bg-red-100 flex items-center justify-center mx-auto mb-4">
-  //           <XCircleIcon className="h-6 w-6 text-red-600" />
-  //         </div>
-  //         <h3 className="text-lg font-semibold text-gray-900 mb-2">
-  //           Error Loading Dashboard
-  //         </h3>
-  //         <p className="text-gray-600 mb-4">{error}</p>
-  //         <button
-  //           onClick={fetchUserData}
-  //           className="px-6 py-2 bg-gradient-to-r from-emerald-500 to-green-600 text-white rounded-xl hover:from-emerald-600 hover:to-green-700 transition-all shadow-lg"
-  //         >
-  //           Try Again
-  //         </button>
-  //       </div>
-  //     );
-  //   }
 
   // Calculate total and sort balances
   const totalBalance =
@@ -191,10 +205,12 @@ const UserDashboard = () => {
 
   return (
     <>
-      {/* User Card - Darker Green Only */}
+      {/* User Card - Updated Colors */}
       <div
-        className="bg-gradient-to-br from-emerald-900 to-green-900 border border-emerald-800 rounded-2xl p-6 mb-9 shadow-xl relative"
+        className="border rounded-2xl p-6 mb-9 shadow-xl relative"
         style={{
+          backgroundColor: "#1F2D3D",
+          borderColor: "#2F80ED",
           backgroundImage: `url(${Cardlogo})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
@@ -206,44 +222,84 @@ const UserDashboard = () => {
           <div className="relative">
             <button
               onClick={() => setShowNotifications(!showNotifications)}
-              className="h-10 w-10 rounded-full bg-emerald-800/70 flex items-center justify-center hover:bg-emerald-700 transition-colors border border-emerald-700"
+              className="h-10 w-10 rounded-full flex items-center justify-center hover:opacity-90 transition-colors border"
+              style={{
+                backgroundColor: "rgba(47, 128, 237, 0.7)",
+                borderColor: "#3B82F6",
+              }}
             >
-              <BellIcon className="h-5 w-5 text-emerald-300" />
+              <BellIcon className="h-5 w-5" style={{ color: "#FFFFFF" }} />
               {notifications.some((n) => !n.read) && (
-                <span className="absolute -top-1 -right-1 h-3 w-3 bg-red-500 rounded-full border-2 border-emerald-900"></span>
+                <span
+                  className="absolute -top-1 -right-1 h-3 w-3 rounded-full border-2"
+                  style={{
+                    backgroundColor: "#E74C3C",
+                    borderColor: "#1F2D3D",
+                  }}
+                ></span>
               )}
             </button>
 
-            {/* Notifications Dropdown - Only Welcome Message */}
+            {/* Notifications Dropdown */}
             {showNotifications && (
-              <div className="absolute right-0 mt-2 w-72 bg-gray-900 rounded-xl shadow-xl border border-emerald-800 z-50">
-                <div className="px-4 py-3 border-b border-emerald-800">
-                  <h3 className="font-semibold text-white">Welcome</h3>
-                  <p className="text-xs text-emerald-300">New notification</p>
+              <div
+                className="absolute right-0 mt-2 w-72 rounded-xl shadow-xl border z-50"
+                style={{
+                  backgroundColor: "#1F2D3D",
+                  borderColor: "#2F80ED",
+                }}
+              >
+                <div
+                  className="px-4 py-3 border-b"
+                  style={{ borderColor: "#2F80ED" }}
+                >
+                  <h3 className="font-semibold" style={{ color: "#FFFFFF" }}>
+                    Welcome
+                  </h3>
+                  <p className="text-xs" style={{ color: "#8FA6BF" }}>
+                    New notification
+                  </p>
                 </div>
                 <div className="p-4">
                   {notifications.map((notification) => (
                     <div
                       key={notification.id}
-                      className="px-3 py-3 bg-emerald-900/30 rounded-lg border border-emerald-800/30"
+                      className="px-3 py-3 rounded-lg border"
+                      style={{
+                        backgroundColor: "rgba(47, 128, 237, 0.1)",
+                        borderColor: "rgba(47, 128, 237, 0.3)",
+                      }}
                     >
                       <div className="flex justify-between items-start">
                         <div>
-                          <p className="text-sm text-gray-200">
+                          <p className="text-sm" style={{ color: "#F5F7FA" }}>
                             {notification.message}
                           </p>
                         </div>
                         {!notification.read && (
-                          <div className="h-2 w-2 rounded-full bg-emerald-500"></div>
+                          <div
+                            className="h-2 w-2 rounded-full"
+                            style={{ backgroundColor: "#6BCF3D" }}
+                          ></div>
                         )}
                       </div>
                     </div>
                   ))}
                 </div>
-                <div className="px-4 py-3 border-t border-emerald-800">
+                <div
+                  className="px-4 py-3 border-t"
+                  style={{ borderColor: "#2F80ED" }}
+                >
                   <button
                     onClick={() => setShowNotifications(false)}
-                    className="w-full text-center text-sm text-emerald-400 hover:text-emerald-300 font-medium"
+                    className="w-full text-center text-sm font-medium"
+                    style={{ color: "#8FA6BF" }}
+                    onMouseEnter={(e) =>
+                      (e.currentTarget.style.color = "#FFFFFF")
+                    }
+                    onMouseLeave={(e) =>
+                      (e.currentTarget.style.color = "#8FA6BF")
+                    }
                   >
                     Close
                   </button>
@@ -257,11 +313,18 @@ const UserDashboard = () => {
           <div className="flex items-center mb-4 md:mb-0"></div>
 
           <div className="text-left">
-            <div className="text-sm text-emerald-300 mb-1">Total Balance</div>
-            <div className="text-3xl md:text-4xl font-bold text-white">
+            <div className="text-sm mb-1" style={{ color: "#8FA6BF" }}>
+              Total Balance
+            </div>
+            <div
+              className="text-3xl md:text-4xl font-bold"
+              style={{ color: "#FFFFFF" }}
+            >
               {formatCurrency(totalBalance)}
             </div>
-            <div className="text-sm text-emerald-400 mt-1">Quantum-Secured</div>
+            <div className="text-sm mt-1" style={{ color: "#2F80ED" }}>
+              Quantum-Secured
+            </div>
           </div>
         </div>
 
@@ -269,51 +332,143 @@ const UserDashboard = () => {
         <div className="grid grid-cols-4 gap-2 mt-8">
           <Link
             to="/deposit"
-            className="flex flex-col items-center justify-center p-4 bg-white/10 backdrop-blur-sm rounded-xl border border-emerald-700 hover:border-emerald-500 hover:bg-emerald-800/50 transition-all group"
+            className="flex flex-col items-center justify-center p-4 backdrop-blur-sm rounded-xl border transition-all group"
+            style={{
+              backgroundColor: "rgba(255, 255, 255, 0.1)",
+              borderColor: "#2F80ED",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.borderColor = "#5DA9E9";
+              e.currentTarget.style.backgroundColor = "rgba(93, 169, 233, 0.2)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.borderColor = "#2F80ED";
+              e.currentTarget.style.backgroundColor =
+                "rgba(255, 255, 255, 0.1)";
+            }}
           >
-            <div className="h-10 w-10 rounded-full bg-emerald-800/70 flex items-center justify-center mb-2 group-hover:bg-emerald-700 transition-colors">
-              <ArrowUpTrayIcon className="h-5 w-5 text-emerald-300" />
+            <div
+              className="h-10 w-10 rounded-full flex items-center justify-center mb-2 transition-colors group-hover:scale-105"
+              style={{ backgroundColor: "rgba(47, 128, 237, 0.7)" }}
+            >
+              <ArrowUpTrayIcon
+                className="h-5 w-5"
+                style={{ color: "#FFFFFF" }}
+              />
             </div>
-            <span className="text-sm font-medium text-gray-200">Send</span>
+            <span className="text-sm font-medium" style={{ color: "#F5F7FA" }}>
+              Send
+            </span>
           </Link>
 
           <Link
             to="/withdraw"
-            className="flex flex-col items-center justify-center p-4 bg-white/10 backdrop-blur-sm rounded-xl border border-emerald-700 hover:border-emerald-500 hover:bg-emerald-800/50 transition-all group"
+            className="flex flex-col items-center justify-center p-4 backdrop-blur-sm rounded-xl border transition-all group"
+            style={{
+              backgroundColor: "rgba(255, 255, 255, 0.1)",
+              borderColor: "#2F80ED",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.borderColor = "#5DA9E9";
+              e.currentTarget.style.backgroundColor = "rgba(93, 169, 233, 0.2)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.borderColor = "#2F80ED";
+              e.currentTarget.style.backgroundColor =
+                "rgba(255, 255, 255, 0.1)";
+            }}
           >
-            <div className="h-10 w-10 rounded-full bg-emerald-800/70 flex items-center justify-center mb-2 group-hover:bg-emerald-700 transition-colors">
-              <ArrowDownTrayIcon className="h-5 w-5 text-emerald-300" />
+            <div
+              className="h-10 w-10 rounded-full flex items-center justify-center mb-2 transition-colors group-hover:scale-105"
+              style={{ backgroundColor: "rgba(47, 128, 237, 0.7)" }}
+            >
+              <ArrowDownTrayIcon
+                className="h-5 w-5"
+                style={{ color: "#FFFFFF" }}
+              />
             </div>
-            <span className="text-sm font-medium text-gray-200">Receive</span>
+            <span className="text-sm font-medium" style={{ color: "#F5F7FA" }}>
+              Receive
+            </span>
           </Link>
 
           <Link
             to="/link"
-            className="flex flex-col items-center justify-center p-4 bg-white/10 backdrop-blur-sm rounded-xl border border-emerald-700 hover:border-emerald-500 hover:bg-emerald-800/50 transition-all group"
+            className="flex flex-col items-center justify-center p-4 backdrop-blur-sm rounded-xl border transition-all group"
+            style={{
+              backgroundColor: "rgba(255, 255, 255, 0.1)",
+              borderColor: "#2F80ED",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.borderColor = "#5DA9E9";
+              e.currentTarget.style.backgroundColor = "rgba(93, 169, 233, 0.2)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.borderColor = "#2F80ED";
+              e.currentTarget.style.backgroundColor =
+                "rgba(255, 255, 255, 0.1)";
+            }}
           >
-            <div className="h-10 w-10 rounded-full bg-emerald-800/70 flex items-center justify-center mb-2 group-hover:bg-emerald-700 transition-colors">
-              <ArrowsRightLeftIcon className="h-5 w-5 text-emerald-300" />
+            <div
+              className="h-10 w-10 rounded-full flex items-center justify-center mb-2 transition-colors group-hover:scale-105"
+              style={{ backgroundColor: "rgba(47, 128, 237, 0.7)" }}
+            >
+              <ArrowsRightLeftIcon
+                className="h-5 w-5"
+                style={{ color: "#FFFFFF" }}
+              />
             </div>
-            <span className="text-sm font-medium text-gray-200">Link</span>
+            <span className="text-sm font-medium" style={{ color: "#F5F7FA" }}>
+              Link
+            </span>
           </Link>
 
           <a
             href="https://www.moonpay.com/buy/xlm"
             target="_blank"
-            className="flex flex-col items-center justify-center p-4 bg-white/10 backdrop-blur-sm rounded-xl border border-emerald-700 hover:border-emerald-500 hover:bg-emerald-800/50 transition-all group"
+            className="flex flex-col items-center justify-center p-4 backdrop-blur-sm rounded-xl border transition-all group"
+            style={{
+              backgroundColor: "rgba(255, 255, 255, 0.1)",
+              borderColor: "#2F80ED",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.borderColor = "#5DA9E9";
+              e.currentTarget.style.backgroundColor = "rgba(93, 169, 233, 0.2)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.borderColor = "#2F80ED";
+              e.currentTarget.style.backgroundColor =
+                "rgba(255, 255, 255, 0.1)";
+            }}
           >
-            <div className="h-10 w-10 rounded-full bg-emerald-800/70 flex items-center justify-center mb-2 group-hover:bg-emerald-700 transition-colors">
-              <PlusCircleIcon className="h-5 w-5 text-emerald-300" />
+            <div
+              className="h-10 w-10 rounded-full flex items-center justify-center mb-2 transition-colors group-hover:scale-105"
+              style={{ backgroundColor: "rgba(47, 128, 237, 0.7)" }}
+            >
+              <PlusCircleIcon
+                className="h-5 w-5"
+                style={{ color: "#FFFFFF" }}
+              />
             </div>
-            <span className="text-sm font-medium text-gray-200">Buy</span>
+            <span className="text-sm font-medium" style={{ color: "#F5F7FA" }}>
+              Buy
+            </span>
           </a>
         </div>
       </div>
 
       {/* Tokens Section */}
-      <div className="bg-white rounded-2xl border border-emerald-100 overflow-hidden shadow-sm">
-        <div className="px-6 py-4 border-b border-emerald-100">
-          <h2 className="text-lg font-semibold text-gray-900">Your Assets</h2>
+      <div
+        className="rounded-2xl border overflow-hidden shadow-sm"
+        style={{
+          backgroundColor: "#FFFFFF",
+          borderColor: "#E1E6EC",
+        }}
+      >
+        <div className="px-6 py-4 border-b" style={{ borderColor: "#E1E6EC" }}>
+          <h2 className="text-lg font-semibold" style={{ color: "#1F2D3D" }}>
+            Your Assets
+          </h2>
         </div>
 
         {/* Tokens with spacing */}
@@ -321,10 +476,30 @@ const UserDashboard = () => {
           {sortedBalances.map(([token, balance]) => (
             <div
               key={token}
-              className="flex items-center justify-between p-4 bg-emerald-50/50 rounded-xl border border-emerald-100 hover:border-emerald-200 hover:bg-emerald-50 transition-all duration-200 shadow-sm"
+              className="flex items-center justify-between p-4 rounded-xl border transition-all duration-200 shadow-sm"
+              style={{
+                backgroundColor: "rgba(245, 247, 250, 0.5)",
+                borderColor: "#E1E6EC",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = "#5DA9E9";
+                e.currentTarget.style.backgroundColor =
+                  "rgba(93, 169, 233, 0.05)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = "#E1E6EC";
+                e.currentTarget.style.backgroundColor =
+                  "rgba(245, 247, 250, 0.5)";
+              }}
             >
               <div className="flex items-center">
-                <div className="h-10 w-10 rounded-full bg-gradient-to-br from-emerald-100 to-green-100 flex items-center justify-center mr-3 overflow-hidden">
+                <div
+                  className="h-10 w-10 rounded-full flex items-center justify-center mr-3 overflow-hidden"
+                  style={{
+                    background:
+                      "linear-gradient(135deg, rgba(47, 128, 237, 0.1), rgba(93, 169, 233, 0.2))",
+                  }}
+                >
                   {tokenLogos[token] ? (
                     <img
                       src={tokenLogos[token]}
@@ -332,33 +507,39 @@ const UserDashboard = () => {
                       className="h-8 w-8"
                     />
                   ) : (
-                    <span className="text-lg font-bold text-emerald-700">
+                    <span
+                      className="text-lg font-bold"
+                      style={{ color: "#2F80ED" }}
+                    >
                       {token.charAt(0).toUpperCase()}
                     </span>
                   )}
                 </div>
                 <div>
-                  <div className="font-medium text-gray-900">
+                  <div className="font-medium" style={{ color: "#1F2D3D" }}>
                     {tokenDisplayNames[token] ||
                       token.charAt(0).toUpperCase() +
                         token.slice(1).replace("-", " ")}
                   </div>
-                  <div className="text-sm text-gray-500">
+                  <div className="text-sm" style={{ color: "#6B7280" }}>
                     {token.toUpperCase()}
                   </div>
                 </div>
               </div>
 
               <div className="text-right">
-                <div className="font-semibold text-gray-900">
+                <div className="font-semibold" style={{ color: "#1F2D3D" }}>
                   {formatCurrency(balance)}
                 </div>
                 <div
-                  className={`text-xs px-2 py-1 rounded-full mt-1 ${
-                    balance > 0
-                      ? "bg-emerald-100 text-emerald-700"
-                      : "bg-gray-100 text-gray-500"
-                  }`}
+                  className="text-xs px-2 py-1 rounded-full mt-1"
+                  style={{
+                    backgroundColor:
+                      balance > 0
+                        ? "rgba(107, 207, 61, 0.1)"
+                        : "rgba(225, 230, 236, 0.5)",
+                    color: balance > 0 ? "#6BCF3D" : "#6B7280",
+                  }}
                 >
                   {balance > 0 ? "Active" : "No Balance"}
                 </div>
@@ -369,11 +550,20 @@ const UserDashboard = () => {
       </div>
 
       {/* Info Banner */}
-      <div className="mt-6 p-4 bg-gradient-to-r from-emerald-50 to-green-50 border border-emerald-100 rounded-xl mb-10">
+      <div
+        className="mt-6 p-4 border rounded-xl mb-10"
+        style={{
+          backgroundColor: "rgba(245, 247, 250, 0.8)",
+          borderColor: "#E1E6EC",
+        }}
+      >
         <div className="flex items-center">
-          <CheckBadgeIcon className="h-5 w-5 text-emerald-600 mr-3 flex-shrink-0" />
+          <CheckBadgeIcon
+            className="h-5 w-5 mr-3 flex-shrink-0"
+            style={{ color: "#6BCF3D" }}
+          />
           <div>
-            <p className="text-sm text-gray-700">
+            <p className="text-sm" style={{ color: "#1F2D3D" }}>
               All assets are protected by quantum-resistant encryption and FRA
               fund recovery system.
             </p>

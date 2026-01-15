@@ -71,28 +71,52 @@ const CardCreation = () => {
     return (
       <div className="flex items-center justify-center h-64">
         <div className="text-center">
-          <div className="relative h-16 w-16">
-            <div className="absolute h-full w-full rounded-full border-4 border-blue-200"></div>
-            <div className="absolute h-full w-full rounded-full border-4 border-transparent border-t-blue-600 animate-spin"></div>
+          <div className="relative h-16 w-16 mb-4 mx-auto">
             <div
-              className="absolute h-full w-full rounded-full border-4 border-transparent border-b-purple-600 animate-spin"
-              style={{ animationDuration: "1.5s" }}
+              className="absolute h-full w-full rounded-full border-4"
+              style={{ borderColor: "#E1E6EC" }}
             ></div>
-            <div className="absolute h-8 w-8 rounded-full bg-gradient-to-br from-blue-100 to-purple-100 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"></div>
+            <div
+              className="absolute h-full w-full rounded-full border-4 border-transparent animate-spin"
+              style={{ borderTopColor: "#2F80ED", animationDuration: "1s" }}
+            ></div>
+            <div
+              className="absolute h-full w-full rounded-full border-4 border-transparent animate-spin"
+              style={{
+                borderRightColor: "#5DA9E9",
+                animationDuration: "1.2s",
+                animationDelay: "0.1s",
+              }}
+            ></div>
+            <div
+              className="absolute h-8 w-8 rounded-full top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+              style={{ backgroundColor: "#F5F7FA" }}
+            ></div>
           </div>
-          <p className="text-gray-600 mt-4 animate-pulse">Loading ...</p>
+          <p className="text-gray-600 font-medium" style={{ color: "#6B7280" }}>
+            Loading ...
+          </p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="max-w-4xl mx-auto px-4">
+    <div className="max-w-4xl mx-auto px-4 mb-11">
       {/* Success Notification - Top Right */}
       {showSuccess && (
         <div className="fixed top-4 right-4 z-50 animate-slide-in">
-          <div className="bg-emerald-50 text-emerald-800 border border-emerald-200 rounded-xl p-4 shadow-lg flex items-center">
-            <CheckCircleIcon className="h-5 w-5 text-emerald-600 mr-2" />
+          <div
+            className="text-emerald-800 border rounded-xl p-4 shadow-lg flex items-center"
+            style={{
+              backgroundColor: "rgba(107, 207, 61, 0.1)",
+              borderColor: "#6BCF3D",
+            }}
+          >
+            <CheckCircleIcon
+              className="h-5 w-5 mr-2"
+              style={{ color: "#6BCF3D" }}
+            />
             <span className="font-medium">
               Card details submitted successfully!
             </span>
@@ -104,10 +128,16 @@ const CardCreation = () => {
       <div className="mb-6">
         <Link
           to="/account"
-          className="inline-flex items-center text-gray-600 hover:text-emerald-600 transition-colors group"
+          className="inline-flex items-center transition-colors group"
+          style={{ color: "#6B7280" }}
+          onMouseEnter={(e) => (e.currentTarget.style.color = "#2F80ED")}
+          onMouseLeave={(e) => (e.currentTarget.style.color = "#6B7280")}
         >
-          <div className="h-8 w-8 rounded-full bg-gray-100 flex items-center justify-center mr-2 group-hover:bg-emerald-50 transition-colors">
-            <ArrowLeftIcon className="h-4 w-4 text-gray-500 group-hover:text-emerald-600" />
+          <div
+            className="h-8 w-8 rounded-full flex items-center justify-center mr-2 transition-colors group-hover:scale-105"
+            style={{ backgroundColor: "#F5F7FA" }}
+          >
+            <ArrowLeftIcon className="h-4 w-4" style={{ color: "#6B7280" }} />
           </div>
           <span className="font-medium">Back to Account</span>
         </Link>
@@ -115,12 +145,12 @@ const CardCreation = () => {
 
       {/* Header */}
       <div className="mb-8 text-center">
-        <h1 className="text-3xl md:text-4xl font-bold text-gray-900">
+        <h1
+          className="text-3xl md:text-4xl font-bold"
+          style={{ color: "#1F2D3D" }}
+        >
           Create Your QFS Ledger Card
         </h1>
-        {/* <p className="text-gray-600 mt-2">
-          Personalize your quantum-secure card with your details
-        </p> */}
       </div>
 
       {/* Card Image at the Top - Standing Alone */}
@@ -135,11 +165,14 @@ const CardCreation = () => {
                 e.target.style.display = "none";
                 const parent = e.target.parentElement;
                 parent.innerHTML = `
-                  <div class="w-full aspect-[1.6] rounded-lg bg-gradient-to-br from-emerald-500 to-green-600 flex flex-col items-center justify-center text-white">
+                  <div class="w-full aspect-[1.6] rounded-lg flex flex-col items-center justify-center text-white"
+                       style="background: linear-gradient(135deg, #2F80ED, #5DA9E9)">
                     <div class="text-center p-6">
-                      <CreditCardIcon class="h-16 w-16 mx-auto mb-4" />
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-16 w-16 mx-auto mb-4">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 0 0 2.25-2.25V6.75A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25v10.5A2.25 2.25 0 0 0 4.5 19.5Z" />
+                      </svg>
                       <span class="font-bold text-2xl block mb-2">QFS LEDGER CARD</span>
-                      <span class="text-emerald-100 text-sm">Quantum Secure Payment Card</span>
+                      <span class="opacity-90 text-sm">Quantum Secure Payment Card</span>
                     </div>
                   </div>
                 `;
@@ -150,12 +183,18 @@ const CardCreation = () => {
       </div>
 
       {/* Form Below */}
-      <div className="bg-white rounded-2xl border border-gray-200 shadow-lg p-8">
+      <div
+        className="rounded-2xl border shadow-lg p-8"
+        style={{
+          backgroundColor: "#FFFFFF",
+          borderColor: "#E1E6EC",
+        }}
+      >
         <div className="mb-8">
-          <h2 className="text-2xl font-bold text-gray-900 mb-3">
+          <h2 className="text-2xl font-bold mb-3" style={{ color: "#1F2D3D" }}>
             Card Details Form
           </h2>
-          <p className="text-gray-600">
+          <p className="text-gray-600" style={{ color: "#6B7280" }}>
             Enter your information to personalize your card
           </p>
         </div>
@@ -164,12 +203,15 @@ const CardCreation = () => {
         <form className="space-y-8" onSubmit={handleSubmit}>
           {/* Name Field */}
           <div>
-            <label className="block text-lg font-medium text-gray-900 mb-3">
+            <label
+              className="block text-lg font-medium mb-3"
+              style={{ color: "#1F2D3D" }}
+            >
               Full Name
             </label>
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                <UserIcon className="h-6 w-6 text-gray-400" />
+                <UserIcon className="h-6 w-6" style={{ color: "#8FA6BF" }} />
               </div>
               <input
                 name="name"
@@ -177,7 +219,20 @@ const CardCreation = () => {
                 required
                 value={formData.name}
                 onChange={handleChange}
-                className="pl-12 w-full px-5 py-4 text-lg border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all"
+                className="pl-12 w-full px-5 py-4 text-lg border rounded-xl focus:outline-none focus:ring-2 focus:border-transparent transition-all"
+                style={{
+                  borderColor: "#E1E6EC",
+                  color: "#1F2D3D",
+                }}
+                onFocus={(e) => {
+                  e.target.style.borderColor = "#2F80ED";
+                  e.target.style.boxShadow =
+                    "0 0 0 2px rgba(47, 128, 237, 0.2)";
+                }}
+                onBlur={(e) => {
+                  e.target.style.borderColor = "#E1E6EC";
+                  e.target.style.boxShadow = "none";
+                }}
                 placeholder="Enter your full name"
               />
             </div>
@@ -185,12 +240,15 @@ const CardCreation = () => {
 
           {/* Address Field */}
           <div>
-            <label className="block text-lg font-medium text-gray-900 mb-3">
+            <label
+              className="block text-lg font-medium mb-3"
+              style={{ color: "#1F2D3D" }}
+            >
               Address
             </label>
             <div className="relative">
               <div className="absolute top-4 left-0 pl-4 pointer-events-none">
-                <MapPinIcon className="h-6 w-6 text-gray-400" />
+                <MapPinIcon className="h-6 w-6" style={{ color: "#8FA6BF" }} />
               </div>
               <textarea
                 name="address"
@@ -198,7 +256,20 @@ const CardCreation = () => {
                 value={formData.address}
                 onChange={handleChange}
                 rows="4"
-                className="pl-12 w-full px-5 py-4 text-lg border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all resize-none"
+                className="pl-12 w-full px-5 py-4 text-lg border rounded-xl focus:outline-none focus:ring-2 focus:border-transparent transition-all resize-none"
+                style={{
+                  borderColor: "#E1E6EC",
+                  color: "#1F2D3D",
+                }}
+                onFocus={(e) => {
+                  e.target.style.borderColor = "#2F80ED";
+                  e.target.style.boxShadow =
+                    "0 0 0 2px rgba(47, 128, 237, 0.2)";
+                }}
+                onBlur={(e) => {
+                  e.target.style.borderColor = "#E1E6EC";
+                  e.target.style.boxShadow = "none";
+                }}
                 placeholder="Enter your complete address"
               />
             </div>
@@ -206,19 +277,39 @@ const CardCreation = () => {
 
           {/* Country Field */}
           <div>
-            <label className="block text-lg font-medium text-gray-900 mb-3">
+            <label
+              className="block text-lg font-medium mb-3"
+              style={{ color: "#1F2D3D" }}
+            >
               Country
             </label>
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                <GlobeAltIcon className="h-6 w-6 text-gray-400" />
+                <GlobeAltIcon
+                  className="h-6 w-6"
+                  style={{ color: "#8FA6BF" }}
+                />
               </div>
               <select
                 name="country"
                 required
                 value={formData.country}
                 onChange={handleChange}
-                className="pl-12 w-full px-5 py-4 text-lg border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all appearance-none bg-white"
+                className="pl-12 w-full px-5 py-4 text-lg border rounded-xl focus:outline-none focus:ring-2 focus:border-transparent transition-all appearance-none"
+                style={{
+                  borderColor: "#E1E6EC",
+                  color: "#1F2D3D",
+                  backgroundColor: "#FFFFFF",
+                }}
+                onFocus={(e) => {
+                  e.target.style.borderColor = "#2F80ED";
+                  e.target.style.boxShadow =
+                    "0 0 0 2px rgba(47, 128, 237, 0.2)";
+                }}
+                onBlur={(e) => {
+                  e.target.style.borderColor = "#E1E6EC";
+                  e.target.style.boxShadow = "none";
+                }}
               >
                 <option value="">Select your country</option>
                 <option value="USA">United States</option>
@@ -239,13 +330,24 @@ const CardCreation = () => {
             disabled={submitting}
             className={`w-full py-5 px-6 text-lg rounded-xl font-bold text-white transition-all duration-300 mt-8 ${
               submitting
-                ? "bg-gray-400 cursor-not-allowed"
-                : "bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 shadow-lg hover:shadow-xl"
+                ? "cursor-not-allowed"
+                : "hover:opacity-90 shadow-lg hover:shadow-xl"
             }`}
+            style={{
+              backgroundColor: submitting
+                ? "rgba(47, 128, 237, 0.5)"
+                : "#2F80ED",
+            }}
           >
             {submitting ? (
               <div className="flex items-center justify-center">
-                <div className="h-6 w-6 border-2 border-white border-t-transparent rounded-full animate-spin mr-3"></div>
+                <div
+                  className="h-6 w-6 border-2 border-t-transparent rounded-full animate-spin mr-3"
+                  style={{
+                    borderColor: "#FFFFFF",
+                    borderTopColor: "transparent",
+                  }}
+                ></div>
                 Submitting...
               </div>
             ) : (
@@ -255,14 +357,20 @@ const CardCreation = () => {
         </form>
 
         {/* Security Note */}
-        <div className="mt-10 pt-8 border-t border-gray-200 mb-7">
+        <div
+          className="mt-10 pt-8 border-t mb-7"
+          style={{ borderColor: "#E1E6EC" }}
+        >
           <div className="flex items-start">
-            <ShieldCheckIcon className="h-6 w-6 text-emerald-500 mr-3 flex-shrink-0 mt-1" />
+            <ShieldCheckIcon
+              className="h-6 w-6 mr-3 flex-shrink-0 mt-1"
+              style={{ color: "#2F80ED" }}
+            />
             <div>
-              <h3 className="font-bold text-gray-900 mb-2">
+              <h3 className="font-bold mb-2" style={{ color: "#1F2D3D" }}>
                 Security Guarantee
               </h3>
-              <p className="text-gray-600 ">
+              <p className="" style={{ color: "#6B7280" }}>
                 All your card details are protected with quantum-resistant
                 encryption. Your personal information is securely encrypted and
                 will only be used for card issuance and verification purposes.

@@ -10,6 +10,8 @@ import {
   Shield,
   X,
   Send,
+  Phone,
+  Globe,
 } from "lucide-react";
 
 // Get token from localStorage
@@ -80,7 +82,16 @@ const filterOutAdmins = (users) => {
 };
 
 // Toast Notification Component
-const Toast = ({ message, type = "success", isVisible }) => {
+const Toast = ({ message, type = "success", isVisible, onClose }) => {
+  useEffect(() => {
+    if (isVisible) {
+      const timer = setTimeout(() => {
+        onClose();
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [isVisible, onClose]);
+
   if (!isVisible) return null;
 
   const bgColor = type === "success" ? "bg-green-500" : "bg-red-500";
@@ -108,12 +119,15 @@ const Toast = ({ message, type = "success", isVisible }) => {
         </svg>
       )}
       <span>{message}</span>
+      <button onClick={onClose} className="ml-4 text-white hover:text-gray-200">
+        <X className="h-4 w-4" />
+      </button>
     </div>
   );
 };
 
 // Fund Modal Component
-const FundModal = ({ isOpen, onClose, user, onFundSuccess, onShowToast }) => {
+const FundModal = ({ isOpen, onClose, user, onFundSuccess }) => {
   const [cryptocurrency, setCryptocurrency] = useState("bitcoin");
   const [amount, setAmount] = useState("");
   const [loading, setLoading] = useState(false);
@@ -166,17 +180,14 @@ const FundModal = ({ isOpen, onClose, user, onFundSuccess, onShowToast }) => {
 
       if (response.ok) {
         setSuccess(true);
-        setAmount("");
-        setCryptocurrency("bitcoin");
-        if (onShowToast) {
-          onShowToast(
-            `Successfully funded ${user?.fullName} with $${amount} ${cryptocurrency}`,
-            "success"
-          );
-        }
-        if (onFundSuccess) onFundSuccess();
+        // Wait for success message to show, then close modal and trigger success callback
         setTimeout(() => {
           onClose();
+          if (onFundSuccess) {
+            onFundSuccess(
+              `Successfully funded ${user?.fullName} with $${amount} ${cryptocurrency}`
+            );
+          }
         }, 1500);
       } else {
         setError(data.message || "Failed to fund user");
@@ -224,6 +235,18 @@ const FundModal = ({ isOpen, onClose, user, onFundSuccess, onShowToast }) => {
                   {user?.fullName}
                 </p>
                 <p className="text-xs text-gray-500">{user?.email}</p>
+                {user?.phone && (
+                  <p className="text-xs text-gray-500 mt-1">
+                    <Phone className="inline h-3 w-3 mr-1" />
+                    {user.phone}
+                  </p>
+                )}
+                {user?.country && (
+                  <p className="text-xs text-gray-500 mt-1">
+                    <Globe className="inline h-3 w-3 mr-1" />
+                    {user.country}
+                  </p>
+                )}
               </div>
 
               <form onSubmit={handleSubmit} className="space-y-4">
@@ -312,7 +335,6 @@ const UsersManagement = () => {
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [pagination, setPagination] = useState({});
   const [fundModalOpen, setFundModalOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
   const [toast, setToast] = useState({
@@ -360,7 +382,6 @@ const UsersManagement = () => {
         // Filter out admin users
         const regularUsers = filterOutAdmins(data.data.users);
         setFilteredUsers(regularUsers);
-        setPagination(data.data.pagination || {});
       } else {
         setError(data.message || "Failed to fetch users");
       }
@@ -380,17 +401,21 @@ const UsersManagement = () => {
     setFundModalOpen(true);
   };
 
-  const handleFundSuccess = () => {
+  const handleFundSuccess = (message) => {
     // Refresh users list after successful fund
     fetchUsers();
+    // Show toast notification
+    if (message) {
+      setToast({
+        message,
+        type: "success",
+        visible: true,
+      });
+    }
   };
 
-  const handleShowToast = (message, type = "success") => {
-    setToast({ message, type, visible: true });
-    // Auto-hide toast after 3 seconds
-    setTimeout(() => {
-      setToast({ message: "", type: "success", visible: false });
-    }, 3000);
+  const handleCloseToast = () => {
+    setToast({ message: "", type: "success", visible: false });
   };
 
   // Calculate statistics from filtered users only
@@ -399,10 +424,6 @@ const UsersManagement = () => {
   const kycVerified = filteredUsers.filter(
     (user) => user.kycStatus === "verified"
   ).length;
-  const totalWalletValue = filteredUsers.reduce(
-    (sum, user) => sum + (user.wallet?.totalValue || 0),
-    0
-  );
 
   if (loading) {
     return (
@@ -414,24 +435,6 @@ const UsersManagement = () => {
       </div>
     );
   }
-
-  // if (error) {
-  //   return (
-  //     <div className="bg-red-50 border border-red-200 rounded-lg p-6 text-center">
-  //       <AlertCircle className="h-12 w-12 text-red-400 mx-auto mb-4" />
-  //       <h3 className="text-lg font-medium text-red-800 mb-2">
-  //         Failed to load users
-  //       </h3>
-  //       <p className="text-red-600 mb-4">{error}</p>
-  //       <button
-  //         onClick={fetchUsers}
-  //         className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
-  //       >
-  //         Try Again
-  //       </button>
-  //     </div>
-  //   );
-  // }
 
   return (
     <div className="space-y-6">
@@ -510,6 +513,9 @@ const UsersManagement = () => {
                   User
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Contact
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Status
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -520,9 +526,6 @@ const UsersManagement = () => {
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Account Created
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Last Login
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Actions
@@ -561,6 +564,27 @@ const UsersManagement = () => {
                           <p className="text-xs text-gray-400 mt-1">
                             ID: {user.id.substring(0, 8)}...
                           </p>
+                        </div>
+                      </td>
+                      <td className="px-6 py-4">
+                        <div className="space-y-2">
+                          {user.phone && (
+                            <div className="flex items-center text-sm text-gray-600">
+                              <Phone className="h-4 w-4 mr-2 text-gray-400" />
+                              <span>{user.phone}</span>
+                            </div>
+                          )}
+                          {user.country && (
+                            <div className="flex items-center text-sm text-gray-600">
+                              <Globe className="h-4 w-4 mr-2 text-gray-400" />
+                              <span>{user.country}</span>
+                            </div>
+                          )}
+                          {!user.phone && !user.country && (
+                            <span className="text-xs text-gray-400">
+                              No contact info
+                            </span>
+                          )}
                         </div>
                       </td>
                       <td className="px-6 py-4">
@@ -606,11 +630,6 @@ const UsersManagement = () => {
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm text-gray-500">
-                          {formatDate(user.lastLogin)}
-                        </div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
                         <button
                           onClick={() => handleFundClick(user)}
                           className="px-3 py-1.5 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-1"
@@ -634,7 +653,6 @@ const UsersManagement = () => {
         onClose={() => setFundModalOpen(false)}
         user={selectedUser}
         onFundSuccess={handleFundSuccess}
-        onShowToast={handleShowToast}
       />
 
       {/* Toast Notification */}
@@ -642,6 +660,7 @@ const UsersManagement = () => {
         message={toast.message}
         type={toast.type}
         isVisible={toast.visible}
+        onClose={handleCloseToast}
       />
     </div>
   );

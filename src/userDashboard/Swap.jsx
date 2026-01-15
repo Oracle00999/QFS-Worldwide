@@ -234,45 +234,88 @@ const Swap = () => {
     return (
       <div className="flex items-center justify-center h-64">
         <div className="text-center">
-          <div className="relative h-16 w-16">
-            <div className="absolute h-full w-full rounded-full border-4 border-blue-200"></div>
-            <div className="absolute h-full w-full rounded-full border-4 border-transparent border-t-blue-600 animate-spin"></div>
+          <div className="relative h-16 w-16 mb-4 mx-auto">
             <div
-              className="absolute h-full w-full rounded-full border-4 border-transparent border-b-purple-600 animate-spin"
-              style={{ animationDuration: "1.5s" }}
+              className="absolute h-full w-full rounded-full border-4"
+              style={{ borderColor: "#E1E6EC" }}
             ></div>
-            <div className="absolute h-8 w-8 rounded-full bg-linear-to-br from-blue-100 to-purple-100 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"></div>
+            <div
+              className="absolute h-full w-full rounded-full border-4 border-transparent animate-spin"
+              style={{ borderTopColor: "#2F80ED", animationDuration: "1s" }}
+            ></div>
+            <div
+              className="absolute h-full w-full rounded-full border-4 border-transparent animate-spin"
+              style={{
+                borderRightColor: "#5DA9E9",
+                animationDuration: "1.2s",
+                animationDelay: "0.1s",
+              }}
+            ></div>
+            <div
+              className="absolute h-8 w-8 rounded-full top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+              style={{ backgroundColor: "#F5F7FA" }}
+            ></div>
           </div>
-          <p className="text-gray-600 mt-4 animate-pulse">Loading ...</p>
+          <p className="text-gray-600 font-medium" style={{ color: "#6B7280" }}>
+            Loading...
+          </p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="max-w-lg mx-auto">
+    <div className="max-w-lg mx-auto mb-11">
       {/* Header */}
       <div className="flex items-center mb-8">
         <Link to="/dashboard" className="mr-4">
-          <div className="h-10 w-10 rounded-full bg-emerald-100 flex items-center justify-center hover:bg-emerald-200 transition-colors">
-            <ArrowLeftIcon className="h-5 w-5 text-emerald-700" />
+          <div
+            className="h-10 w-10 rounded-full flex items-center justify-center hover:opacity-90 transition-colors"
+            style={{ backgroundColor: "#2F80ED" }}
+          >
+            <ArrowLeftIcon className="h-5 w-5" style={{ color: "#FFFFFF" }} />
           </div>
         </Link>
+        <div>
+          <h1 className="text-2xl font-bold" style={{ color: "#1F2D3D" }}>
+            Swap
+          </h1>
+          <p className="text-gray-600" style={{ color: "#6B7280" }}>
+            Trade between cryptocurrencies
+          </p>
+        </div>
       </div>
 
       {/* Swap Card */}
-      <div className="bg-gradient-to-br from-emerald-900 to-green-900 rounded-2xl border border-emerald-800 shadow-xl overflow-hidden mb-8">
+      <div
+        className="rounded-2xl border shadow-xl overflow-hidden mb-8"
+        style={{
+          backgroundColor: "#1F2D3D",
+          borderColor: "#2F80ED",
+        }}
+      >
         {/* Card Header */}
-        <div className="px-6 pt-6 pb-4 border-b border-emerald-800">
+        <div
+          className="px-6 pt-6 pb-4 border-b"
+          style={{ borderColor: "#2F80ED" }}
+        >
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-xl font-bold text-white">Instant Swap</h2>
-              <p className="text-emerald-300 text-sm mt-1">
+              <h2 className="text-xl font-bold" style={{ color: "#FFFFFF" }}>
+                Instant Swap
+              </h2>
+              <p className="text-sm mt-1" style={{ color: "#8FA6BF" }}>
                 Trade between supported cryptocurrencies
               </p>
             </div>
-            <div className="h-10 w-10 rounded-full bg-emerald-800 flex items-center justify-center">
-              <ArrowsRightLeftIcon className="h-5 w-5 text-emerald-300" />
+            <div
+              className="h-10 w-10 rounded-full flex items-center justify-center"
+              style={{ backgroundColor: "#2F80ED" }}
+            >
+              <ArrowsRightLeftIcon
+                className="h-5 w-5"
+                style={{ color: "#FFFFFF" }}
+              />
             </div>
           </div>
         </div>
@@ -281,45 +324,82 @@ const Swap = () => {
         <div className="p-6">
           {success ? (
             <div className="text-center py-8">
-              <div className="h-16 w-16 rounded-full bg-emerald-700 flex items-center justify-center mx-auto mb-4">
-                <CheckCircleIcon className="h-8 w-8 text-white" />
+              <div
+                className="h-16 w-16 rounded-full flex items-center justify-center mx-auto mb-4"
+                style={{ backgroundColor: "#2F80ED" }}
+              >
+                <CheckCircleIcon
+                  className="h-8 w-8"
+                  style={{ color: "#FFFFFF" }}
+                />
               </div>
-              <h3 className="text-xl font-bold text-white mb-2">
+              <h3
+                className="text-xl font-bold mb-2"
+                style={{ color: "#FFFFFF" }}
+              >
                 Swap Successful!
               </h3>
-              <p className="text-emerald-300 mb-6">
+              <p className="mb-6" style={{ color: "#8FA6BF" }}>
                 {formatCurrency(parseFloat(swapData.amount))} of{" "}
                 {getCryptoName(swapData.fromCrypto)} →{" "}
                 {getCryptoName(swapData.toCrypto)}
               </p>
               <Link
                 to="/dashboard"
-                className="inline-block px-6 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-500 transition-colors"
+                className="inline-block px-6 py-2 rounded-lg transition-colors"
+                style={{
+                  backgroundColor: "#2F80ED",
+                  color: "#FFFFFF",
+                }}
+                onMouseEnter={(e) =>
+                  (e.currentTarget.style.backgroundColor = "#3B82F6")
+                }
+                onMouseLeave={(e) =>
+                  (e.currentTarget.style.backgroundColor = "#2F80ED")
+                }
               >
                 Back to Dashboard
               </Link>
             </div>
           ) : swapping ? (
             <div className="text-center py-8">
-              <div className="h-16 w-16 rounded-full border-4 border-emerald-500 border-t-transparent animate-spin mx-auto mb-4"></div>
-              <h3 className="text-xl font-bold text-white mb-2">
+              <div
+                className="h-16 w-16 rounded-full border-4 border-t-transparent animate-spin mx-auto mb-4"
+                style={{
+                  borderColor: "#2F80ED",
+                  borderTopColor: "transparent",
+                }}
+              ></div>
+              <h3
+                className="text-xl font-bold mb-2"
+                style={{ color: "#FFFFFF" }}
+              >
                 Processing Swap
               </h3>
-              <p className="text-emerald-300">
+              <p style={{ color: "#8FA6BF" }}>
                 Please wait while we process your transaction...
               </p>
             </div>
           ) : (
             <form onSubmit={handleSwap}>
               {/* From Section */}
-              <div className="bg-emerald-950/50 rounded-xl p-4 border border-emerald-800 mb-4">
+              <div
+                className="rounded-xl p-4 border mb-4"
+                style={{
+                  backgroundColor: "rgba(47, 128, 237, 0.1)",
+                  borderColor: "#2F80ED",
+                }}
+              >
                 <div className="flex justify-between items-center mb-2">
-                  <span className="text-sm text-emerald-300 font-medium">
+                  <span
+                    className="text-sm font-medium"
+                    style={{ color: "#8FA6BF" }}
+                  >
                     From
                   </span>
-                  <div className="text-xs text-emerald-400">
+                  <div className="text-xs" style={{ color: "#8FA6BF" }}>
                     Available:{" "}
-                    <span className="font-medium">
+                    <span className="font-medium" style={{ color: "#FFFFFF" }}>
                       {formatCurrency(getCryptoBalance(swapData.fromCrypto))}
                     </span>
                   </div>
@@ -333,9 +413,10 @@ const Swap = () => {
                       value={swapData.amount}
                       onChange={handleInputChange}
                       placeholder="0.00"
-                      className="w-full bg-transparent text-2xl font-bold text-white placeholder-emerald-400 outline-none"
+                      className="w-full bg-transparent text-2xl font-bold placeholder-gray-400 outline-none"
+                      style={{ color: "#FFFFFF" }}
                     />
-                    <div className="text-xs text-emerald-500 mt-1">
+                    <div className="text-xs mt-1" style={{ color: "#8FA6BF" }}>
                       {swapData.amount &&
                         `≈ ${formatCurrency(parseFloat(swapData.amount))}`}
                     </div>
@@ -345,7 +426,17 @@ const Swap = () => {
                     <button
                       type="button"
                       onClick={handleMaxAmount}
-                      className="px-3 py-1 text-xs bg-emerald-800 text-emerald-300 rounded-lg hover:bg-emerald-700 transition-colors whitespace-nowrap"
+                      className="px-3 py-1 text-xs rounded-lg whitespace-nowrap transition-colors"
+                      style={{
+                        backgroundColor: "#5DA9E9",
+                        color: "#FFFFFF",
+                      }}
+                      onMouseEnter={(e) =>
+                        (e.currentTarget.style.backgroundColor = "#2F80ED")
+                      }
+                      onMouseLeave={(e) =>
+                        (e.currentTarget.style.backgroundColor = "#5DA9E9")
+                      }
                     >
                       MAX
                     </button>
@@ -355,7 +446,12 @@ const Swap = () => {
                         name="fromCrypto"
                         value={swapData.fromCrypto}
                         onChange={handleInputChange}
-                        className="w-full appearance-none bg-emerald-900 border border-emerald-700 rounded-lg pl-3 pr-8 py-2 text-white text-sm font-medium focus:outline-none focus:border-emerald-500 cursor-pointer"
+                        className="w-full appearance-none rounded-lg pl-3 pr-8 py-2 text-sm font-medium focus:outline-none cursor-pointer"
+                        style={{
+                          backgroundColor: "rgba(31, 45, 61, 0.8)",
+                          border: "1px solid #2F80ED",
+                          color: "#FFFFFF",
+                        }}
                       >
                         {cryptoOptions.map((crypto) => (
                           <option
@@ -367,18 +463,30 @@ const Swap = () => {
                           </option>
                         ))}
                       </select>
-                      <ArrowDownIcon className="h-3 w-3 text-emerald-400 absolute right-3 top-3.5 pointer-events-none" />
+                      <ArrowDownIcon
+                        className="h-3 w-3 absolute right-3 top-3.5 pointer-events-none"
+                        style={{ color: "#8FA6BF" }}
+                      />
                     </div>
                   </div>
                 </div>
 
-                <div className="flex items-center mt-3 pt-3 border-t border-emerald-800/50">
-                  <div className="h-7 w-7 rounded-full bg-emerald-800 flex items-center justify-center mr-2">
-                    <span className="text-emerald-300 text-sm font-bold">
+                <div
+                  className="flex items-center mt-3 pt-3 border-t"
+                  style={{ borderColor: "rgba(47, 128, 237, 0.3)" }}
+                >
+                  <div
+                    className="h-7 w-7 rounded-full flex items-center justify-center mr-2"
+                    style={{ backgroundColor: "#2F80ED" }}
+                  >
+                    <span
+                      className="text-sm font-bold"
+                      style={{ color: "#FFFFFF" }}
+                    >
                       {getCryptoIcon(swapData.fromCrypto)}
                     </span>
                   </div>
-                  <span className="text-sm text-emerald-300">
+                  <span className="text-sm" style={{ color: "#8FA6BF" }}>
                     {getCryptoName(swapData.fromCrypto)}
                   </span>
                 </div>
@@ -390,23 +498,42 @@ const Swap = () => {
                   <button
                     type="button"
                     onClick={switchCurrencies}
-                    className="h-8 w-8 rounded-full bg-emerald-800 border-4 border-emerald-900 flex items-center justify-center hover:bg-emerald-700 transition-colors z-10"
+                    className="h-8 w-8 rounded-full border-4 flex items-center justify-center hover:opacity-90 transition-colors z-10"
+                    style={{
+                      backgroundColor: "#2F80ED",
+                      borderColor: "#1F2D3D",
+                    }}
                   >
-                    <ArrowUpIcon className="h-3 w-3 text-emerald-300" />
-                    <ArrowDownIcon className="h-3 w-3 text-emerald-300 -mt-0.5" />
+                    <ArrowUpIcon
+                      className="h-3 w-3"
+                      style={{ color: "#FFFFFF" }}
+                    />
+                    <ArrowDownIcon
+                      className="h-3 w-3 -mt-0.5"
+                      style={{ color: "#FFFFFF" }}
+                    />
                   </button>
                 </div>
               </div>
 
               {/* To Section */}
-              <div className="bg-emerald-950/50 rounded-xl p-4 border border-emerald-800">
+              <div
+                className="rounded-xl p-4 border"
+                style={{
+                  backgroundColor: "rgba(47, 128, 237, 0.1)",
+                  borderColor: "#2F80ED",
+                }}
+              >
                 <div className="flex justify-between items-center mb-2">
-                  <span className="text-sm text-emerald-300 font-medium">
+                  <span
+                    className="text-sm font-medium"
+                    style={{ color: "#8FA6BF" }}
+                  >
                     To (Estimate)
                   </span>
-                  <div className="text-xs text-emerald-400">
+                  <div className="text-xs" style={{ color: "#8FA6BF" }}>
                     Balance:{" "}
-                    <span className="font-medium">
+                    <span className="font-medium" style={{ color: "#FFFFFF" }}>
                       {formatCurrency(getCryptoBalance(swapData.toCrypto))}
                     </span>
                   </div>
@@ -414,12 +541,15 @@ const Swap = () => {
 
                 <div className="flex items-center gap-3">
                   <div className="flex-1">
-                    <div className="text-2xl font-bold text-white">
+                    <div
+                      className="text-2xl font-bold"
+                      style={{ color: "#FFFFFF" }}
+                    >
                       {swapData.amount
                         ? formatCurrency(parseFloat(swapData.amount))
                         : "$0.00"}
                     </div>
-                    <div className="text-xs text-emerald-500 mt-1">
+                    <div className="text-xs mt-1" style={{ color: "#8FA6BF" }}>
                       Same USD value as input
                     </div>
                   </div>
@@ -429,7 +559,12 @@ const Swap = () => {
                       name="toCrypto"
                       value={swapData.toCrypto}
                       onChange={handleInputChange}
-                      className="w-full appearance-none bg-emerald-900 border border-emerald-700 rounded-lg pl-3 pr-8 py-2 text-white text-sm font-medium focus:outline-none focus:border-emerald-500 cursor-pointer"
+                      className="w-full appearance-none rounded-lg pl-3 pr-8 py-2 text-sm font-medium focus:outline-none cursor-pointer"
+                      style={{
+                        backgroundColor: "rgba(31, 45, 61, 0.8)",
+                        border: "1px solid #2F80ED",
+                        color: "#FFFFFF",
+                      }}
                     >
                       {cryptoOptions.map((crypto) => (
                         <option key={crypto.id} value={crypto.id}>
@@ -437,42 +572,73 @@ const Swap = () => {
                         </option>
                       ))}
                     </select>
-                    <ArrowDownIcon className="h-3 w-3 text-emerald-400 absolute right-3 top-3.5 pointer-events-none" />
+                    <ArrowDownIcon
+                      className="h-3 w-3 absolute right-3 top-3.5 pointer-events-none"
+                      style={{ color: "#8FA6BF" }}
+                    />
                   </div>
                 </div>
 
-                <div className="flex items-center mt-3 pt-3 border-t border-emerald-800/50">
-                  <div className="h-7 w-7 rounded-full bg-emerald-800 flex items-center justify-center mr-2">
-                    <span className="text-emerald-300 text-sm font-bold">
+                <div
+                  className="flex items-center mt-3 pt-3 border-t"
+                  style={{ borderColor: "rgba(47, 128, 237, 0.3)" }}
+                >
+                  <div
+                    className="h-7 w-7 rounded-full flex items-center justify-center mr-2"
+                    style={{ backgroundColor: "#2F80ED" }}
+                  >
+                    <span
+                      className="text-sm font-bold"
+                      style={{ color: "#FFFFFF" }}
+                    >
                       {getCryptoIcon(swapData.toCrypto)}
                     </span>
                   </div>
-                  <span className="text-sm text-emerald-300">
+                  <span className="text-sm" style={{ color: "#8FA6BF" }}>
                     {getCryptoName(swapData.toCrypto)}
                   </span>
                 </div>
               </div>
 
               {/* Swap Info */}
-              <div className="mt-4 p-3 bg-emerald-950/30 rounded-lg border border-emerald-800/50 text-sm">
+              <div
+                className="mt-4 p-3 rounded-lg border text-sm"
+                style={{
+                  backgroundColor: "rgba(47, 128, 237, 0.1)",
+                  borderColor: "rgba(47, 128, 237, 0.3)",
+                }}
+              >
                 <div className="flex justify-between">
-                  <span className="text-emerald-400">Exchange Rate</span>
-                  <span className="text-emerald-300 font-medium">
+                  <span style={{ color: "#8FA6BF" }}>Exchange Rate</span>
+                  <span className="font-medium" style={{ color: "#FFFFFF" }}>
                     1:1 USD Value
                   </span>
                 </div>
                 <div className="flex justify-between mt-1">
-                  <span className="text-emerald-400">Network Fee</span>
-                  <span className="text-emerald-300 font-medium">No Fees</span>
+                  <span style={{ color: "#8FA6BF" }}>Network Fee</span>
+                  <span className="font-medium" style={{ color: "#FFFFFF" }}>
+                    No Fees
+                  </span>
                 </div>
               </div>
 
               {/* Error Message */}
               {error && (
-                <div className="mt-4 p-3 bg-red-900/20 border border-red-800 rounded-lg">
+                <div
+                  className="mt-4 p-3 rounded-lg border"
+                  style={{
+                    backgroundColor: "rgba(231, 76, 60, 0.1)",
+                    borderColor: "#E74C3C",
+                  }}
+                >
                   <div className="flex items-center">
-                    <XCircleIcon className="h-4 w-4 text-red-400 mr-2 flex-shrink-0" />
-                    <span className="text-red-300 text-sm">{error}</span>
+                    <XCircleIcon
+                      className="h-4 w-4 mr-2 flex-shrink-0"
+                      style={{ color: "#E74C3C" }}
+                    />
+                    <span className="text-sm" style={{ color: "#E74C3C" }}>
+                      {error}
+                    </span>
                   </div>
                 </div>
               )}
@@ -485,19 +651,31 @@ const Swap = () => {
                   parseFloat(swapData.amount) <= 0 ||
                   loading
                 }
-                className={`w-full mt-6 py-3 rounded-xl font-bold text-white transition-all ${
+                className={`w-full mt-6 py-3 rounded-xl font-bold transition-all ${
                   !swapData.amount ||
                   parseFloat(swapData.amount) <= 0 ||
                   loading
-                    ? "bg-emerald-800/50 text-emerald-400 cursor-not-allowed"
-                    : "bg-emerald-600 hover:bg-emerald-500 shadow-lg"
+                    ? "cursor-not-allowed"
+                    : "hover:opacity-90 shadow-lg"
                 }`}
+                style={{
+                  backgroundColor:
+                    !swapData.amount ||
+                    parseFloat(swapData.amount) <= 0 ||
+                    loading
+                      ? "rgba(47, 128, 237, 0.5)"
+                      : "#2F80ED",
+                  color: "#FFFFFF",
+                }}
               >
                 {loading ? "Processing..." : "Swap Now"}
               </button>
 
               {/* Disclaimer */}
-              <div className="mt-4 flex items-start text-xs text-emerald-400 ">
+              <div
+                className="mt-4 flex items-start text-xs"
+                style={{ color: "#8FA6BF" }}
+              >
                 <InformationCircleIcon className="h-4 w-4 mr-2 mt-0.5 flex-shrink-0" />
                 <p>
                   Swap executes instantly at equal USD value. Your balances will

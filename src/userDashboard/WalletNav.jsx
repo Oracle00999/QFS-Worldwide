@@ -35,7 +35,13 @@ const WalletNav = () => {
   ];
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-emerald-900 border-t border-emerald-800 shadow-lg z-40">
+    <div
+      className="fixed bottom-0 left-0 right-0 border-t shadow-lg z-40"
+      style={{
+        backgroundColor: "#1F2D3D",
+        borderColor: "#2F80ED",
+      }}
+    >
       <div className="flex justify-around items-center h-16 px-2">
         {navItems.map((item) => {
           const Icon = item.icon;
@@ -44,16 +50,30 @@ const WalletNav = () => {
             <Link
               key={item.label}
               to={item.path}
-              className={`flex flex-col items-center justify-center w-20 h-full ${
-                isActive ? "text-white" : "text-emerald-300 hover:text-white"
-              } transition-colors`}
+              className={`flex flex-col items-center justify-center w-20 h-full transition-colors ${
+                isActive ? "text-white" : "text-gray-400 hover:text-white"
+              }`}
             >
               <div
-                className={`p-2 rounded-lg ${isActive ? "bg-emerald-800" : ""}`}
+                className={`p-2 rounded-lg transition-all ${
+                  isActive ? "bg-opacity-20" : ""
+                }`}
+                style={{
+                  backgroundColor: isActive
+                    ? "rgba(59, 130, 246, 0.2)"
+                    : "transparent",
+                }}
               >
                 <Icon className="h-6 w-6" />
               </div>
-              <span className="text-xs font-medium mt-1">{item.label}</span>
+              <span
+                className="text-xs font-medium mt-1"
+                style={{
+                  color: isActive ? "#FFFFFF" : "#8FA6BF",
+                }}
+              >
+                {item.label}
+              </span>
             </Link>
           );
         })}

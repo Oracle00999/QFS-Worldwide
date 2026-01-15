@@ -23,7 +23,7 @@ export default function Layout() {
       <WhyTrustUs />
       <About />
       <CryptoTracker />
-      <CustomerTestimonials />
+      {/* <CustomerTestimonials /> */}
       <MobileApp />
       <SmartsuppChat />
       <Footer />

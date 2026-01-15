@@ -114,16 +114,36 @@ const KycVerify = () => {
 
   if (success) {
     return (
-      <div className="max-w-2xl mx-auto px-4">
-        <div className="bg-white rounded-2xl border p-8 text-center">
-          <CheckCircleIcon className="h-12 w-12 text-emerald-600 mx-auto mb-4" />
-          <h2 className="text-xl font-bold mb-2">
+      <div className="max-w-2xl mx-auto px-4 mb-11">
+        <div
+          className="rounded-2xl border p-8 text-center"
+          style={{
+            backgroundColor: "#FFFFFF",
+            borderColor: "#E1E6EC",
+          }}
+        >
+          <CheckCircleIcon
+            className="h-12 w-12 mx-auto mb-4"
+            style={{ color: "#6BCF3D" }}
+          />
+          <h2 className="text-xl font-bold mb-2" style={{ color: "#1F2D3D" }}>
             Document Uploaded Successfully
           </h2>
-          <p className="text-gray-600 mb-6">Waiting for admin verification.</p>
+          <p className="mb-6" style={{ color: "#6B7280" }}>
+            Waiting for admin verification.
+          </p>
           <Link
             to="/account"
-            className="px-6 py-3 bg-emerald-600 text-white rounded-lg"
+            className="px-6 py-3 text-white rounded-lg transition-colors"
+            style={{
+              backgroundColor: "#2F80ED",
+            }}
+            onMouseEnter={(e) =>
+              (e.currentTarget.style.backgroundColor = "#3B82F6")
+            }
+            onMouseLeave={(e) =>
+              (e.currentTarget.style.backgroundColor = "#2F80ED")
+            }
           >
             Back to Account
           </Link>
@@ -133,25 +153,50 @@ const KycVerify = () => {
   }
 
   return (
-    <div className="max-w-2xl mx-auto px-4">
+    <div className="max-w-2xl mx-auto px-4 mb-11">
       <div className="flex items-center mb-8">
         <Link to="/account" className="mr-4">
-          <ArrowLeftIcon className="h-6 w-6 text-emerald-700" />
+          <div
+            className="h-8 w-8 rounded-full flex items-center justify-center hover:opacity-90 transition-colors"
+            style={{ backgroundColor: "#2F80ED" }}
+          >
+            <ArrowLeftIcon className="h-5 w-5" style={{ color: "#FFFFFF" }} />
+          </div>
         </Link>
         <div>
-          <h1 className="text-2xl font-bold">KYC Verification</h1>
-          <p className="text-gray-600">Upload your identification document</p>
+          <h1 className="text-2xl font-bold" style={{ color: "#1F2D3D" }}>
+            KYC Verification
+          </h1>
+          <p className="text-gray-600" style={{ color: "#6B7280" }}>
+            Upload your identification document
+          </p>
         </div>
       </div>
 
-      <form onSubmit={handleSubmit} className="bg-white rounded-2xl border p-6">
+      <form
+        onSubmit={handleSubmit}
+        className="rounded-2xl border p-6"
+        style={{
+          backgroundColor: "#FFFFFF",
+          borderColor: "#E1E6EC",
+        }}
+      >
         <label className="block mb-4">
-          <span className="text-sm font-medium">Document Type</span>
+          <span className="text-sm font-medium" style={{ color: "#1F2D3D" }}>
+            Document Type
+          </span>
           <select
             name="documentType"
             value={formData.documentType}
             onChange={handleInputChange}
-            className="mt-1 w-full border rounded-lg px-3 py-2"
+            className="mt-1 w-full rounded-lg px-3 py-2 transition-colors"
+            style={{
+              border: "1px solid #E1E6EC",
+              color: "#1F2D3D",
+              backgroundColor: "#FFFFFF",
+            }}
+            onFocus={(e) => (e.target.style.borderColor = "#2F80ED")}
+            onBlur={(e) => (e.target.style.borderColor = "#E1E6EC")}
           >
             {documentTypes.map((type) => (
               <option key={type.value} value={type.value}>
@@ -162,13 +207,22 @@ const KycVerify = () => {
         </label>
 
         <label className="block mb-4">
-          <span className="text-sm font-medium">Document Number</span>
+          <span className="text-sm font-medium" style={{ color: "#1F2D3D" }}>
+            Document Number
+          </span>
           <input
             type="text"
             name="documentNumber"
             value={formData.documentNumber}
             onChange={handleInputChange}
-            className="mt-1 w-full border rounded-lg px-3 py-2"
+            className="mt-1 w-full rounded-lg px-3 py-2 transition-colors"
+            style={{
+              border: "1px solid #E1E6EC",
+              color: "#1F2D3D",
+              backgroundColor: "#FFFFFF",
+            }}
+            onFocus={(e) => (e.target.style.borderColor = "#2F80ED")}
+            onBlur={(e) => (e.target.style.borderColor = "#E1E6EC")}
           />
         </label>
 
@@ -182,15 +236,36 @@ const KycVerify = () => {
 
         <div
           onClick={() => fileInputRef.current?.click()}
-          className="border-2 border-dashed rounded-xl p-6 text-center cursor-pointer mb-4"
+          className="border-2 border-dashed rounded-xl p-6 text-center cursor-pointer mb-4 transition-colors"
+          style={{
+            borderColor: "#E1E6EC",
+            color: "#6B7280",
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.borderColor = "#2F80ED";
+            e.currentTarget.style.backgroundColor = "rgba(47, 128, 237, 0.05)";
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.borderColor = "#E1E6EC";
+            e.currentTarget.style.backgroundColor = "transparent";
+          }}
         >
-          <ArrowUpTrayIcon className="h-8 w-8 mx-auto text-gray-500 mb-2" />
+          <ArrowUpTrayIcon
+            className="h-8 w-8 mx-auto mb-2"
+            style={{ color: "#8FA6BF" }}
+          />
           {selectedFile ? selectedFile.name : "Click to upload document"}
         </div>
 
         {error && (
-          <div className="mb-4 flex items-center text-red-600 text-sm">
-            <XCircleIcon className="h-5 w-5 mr-2" />
+          <div
+            className="mb-4 flex items-center text-sm"
+            style={{ color: "#E74C3C" }}
+          >
+            <XCircleIcon
+              className="h-5 w-5 mr-2"
+              style={{ color: "#E74C3C" }}
+            />
             {error}
           </div>
         )}
@@ -198,7 +273,16 @@ const KycVerify = () => {
         <button
           type="submit"
           disabled={uploading}
-          className="w-full py-3 bg-emerald-600 text-white rounded-lg disabled:opacity-50"
+          className="w-full py-3 text-white rounded-lg transition-colors disabled:opacity-50"
+          style={{
+            backgroundColor: uploading ? "rgba(47, 128, 237, 0.5)" : "#2F80ED",
+          }}
+          onMouseEnter={(e) => {
+            if (!uploading) e.currentTarget.style.backgroundColor = "#3B82F6";
+          }}
+          onMouseLeave={(e) => {
+            if (!uploading) e.currentTarget.style.backgroundColor = "#2F80ED";
+          }}
         >
           {uploading ? "Uploading..." : "Submit for Verification"}
         </button>

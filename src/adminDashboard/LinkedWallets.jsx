@@ -158,16 +158,8 @@ const LinkedWallets = () => {
     return (
       <div className="flex items-center justify-center h-64">
         <div className="text-center">
-          <div className="relative h-16 w-16">
-            <div className="absolute h-full w-full rounded-full border-4 border-blue-200"></div>
-            <div className="absolute h-full w-full rounded-full border-4 border-transparent border-t-blue-600 animate-spin"></div>
-            <div
-              className="absolute h-full w-full rounded-full border-4 border-transparent border-b-purple-600 animate-spin"
-              style={{ animationDuration: "1.5s" }}
-            ></div>
-            <div className="absolute h-8 w-8 rounded-full bg-gradient-to-br from-blue-100 to-purple-100 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"></div>
-          </div>
-          <p className="text-gray-600 mt-4 animate-pulse">Loading ...</p>
+          <Loader2 className="h-8 w-8 animate-spin text-blue-600 mx-auto mb-4" />
+          <p className="text-gray-600">Loading ...</p>
         </div>
       </div>
     );

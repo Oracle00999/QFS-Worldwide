@@ -278,51 +278,88 @@ const Withdraw = () => {
     return (
       <div className="flex items-center justify-center h-64">
         <div className="text-center">
-          <div className="relative h-16 w-16">
-            <div className="absolute h-full w-full rounded-full border-4 border-blue-200"></div>
-            <div className="absolute h-full w-full rounded-full border-4 border-transparent border-t-blue-600 animate-spin"></div>
+          <div className="relative h-16 w-16 mb-4 mx-auto">
             <div
-              className="absolute h-full w-full rounded-full border-4 border-transparent border-b-purple-600 animate-spin"
-              style={{ animationDuration: "1.5s" }}
+              className="absolute h-full w-full rounded-full border-4"
+              style={{ borderColor: "#E1E6EC" }}
             ></div>
-            <div className="absolute h-8 w-8 rounded-full bg-linear-to-br from-blue-100 to-purple-100 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"></div>
+            <div
+              className="absolute h-full w-full rounded-full border-4 border-transparent animate-spin"
+              style={{ borderTopColor: "#2F80ED", animationDuration: "1s" }}
+            ></div>
+            <div
+              className="absolute h-full w-full rounded-full border-4 border-transparent animate-spin"
+              style={{
+                borderRightColor: "#5DA9E9",
+                animationDuration: "1.2s",
+                animationDelay: "0.1s",
+              }}
+            ></div>
+            <div
+              className="absolute h-8 w-8 rounded-full top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+              style={{ backgroundColor: "#F5F7FA" }}
+            ></div>
           </div>
-          <p className="text-gray-600 mt-4 animate-pulse">Loading ...</p>
+          <p className="text-gray-600 font-medium" style={{ color: "#6B7280" }}>
+            Loading...
+          </p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="max-w-lg mx-auto">
+    <div className="max-w-lg mx-auto mb-11">
       {/* Header */}
       <div className="flex items-center mb-8">
         <Link to="/dashboard" className="mr-4">
-          <div className="h-10 w-10 rounded-full bg-emerald-100 flex items-center justify-center hover:bg-emerald-200 transition-colors">
-            <ArrowLeftIcon className="h-5 w-5 text-emerald-700" />
+          <div
+            className="h-10 w-10 rounded-full flex items-center justify-center hover:opacity-90 transition-colors"
+            style={{ backgroundColor: "#2F80ED" }}
+          >
+            <ArrowLeftIcon className="h-5 w-5" style={{ color: "#FFFFFF" }} />
           </div>
         </Link>
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Withdraw Funds</h1>
-          <p className="text-gray-600">Transfer funds to external wallet</p>
+          <h1 className="text-2xl font-bold" style={{ color: "#1F2D3D" }}>
+            Withdraw Funds
+          </h1>
+          <p className="text-gray-600" style={{ color: "#6B7280" }}>
+            Transfer funds to external wallet
+          </p>
         </div>
       </div>
 
       {/* Withdrawal Card */}
-      <div className="bg-gradient-to-br from-emerald-900 to-green-900 rounded-2xl border border-emerald-800 shadow-xl overflow-hidden mb-8">
+      <div
+        className="rounded-2xl border shadow-xl overflow-hidden mb-8"
+        style={{
+          backgroundColor: "#1F2D3D",
+          borderColor: "#2F80ED",
+        }}
+      >
         {/* Card Header */}
-        <div className="px-6 pt-6 pb-4 border-b border-emerald-800">
+        <div
+          className="px-6 pt-6 pb-4 border-b"
+          style={{ borderColor: "#2F80ED" }}
+        >
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-xl font-bold text-white">
+              <h2 className="text-xl font-bold" style={{ color: "#FFFFFF" }}>
                 Withdraw Cryptocurrency
               </h2>
-              <p className="text-emerald-300 text-sm mt-1">
+              <p className="text-sm mt-1" style={{ color: "#8FA6BF" }}>
                 Send funds to an external wallet address • No fees
               </p>
             </div>
-            <div className="h-10 w-10 rounded-full bg-emerald-800 flex items-center justify-center">
-              <ArrowUpTrayIcon className="h-5 w-5 text-emerald-300" />
+            <div
+              className="h-10 w-10 rounded-full flex items-center justify-center"
+              style={{ backgroundColor: "#2F80ED" }}
+            >
+              <ArrowUpTrayIcon
+                className="h-5 w-5"
+                style={{ color: "#FFFFFF" }}
+              />
             </div>
           </div>
         </div>
@@ -333,66 +370,109 @@ const Withdraw = () => {
             <div className="space-y-6">
               {/* Success Header */}
               <div className="text-center">
-                <div className="h-16 w-16 rounded-full bg-emerald-700 flex items-center justify-center mx-auto mb-4">
-                  <CheckCircleIcon className="h-8 w-8 text-white" />
+                <div
+                  className="h-16 w-16 rounded-full flex items-center justify-center mx-auto mb-4"
+                  style={{ backgroundColor: "#2F80ED" }}
+                >
+                  <CheckCircleIcon
+                    className="h-8 w-8"
+                    style={{ color: "#FFFFFF" }}
+                  />
                 </div>
-                <h3 className="text-xl font-bold text-white mb-2">
+                <h3
+                  className="text-xl font-bold mb-2"
+                  style={{ color: "#FFFFFF" }}
+                >
                   Withdrawal Request Submitted!
                 </h3>
-                <p className="text-emerald-300">
+                <p style={{ color: "#8FA6BF" }}>
                   Your withdrawal is being processed.
                 </p>
               </div>
 
               {/* Transaction Details */}
-              <div className="bg-emerald-950/50 rounded-xl p-4 border border-emerald-800">
-                <h4 className="text-sm text-emerald-300 font-medium mb-3">
+              <div
+                className="rounded-xl p-4 border"
+                style={{
+                  backgroundColor: "rgba(47, 128, 237, 0.1)",
+                  borderColor: "#2F80ED",
+                }}
+              >
+                <h4
+                  className="text-sm font-medium mb-3"
+                  style={{ color: "#8FA6BF" }}
+                >
                   Withdrawal Details
                 </h4>
                 <div className="space-y-2">
                   <div className="flex justify-between">
-                    <span className="text-emerald-400 text-sm">
+                    <span className="text-sm" style={{ color: "#8FA6BF" }}>
                       Transaction ID
                     </span>
-                    <span className="text-white text-sm font-medium">
+                    <span
+                      className="text-sm font-medium"
+                      style={{ color: "#FFFFFF" }}
+                    >
                       {withdrawResult.transaction?.transactionId || "N/A"}
                     </span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-emerald-400 text-sm">Amount</span>
-                    <span className="text-white text-sm font-medium">
+                    <span className="text-sm" style={{ color: "#8FA6BF" }}>
+                      Amount
+                    </span>
+                    <span
+                      className="text-sm font-medium"
+                      style={{ color: "#FFFFFF" }}
+                    >
                       {formatCurrency(withdrawResult.transaction?.amount)}
                     </span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-emerald-400 text-sm">
+                    <span className="text-sm" style={{ color: "#8FA6BF" }}>
                       Cryptocurrency
                     </span>
-                    <span className="text-white text-sm font-medium">
+                    <span
+                      className="text-sm font-medium"
+                      style={{ color: "#FFFFFF" }}
+                    >
                       {getCryptoName(
                         withdrawResult.transaction?.cryptocurrency
                       )}
                     </span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-emerald-400 text-sm">
+                    <span className="text-sm" style={{ color: "#8FA6BF" }}>
                       Destination
                     </span>
-                    <span className="text-white text-sm font-medium font-mono truncate max-w-[180px]">
+                    <span
+                      className="text-sm font-medium font-mono truncate max-w-[180px]"
+                      style={{ color: "#FFFFFF" }}
+                    >
                       {withdrawData.toAddress}
                     </span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-emerald-400 text-sm">Status</span>
-                    <span className="px-2 py-1 text-xs rounded-full bg-yellow-900/50 text-yellow-300">
+                    <span className="text-sm" style={{ color: "#8FA6BF" }}>
+                      Status
+                    </span>
+                    <span
+                      className="px-2 py-1 text-xs rounded-full"
+                      style={{
+                        backgroundColor: "rgba(247, 147, 26, 0.2)",
+                        color: "#F7931A",
+                      }}
+                    >
                       {withdrawResult.transaction?.status || "pending"}
                     </span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-emerald-400 text-sm">
+                    <span className="text-sm" style={{ color: "#8FA6BF" }}>
                       Request Time
                     </span>
-                    <span className="text-white text-sm font-medium">
+                    <span
+                      className="text-sm font-medium"
+                      style={{ color: "#FFFFFF" }}
+                    >
                       {formatDate(withdrawResult.transaction?.createdAt)}
                     </span>
                   </div>
@@ -400,16 +480,24 @@ const Withdraw = () => {
               </div>
 
               {/* Processing Information */}
-              <div className="bg-emerald-950/30 rounded-lg p-4 border border-emerald-800/50">
-                <h4 className="text-sm text-emerald-300 font-medium mb-2">
+              <div
+                className="rounded-lg p-4 border"
+                style={{
+                  backgroundColor: "rgba(47, 128, 237, 0.05)",
+                  borderColor: "rgba(47, 128, 237, 0.3)",
+                }}
+              >
+                <h4
+                  className="text-sm font-medium mb-2"
+                  style={{ color: "#8FA6BF" }}
+                >
                   Processing Information
                 </h4>
-                <ul className="text-xs text-emerald-400 space-y-1">
+                <ul className="text-xs space-y-1" style={{ color: "#8FA6BF" }}>
                   <li className="flex items-start">
                     <span className="mr-2">•</span>
                     <span>Withdrawals are processed within 24 hours</span>
                   </li>
-
                   <li className="flex items-start">
                     <span className="mr-2">•</span>
                     <span>
@@ -429,13 +517,33 @@ const Withdraw = () => {
               <div className="flex gap-3">
                 <button
                   onClick={() => setSuccess(false)}
-                  className="flex-1 py-2 bg-emerald-800 text-emerald-300 rounded-lg hover:bg-emerald-700 transition-colors"
+                  className="flex-1 py-2 rounded-lg transition-colors"
+                  style={{
+                    backgroundColor: "#2F80ED",
+                    color: "#FFFFFF",
+                  }}
+                  onMouseEnter={(e) =>
+                    (e.currentTarget.style.backgroundColor = "#3B82F6")
+                  }
+                  onMouseLeave={(e) =>
+                    (e.currentTarget.style.backgroundColor = "#2F80ED")
+                  }
                 >
                   New Withdrawal
                 </button>
                 <Link
                   to="/dashboard"
-                  className="flex-1 py-2 text-center bg-emerald-600 text-white rounded-lg hover:bg-emerald-500 transition-colors"
+                  className="flex-1 py-2 text-center rounded-lg transition-colors"
+                  style={{
+                    backgroundColor: "#5DA9E9",
+                    color: "#FFFFFF",
+                  }}
+                  onMouseEnter={(e) =>
+                    (e.currentTarget.style.backgroundColor = "#2F80ED")
+                  }
+                  onMouseLeave={(e) =>
+                    (e.currentTarget.style.backgroundColor = "#5DA9E9")
+                  }
                 >
                   Back to Dashboard
                 </Link>
@@ -445,7 +553,10 @@ const Withdraw = () => {
             <form onSubmit={handleWithdraw}>
               {/* Cryptocurrency Selection */}
               <div className="mb-4">
-                <label className="block text-sm text-emerald-300 font-medium mb-2">
+                <label
+                  className="block text-sm font-medium mb-2"
+                  style={{ color: "#8FA6BF" }}
+                >
                   Select Cryptocurrency
                 </label>
                 <div className="relative">
@@ -453,7 +564,12 @@ const Withdraw = () => {
                     name="cryptocurrency"
                     value={withdrawData.cryptocurrency}
                     onChange={handleInputChange}
-                    className="w-full appearance-none bg-emerald-900 border border-emerald-700 rounded-xl pl-4 pr-10 py-3 text-white font-medium focus:outline-none focus:border-emerald-500 cursor-pointer"
+                    className="w-full appearance-none rounded-xl pl-4 pr-10 py-3 font-medium focus:outline-none cursor-pointer"
+                    style={{
+                      backgroundColor: "rgba(31, 45, 61, 0.8)",
+                      border: "1px solid #2F80ED",
+                      color: "#FFFFFF",
+                    }}
                   >
                     {cryptoOptions
                       .filter((crypto) => getCryptoBalance(crypto.id) > 0)
@@ -464,15 +580,21 @@ const Withdraw = () => {
                         </option>
                       ))}
                   </select>
-                  <ArrowLeftIcon className="h-4 w-4 text-emerald-400 absolute right-3 top-4 pointer-events-none rotate-90" />
+                  <ArrowLeftIcon
+                    className="h-4 w-4 absolute right-3 top-4 pointer-events-none rotate-90"
+                    style={{ color: "#8FA6BF" }}
+                  />
                 </div>
                 <div className="flex items-center mt-2">
-                  <div className="h-7 w-7 rounded-full bg-emerald-800 flex items-center justify-center mr-2">
-                    <span className="text-emerald-300 font-bold">
+                  <div
+                    className="h-7 w-7 rounded-full flex items-center justify-center mr-2"
+                    style={{ backgroundColor: "#2F80ED" }}
+                  >
+                    <span className="font-bold" style={{ color: "#FFFFFF" }}>
                       {getCryptoIcon(withdrawData.cryptocurrency)}
                     </span>
                   </div>
-                  <span className="text-sm text-emerald-300">
+                  <span className="text-sm" style={{ color: "#8FA6BF" }}>
                     Balance:{" "}
                     {formatCurrency(
                       getCryptoBalance(withdrawData.cryptocurrency)
@@ -483,7 +605,10 @@ const Withdraw = () => {
 
               {/* Amount Input */}
               <div className="mb-4">
-                <label className="block text-sm text-emerald-300 font-medium mb-2">
+                <label
+                  className="block text-sm font-medium mb-2"
+                  style={{ color: "#8FA6BF" }}
+                >
                   Withdrawal Amount (USD)
                 </label>
                 <div className="flex items-center gap-2">
@@ -494,28 +619,49 @@ const Withdraw = () => {
                       value={withdrawData.amount}
                       onChange={handleInputChange}
                       placeholder="0.00"
-                      className="w-full bg-emerald-900 border border-emerald-700 rounded-xl pl-4 pr-12 py-3 text-2xl font-bold text-white placeholder-emerald-400 focus:outline-none focus:border-emerald-500"
+                      className="w-full rounded-xl pl-4 pr-12 py-3 text-2xl font-bold placeholder-gray-400 focus:outline-none"
+                      style={{
+                        backgroundColor: "rgba(31, 45, 61, 0.8)",
+                        border: "1px solid #2F80ED",
+                        color: "#FFFFFF",
+                      }}
                     />
-                    <div className="absolute right-4 top-3.5 text-emerald-400">
+                    <div
+                      className="absolute right-4 top-3.5"
+                      style={{ color: "#8FA6BF" }}
+                    >
                       USD
                     </div>
                   </div>
                   <button
                     type="button"
                     onClick={handleMaxAmount}
-                    className="px-4 py-3 text-sm bg-emerald-800 text-emerald-300 rounded-xl hover:bg-emerald-700 transition-colors whitespace-nowrap"
+                    className="px-4 py-3 text-sm rounded-xl whitespace-nowrap transition-colors"
+                    style={{
+                      backgroundColor: "#5DA9E9",
+                      color: "#FFFFFF",
+                    }}
+                    onMouseEnter={(e) =>
+                      (e.currentTarget.style.backgroundColor = "#2F80ED")
+                    }
+                    onMouseLeave={(e) =>
+                      (e.currentTarget.style.backgroundColor = "#5DA9E9")
+                    }
                   >
                     MAX
                   </button>
                 </div>
-                <div className="text-xs text-emerald-500 mt-1">
+                <div className="text-xs mt-1" style={{ color: "#8FA6BF" }}>
                   Minimum withdrawal: $10.00 • No fees
                 </div>
               </div>
 
               {/* Destination Address */}
               <div className="mb-6">
-                <label className="block text-sm text-emerald-300 font-medium mb-2">
+                <label
+                  className="block text-sm font-medium mb-2"
+                  style={{ color: "#8FA6BF" }}
+                >
                   Destination Wallet Address
                 </label>
                 <textarea
@@ -526,38 +672,62 @@ const Withdraw = () => {
                     withdrawData.cryptocurrency
                   )} address...`}
                   rows="3"
-                  className="w-full bg-emerald-900 border border-emerald-700 rounded-xl px-4 py-3 text-white placeholder-emerald-400 focus:outline-none focus:border-emerald-500 resize-none font-mono text-sm"
+                  className="w-full rounded-xl px-4 py-3 placeholder-gray-400 focus:outline-none resize-none font-mono text-sm"
+                  style={{
+                    backgroundColor: "rgba(31, 45, 61, 0.8)",
+                    border: "1px solid #2F80ED",
+                    color: "#FFFFFF",
+                  }}
                 />
-                <div className="text-xs text-emerald-500 mt-1">
+                <div className="text-xs mt-1" style={{ color: "#8FA6BF" }}>
                   Double-check the address. Funds cannot be recovered if sent to
                   wrong address.
                 </div>
               </div>
 
               {/* Summary */}
-              <div className="mb-4 p-3 bg-emerald-950/30 rounded-lg border border-emerald-800/50 text-sm">
+              <div
+                className="mb-4 p-3 rounded-lg border text-sm"
+                style={{
+                  backgroundColor: "rgba(47, 128, 237, 0.1)",
+                  borderColor: "rgba(47, 128, 237, 0.3)",
+                }}
+              >
                 <div className="flex justify-between">
-                  <span className="text-emerald-300 font-medium">
+                  <span className="font-medium" style={{ color: "#8FA6BF" }}>
                     Amount to Withdraw
                   </span>
-                  <span className="text-white font-bold">
+                  <span className="font-bold" style={{ color: "#FFFFFF" }}>
                     {withdrawData.amount
                       ? formatCurrency(parseFloat(withdrawData.amount))
                       : "$0.00"}
                   </span>
                 </div>
                 <div className="flex justify-between mt-1">
-                  <span className="text-emerald-400">Network Fee</span>
-                  <span className="text-white font-medium">$0.00</span>
+                  <span style={{ color: "#8FA6BF" }}>Network Fee</span>
+                  <span className="font-medium" style={{ color: "#FFFFFF" }}>
+                    $0.00
+                  </span>
                 </div>
               </div>
 
               {/* Error Message */}
               {error && (
-                <div className="mb-4 p-3 bg-red-900/20 border border-red-800 rounded-lg">
+                <div
+                  className="mb-4 p-3 rounded-lg border"
+                  style={{
+                    backgroundColor: "rgba(231, 76, 60, 0.1)",
+                    borderColor: "#E74C3C",
+                  }}
+                >
                   <div className="flex items-center">
-                    <XCircleIcon className="h-4 w-4 text-red-400 mr-2 flex-shrink-0" />
-                    <span className="text-red-300 text-sm">{error}</span>
+                    <XCircleIcon
+                      className="h-4 w-4 mr-2 flex-shrink-0"
+                      style={{ color: "#E74C3C" }}
+                    />
+                    <span className="text-sm" style={{ color: "#E74C3C" }}>
+                      {error}
+                    </span>
                   </div>
                 </div>
               )}
@@ -570,19 +740,31 @@ const Withdraw = () => {
                   !withdrawData.amount ||
                   parseFloat(withdrawData.amount) < 10
                 }
-                className={`w-full py-3 rounded-xl font-bold text-white transition-all ${
+                className={`w-full py-3 rounded-xl font-bold transition-all ${
                   submitting ||
                   !withdrawData.amount ||
                   parseFloat(withdrawData.amount) < 10
-                    ? "bg-emerald-800/50 text-emerald-400 cursor-not-allowed"
-                    : "bg-emerald-600 hover:bg-emerald-500 shadow-lg"
+                    ? "cursor-not-allowed"
+                    : "hover:opacity-90 shadow-lg"
                 }`}
+                style={{
+                  backgroundColor:
+                    submitting ||
+                    !withdrawData.amount ||
+                    parseFloat(withdrawData.amount) < 10
+                      ? "rgba(47, 128, 237, 0.5)"
+                      : "#2F80ED",
+                  color: "#FFFFFF",
+                }}
               >
                 {submitting ? "Processing..." : "Withdraw Funds"}
               </button>
 
               {/* Disclaimer */}
-              <div className="mt-4 flex items-start text-xs text-emerald-400 mb-3">
+              <div
+                className="mt-4 flex items-start text-xs mb-3"
+                style={{ color: "#8FA6BF" }}
+              >
                 <InformationCircleIcon className="h-4 w-4 mr-2 mt-0.5 flex-shrink-0" />
                 <p>
                   Withdrawals are processed within 24 hours. Ensure the

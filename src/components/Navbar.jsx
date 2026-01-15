@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
-import logoImage from "../assets/logo.png"; // Adjust the path to your logo image
+import logoImage from "../assets/logo.png";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -14,25 +14,20 @@ const Navbar = () => {
     const pingBackend = async () => {
       if (!backendPinged) {
         try {
-          // Add timestamp to prevent caching
           const timestamp = Date.now();
           const backendUrl = `https://qfs-backend-ghuv.onrender.com/?_=${timestamp}`;
-
-          // Make the request
           const response = await fetch(backendUrl, {
             method: "GET",
-            mode: "cors", // Try with CORS first
+            mode: "cors",
             headers: {
               Accept: "application/json",
               "Cache-Control": "no-cache",
               Pragma: "no-cache",
             },
           });
-
           console.log("✅ Backend woken successfully");
           setBackendPinged(true);
         } catch (error) {
-          // Try with no-cors mode as fallback
           try {
             const backendUrl = `https://qfs-backend-ghuv.onrender.com/?_=${Date.now()}`;
             await fetch(backendUrl, {
@@ -49,14 +44,10 @@ const Navbar = () => {
       }
     };
 
-    // Ping immediately on mount
     pingBackend();
-
-    // Optional: Set up periodic pings to keep backend warm
     const intervalId = setInterval(() => {
-      // Reset pinged state every 4 minutes to allow new ping
       setBackendPinged(false);
-    }, 4 * 60 * 1000); // Every 4 minutes
+    }, 4 * 60 * 1000);
 
     return () => clearInterval(intervalId);
   }, [backendPinged]);
@@ -72,8 +63,6 @@ const Navbar = () => {
     };
 
     window.addEventListener("scroll", handleScroll);
-
-    // Cleanup
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
@@ -81,8 +70,8 @@ const Navbar = () => {
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled
-          ? "bg-white/95 backdrop-blur-md border-b border-gray-100 shadow-lg"
-          : "bg-white border-b border-gray-100"
+          ? "bg-[#0B1F3A]/95 backdrop-blur-md border-b border-[#112E4A]/30 shadow-[0_4px_20px_rgba(47,140,255,0.15)]"
+          : "bg-[#0B1F3A] border-b border-[#112E4A]/50"
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -90,7 +79,7 @@ const Navbar = () => {
           {/* Logo with Image - LEFT */}
           <div className="flex items-center">
             <Link to="/" className="flex items-center space-x-3 group">
-              <div className="flex items-center justify-center transition-all duration-300 group-hover:scale-105">
+              <div className="flex items-center justify-center transition-all duration-300 group-hover:scale-105 group-hover:drop-shadow-[0_0_8px_rgba(47,140,255,0.5)]">
                 <img
                   src={logoImage}
                   alt="QFS WorldWide Ledger Logo"
@@ -98,10 +87,9 @@ const Navbar = () => {
                     isScrolled ? "max-h-10" : "max-h-10"
                   }`}
                   onError={(e) => {
-                    // Fallback if image fails to load
                     e.target.style.display = "none";
                     e.target.parentElement.innerHTML = `
-                      <div class="h-10 w-10 rounded-xl flex items-center justify-center bg-gradient-to-br from-green-500 to-emerald-600 shadow-md">
+                      <div class="h-10 w-10 rounded-xl flex items-center justify-center bg-gradient-to-br from-[#1EC9E8] to-[#2F8CFF] shadow-lg">
                         <span class="font-bold text-white text-lg">Q</span>
                       </div>
                     `;
@@ -109,10 +97,10 @@ const Navbar = () => {
                 />
               </div>
               <div className="flex flex-col">
-                <span className="text-xl font-bold tracking-tight text-gray-900">
+                <span className="text-xl font-bold tracking-tight text-white">
                   QFS WorldWide
                 </span>
-                <span className="text-sm font-medium text-emerald-600">
+                <span className="text-sm font-medium text-[#1EC9E8]">
                   Ledger
                 </span>
               </div>
@@ -125,15 +113,15 @@ const Navbar = () => {
               to="/login"
               className={`px-5 py-2.5 text-sm font-medium rounded-xl transition-all duration-300 border ${
                 isScrolled
-                  ? "text-gray-700 border-gray-200 hover:border-emerald-500 hover:text-emerald-600 hover:bg-emerald-50"
-                  : "text-gray-700 border-gray-200 hover:border-emerald-500 hover:text-emerald-600 hover:bg-emerald-50"
+                  ? "text-[#D1D9E0] border-[#163E63] hover:border-[#1EC9E8] hover:text-white hover:bg-[#112E4A]/50"
+                  : "text-[#D1D9E0] border-[#163E63] hover:border-[#1EC9E8] hover:text-white hover:bg-[#112E4A]"
               }`}
             >
               Sign In
             </Link>
             <Link
               to="/signup"
-              className="px-6 py-2.5 bg-gradient-to-r from-green-500 to-emerald-600 text-white font-medium rounded-xl hover:from-green-600 hover:to-emerald-700 transition-all duration-300 shadow-lg hover:shadow-xl"
+              className="px-6 py-2.5 bg-gradient-to-r from-[#1EC9E8] to-[#2F8CFF] text-white font-medium rounded-xl hover:from-[#1EC9E8] hover:to-[#1EC9E8] hover:shadow-[0_0_20px_rgba(30,201,232,0.5)] transition-all duration-300 shadow-lg"
             >
               Get Started Free
             </Link>
@@ -145,8 +133,8 @@ const Navbar = () => {
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className={`p-2.5 rounded-xl transition-all duration-300 ${
                 isScrolled
-                  ? "text-gray-600 hover:text-emerald-600 hover:bg-emerald-50"
-                  : "text-gray-600 hover:text-emerald-600 hover:bg-emerald-50"
+                  ? "text-[#D1D9E0] hover:text-[#1EC9E8] hover:bg-[#112E4A]/50"
+                  : "text-[#D1D9E0] hover:text-[#1EC9E8] hover:bg-[#112E4A]"
               }`}
             >
               {isMenuOpen ? (
@@ -163,21 +151,21 @@ const Navbar = () => {
           <div
             className={`md:hidden border-t ${
               isScrolled
-                ? "border-gray-100 bg-white/95 backdrop-blur-md"
-                : "border-gray-100 bg-white"
+                ? "border-[#112E4A]/30 bg-[#0B1F3A]/95 backdrop-blur-md"
+                : "border-[#112E4A] bg-[#0B1F3A]"
             }`}
           >
             <div className="px-2 pt-3 pb-4 space-y-2">
               <Link
                 to="/login"
-                className="block w-full text-left px-4 py-3 text-base font-medium text-gray-700 hover:text-emerald-600 hover:bg-emerald-50 rounded-xl border border-gray-100 hover:border-emerald-200 transition-all duration-300"
+                className="block w-full text-left px-4 py-3 text-base font-medium text-[#D1D9E0] hover:text-white hover:bg-[#112E4A] rounded-xl border border-[#163E63] hover:border-[#1EC9E8] transition-all duration-300"
                 onClick={() => setIsMenuOpen(false)}
               >
                 Sign In
               </Link>
               <Link
                 to="/signup"
-                className="block w-full text-left px-4 py-3 text-base font-medium bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-xl shadow-lg hover:from-green-600 hover:to-emerald-700 transition-all duration-300"
+                className="block w-full text-left px-4 py-3 text-base font-medium bg-gradient-to-r from-[#1EC9E8] to-[#2F8CFF] text-white rounded-xl shadow-lg hover:shadow-[0_0_20px_rgba(30,201,232,0.5)] transition-all duration-300"
                 onClick={() => setIsMenuOpen(false)}
               >
                 Get Started Free

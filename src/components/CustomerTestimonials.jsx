@@ -1,13 +1,7 @@
 // components/CustomerTestimonials.jsx
 import React from "react";
-import {
-  StarIcon,
-  ChatBubbleLeftRightIcon,
-  CurrencyDollarIcon,
-  ShieldCheckIcon,
-  ArrowTrendingUpIcon,
-} from "@heroicons/react/24/outline";
-import testimonialBg from "../assets/trump.jpg"; // You'll import your background image
+import { StarIcon, ChatBubbleLeftRightIcon } from "@heroicons/react/24/outline";
+import testimonialBg from "../assets/trump.jpg";
 
 const CustomerTestimonials = () => {
   const testimonials = [
@@ -42,33 +36,26 @@ const CustomerTestimonials = () => {
   ];
 
   return (
-    <section className="relative py-20 md:py-28 overflow-hidden">
-      {/* Background Image */}
-      <div
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{
-          backgroundImage: `url(${testimonialBg})`,
-        }}
-      >
-        {/* Dark overlay for text contrast */}
-        <div className="absolute inset-0 bg-gradient-to-br from-gray-900/85 to-emerald-900/85"></div>
-      </div>
-
+    <section className="relative py-20 md:py-28 overflow-hidden bg-[#0B1F3A] border-t border-[#112E4A]">
       <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 z-10">
         {/* Header */}
         <div className="text-center mb-12">
-          <div className="inline-flex items-center px-4 py-2 bg-emerald-500/20 backdrop-blur-sm rounded-full border border-emerald-500/30 mb-6">
-            <ChatBubbleLeftRightIcon className="h-4 w-4 text-emerald-400 mr-2" />
-            <span className="text-sm font-medium text-emerald-100">
+          <div className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-[#112E4A] to-[#163E63] rounded-full border border-[#2F8CFF]/30 mb-6">
+            <ChatBubbleLeftRightIcon className="h-4 w-4 text-[#2F8CFF] mr-2" />
+            <span className="text-sm font-medium text-[#7FA6C9]">
               Community Voices
             </span>
           </div>
 
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-            What Our <span className="text-emerald-400">Customers</span> Say
+            What Our{" "}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#1EC9E8] to-[#2F8CFF]">
+              Customers
+            </span>{" "}
+            Say
           </h2>
 
-          <p className="text-gray-300 max-w-2xl mx-auto">
+          <p className="text-[#D1D9E0] max-w-2xl mx-auto">
             Join thousands who have already transitioned to quantum-secure
             finance
           </p>
@@ -79,12 +66,12 @@ const CustomerTestimonials = () => {
           {testimonials.map((testimonial) => (
             <div
               key={testimonial.id}
-              className="bg-gray-900/60 backdrop-blur-sm rounded-2xl border border-emerald-800/30 p-6 hover:border-emerald-700/50 hover:bg-gray-900/70 transition-all duration-300 group"
+              className="bg-[#112E4A] rounded-2xl border border-[#163E63] p-6 hover:border-[#2F8CFF] transition-colors duration-300"
             >
               {/* Quote Icon */}
               <div className="mb-4">
-                <div className="h-12 w-12 rounded-full bg-emerald-900/40 flex items-center justify-center border border-emerald-700/30 group-hover:border-emerald-600/50 transition-colors">
-                  <ChatBubbleLeftRightIcon className="h-5 w-5 text-emerald-400" />
+                <div className="h-12 w-12 rounded-full bg-[#163E63] flex items-center justify-center border border-[#2F8CFF]/30">
+                  <ChatBubbleLeftRightIcon className="h-5 w-5 text-[#2F8CFF]" />
                 </div>
               </div>
 
@@ -93,26 +80,26 @@ const CustomerTestimonials = () => {
                 {[...Array(testimonial.rating)].map((_, i) => (
                   <StarIcon
                     key={i}
-                    className="h-5 w-5 text-yellow-500 fill-current"
+                    className="h-5 w-5 text-[#F5B400] fill-current"
                   />
                 ))}
               </div>
 
               {/* Testimonial Text */}
-              <p className="text-gray-200 text-lg leading-relaxed mb-6 italic">
+              <p className="text-[#D1D9E0] text-lg leading-relaxed mb-6 italic">
                 "{testimonial.text}"
               </p>
 
               {/* Author Info */}
-              <div className="flex items-center pt-4 border-t border-emerald-800/30">
-                <div className="h-10 w-10 rounded-full bg-gradient-to-br from-emerald-600 to-green-700 flex items-center justify-center text-white font-bold mr-3">
+              <div className="flex items-center pt-4 border-t border-[#163E63]">
+                <div className="h-10 w-10 rounded-full bg-gradient-to-br from-[#1EC9E8] to-[#2F8CFF] flex items-center justify-center text-white font-bold mr-3">
                   {testimonial.author.charAt(0)}
                 </div>
                 <div>
                   <div className="font-semibold text-white">
                     {testimonial.author}
                   </div>
-                  <div className="text-sm text-emerald-300">
+                  <div className="text-sm text-[#7FA6C9]">
                     {testimonial.role}
                   </div>
                 </div>
@@ -120,49 +107,6 @@ const CustomerTestimonials = () => {
             </div>
           ))}
         </div>
-
-        {/* Stats Section */}
-        {/* <di className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-6">
-          <div className="text-center p-6 bg-gray-900/40 backdrop-blur-sm rounded-xl border border-emerald-800/30">
-            <CurrencyDollarIcon className="h-10 w-10 text-emerald-400 mx-auto mb-3" />
-            <div className="text-2xl font-bold text-white">$200K+</div>
-            <div className="text-sm text-emerald-300">Average Payout</div>
-          </div>
-
-          <div className="text-center p-6 bg-gray-900/40 backdrop-blur-sm rounded-xl border border-emerald-800/30">
-            <ArrowTrendingUpIcon className="h-10 w-10 text-emerald-400 mx-auto mb-3" />
-            <div className="text-2xl font-bold text-white">99%</div>
-            <div className="text-sm text-emerald-300">Success Rate</div>
-          </div>
-
-          <div className="text-center p-6 bg-gray-900/40 backdrop-blur-sm rounded-xl border border-emerald-800/30">
-            <ShieldCheckIcon className="h-10 w-10 text-emerald-400 mx-auto mb-3" />
-            <div className="text-2xl font-bold text-white">100%</div>
-            <div className="text-sm text-emerald-300">Secure</div>
-          </div>
-
-          <div className="text-center p-6 bg-gray-900/40 backdrop-blur-sm rounded-xl border border-emerald-800/30">
-            <StarIcon className="h-10 w-10 text-emerald-400 mx-auto mb-3" />
-            <div className="text-2xl font-bold text-white">4.9/5</div>
-            <div className="text-sm text-emerald-300">Customer Rating</div>
-          </div>
-        </di> */}
-
-        {/* CTA Section */}
-        {/* <di className="mt-16 text-center">
-          <div className="inline-block bg-gradient-to-r from-emerald-900/40 to-green-900/40 backdrop-blur-sm rounded-2xl p-8 border border-emerald-700/30 max-w-2xl">
-            <h3 className="text-2xl font-bold text-white mb-4">
-              Ready to Secure Your Financial Future?
-            </h3>
-            <p className="text-gray-300 mb-6">
-              Join thousands who have already transitioned to quantum-secure
-              finance with QFS Ledger
-            </p>
-            <button className="px-8 py-3.5 bg-gradient-to-r from-emerald-500 to-green-600 text-white font-medium rounded-xl hover:from-emerald-600 hover:to-green-700 transition-all duration-300 shadow-lg hover:shadow-xl">
-              Get Started Free
-            </button>
-          </div>
-        </di> */}
       </div>
     </section>
   );

@@ -14,7 +14,6 @@ const CryptoTracker = () => {
   const [loading, setLoading] = useState(true);
   const [lastUpdated, setLastUpdated] = useState("");
 
-  // Top cryptocurrencies to track
   const cryptocurrencies = [
     "bitcoin",
     "ethereum",
@@ -28,7 +27,6 @@ const CryptoTracker = () => {
     "litecoin",
   ];
 
-  // Fetch crypto data from CoinGecko API
   const fetchCryptoData = async () => {
     try {
       setLoading(true);
@@ -51,12 +49,10 @@ const CryptoTracker = () => {
 
   useEffect(() => {
     fetchCryptoData();
-    // Refresh every 30 seconds
     const interval = setInterval(fetchCryptoData, 30000);
     return () => clearInterval(interval);
   }, []);
 
-  // Format currency for mobile
   const formatCurrency = (value) => {
     if (value < 0.01) {
       return new Intl.NumberFormat("en-US", {
@@ -73,7 +69,6 @@ const CryptoTracker = () => {
         maximumFractionDigits: 4,
       }).format(value);
     } else {
-      // For mobile, show compact version for large numbers
       return new Intl.NumberFormat("en-US", {
         style: "currency",
         currency: "USD",
@@ -83,13 +78,12 @@ const CryptoTracker = () => {
     }
   };
 
-  // Format percentage with color - mobile optimized
   const formatPercentage = (value) => {
     const isPositive = value > 0;
     return (
       <span
         className={`inline-flex items-center ${
-          isPositive ? "text-green-500" : "text-red-500"
+          isPositive ? "text-[#1EC9E8]" : "text-[#FF6B6B]"
         }`}
       >
         {isPositive ? (
@@ -104,7 +98,6 @@ const CryptoTracker = () => {
     );
   };
 
-  // Format market cap for mobile
   const formatMarketCap = (value) => {
     if (value >= 1e12) return `$${(value / 1e12).toFixed(2)}T`;
     if (value >= 1e9) return `$${(value / 1e9).toFixed(2)}B`;
@@ -113,58 +106,48 @@ const CryptoTracker = () => {
   };
 
   return (
-    <section className="py-10 sm:py-16 bg-gradient-to-br from-gray-900 via-black to-gray-900">
+    <section className="py-10 sm:py-16 bg-[#0B1F3A] border-t border-[#112E4A]">
       <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
-        {/* Header - Mobile Optimized */}
+        {/* Header */}
         <div className="text-center mb-8 sm:mb-12">
-          <div className="inline-flex items-center px-3 py-1.5 sm:px-4 sm:py-2 bg-gradient-to-r from-emerald-500/10 to-green-600/10 backdrop-blur-sm rounded-full border border-emerald-500/20 mb-3 sm:mb-4">
-            <FireIcon className="h-3 w-3 sm:h-4 sm:w-4 text-emerald-400 mr-1.5 sm:mr-2" />
-            <span className="text-xs sm:text-sm font-medium text-emerald-300">
+          <div className="inline-flex items-center px-3 py-1.5 sm:px-4 sm:py-2 bg-gradient-to-r from-[#112E4A] to-[#163E63] rounded-full border border-[#2F8CFF]/30 mb-3 sm:mb-4">
+            <FireIcon className="h-3 w-3 sm:h-4 sm:w-4 text-[#2F8CFF] mr-1.5 sm:mr-2" />
+            <span className="text-xs sm:text-sm font-medium text-[#2F8CFF]">
               Live Market Data
             </span>
           </div>
 
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-3 sm:mb-4">
-            Real-Time <span className="text-emerald-400">Crypto</span> Markets
+            Real-Time{" "}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#1EC9E8] to-[#2F8CFF]">
+              Crypto
+            </span>{" "}
+            Markets
           </h2>
 
-          <p className="text-gray-400 text-sm sm:text-base max-w-2xl mx-auto px-2">
+          <p className="text-[#7FA6C9] text-sm sm:text-base max-w-2xl mx-auto px-2">
             Track top cryptocurrencies with live prices and 24-hour changes
           </p>
-
-          {/* Last Updated - Mobile Friendly */}
-          {/* <di  className="mt-4 flex items-center justify-center space-x-1 sm:space-x-2 text-xs sm:text-sm text-gray-500">
-            <ArrowsRightLeftIcon className="h-3 w-3 sm:h-4 sm:w-4 animate-pulse text-emerald-500" />
-            <span>Live updates</span>
-            {lastUpdated && (
-              <>
-                <span className="text-gray-600">•</span>
-                <span className="text-emerald-400">{lastUpdated}</span>
-              </>
-            )}
-          </di> */}
         </div>
 
-        {/* Mobile-Friendly Crypto Cards (instead of table on small screens) */}
         {loading ? (
-          // Loading Skeleton - Mobile Optimized
           <div className="p-4 sm:p-8">
             <div className="animate-pulse space-y-3 sm:space-y-4">
               {[...Array(5)].map((_, i) => (
                 <div
                   key={i}
-                  className="flex items-center justify-between p-3 sm:p-4 bg-gray-800/50 rounded-xl"
+                  className="flex items-center justify-between p-3 sm:p-4 bg-[#112E4A] rounded-xl"
                 >
                   <div className="flex items-center space-x-3 sm:space-x-4">
-                    <div className="h-8 w-8 sm:h-10 sm:w-10 bg-gray-700 rounded-full"></div>
+                    <div className="h-8 w-8 sm:h-10 sm:w-10 bg-[#163E63] rounded-full"></div>
                     <div className="space-y-1.5 sm:space-y-2">
-                      <div className="h-3 sm:h-4 w-16 sm:w-24 bg-gray-700 rounded"></div>
-                      <div className="h-2.5 sm:h-3 w-12 sm:w-16 bg-gray-700 rounded"></div>
+                      <div className="h-3 sm:h-4 w-16 sm:w-24 bg-[#163E63] rounded"></div>
+                      <div className="h-2.5 sm:h-3 w-12 sm:w-16 bg-[#163E63] rounded"></div>
                     </div>
                   </div>
                   <div className="space-y-1.5 sm:space-y-2">
-                    <div className="h-3 sm:h-4 w-20 sm:w-32 bg-gray-700 rounded"></div>
-                    <div className="h-2.5 sm:h-3 w-14 sm:w-20 bg-gray-700 rounded"></div>
+                    <div className="h-3 sm:h-4 w-20 sm:w-32 bg-[#163E63] rounded"></div>
+                    <div className="h-2.5 sm:h-3 w-14 sm:w-20 bg-[#163E63] rounded"></div>
                   </div>
                 </div>
               ))}
@@ -172,12 +155,12 @@ const CryptoTracker = () => {
           </div>
         ) : (
           <>
-            {/* Mobile View: Card Layout */}
+            {/* Mobile View */}
             <div className="block sm:hidden space-y-3 mb-6">
               {cryptoData.map((crypto) => (
                 <div
                   key={crypto.id}
-                  className="bg-gray-900/60 backdrop-blur-sm rounded-xl border border-gray-800 p-4 hover:border-emerald-500/30 hover:bg-gray-800/40 transition-all duration-200 cursor-pointer active:scale-[0.98]"
+                  className="bg-[#112E4A] rounded-xl border border-[#163E63] p-4 hover:border-[#2F8CFF] transition-all duration-200"
                   onClick={() =>
                     window.open(
                       `https://www.coingecko.com/en/coins/${crypto.id}`,
@@ -191,14 +174,14 @@ const CryptoTracker = () => {
                         <img
                           src={crypto.image}
                           alt={crypto.name}
-                          className="h-8 w-8 rounded-full border border-gray-700"
+                          className="h-8 w-8 rounded-full border border-[#163E63]"
                         />
                       </div>
                       <div>
                         <div className="font-semibold text-white text-sm">
                           {crypto.symbol.toUpperCase()}
                         </div>
-                        <div className="text-xs text-gray-400">
+                        <div className="text-xs text-[#7FA6C9]">
                           {crypto.name.length > 12
                             ? crypto.name.substring(0, 12) + "..."
                             : crypto.name}
@@ -214,7 +197,7 @@ const CryptoTracker = () => {
                       </div>
                     </div>
                   </div>
-                  <div className="flex justify-between items-center pt-3 border-t border-gray-800/50 text-xs text-gray-400">
+                  <div className="flex justify-between items-center pt-3 border-t border-[#163E63] text-xs text-[#7FA6C9]">
                     <div>Market Cap</div>
                     <div>{formatMarketCap(crypto.market_cap)}</div>
                   </div>
@@ -222,34 +205,34 @@ const CryptoTracker = () => {
               ))}
             </div>
 
-            {/* Desktop View: Table Layout */}
-            <div className="hidden sm:block bg-gray-900/50 backdrop-blur-lg rounded-2xl border border-gray-800 overflow-hidden shadow-2xl">
+            {/* Desktop View */}
+            <div className="hidden sm:block bg-[#112E4A] rounded-2xl border border-[#163E63] overflow-hidden">
               <div className="overflow-x-auto">
                 <table className="w-full">
                   <thead>
-                    <tr className="border-b border-gray-800">
+                    <tr className="border-b border-[#163E63]">
                       <th className="py-4 px-4 sm:px-6 text-left">
-                        <span className="text-gray-400 font-medium text-sm sm:text-base">
+                        <span className="text-[#7FA6C9] font-medium text-sm sm:text-base">
                           Asset
                         </span>
                       </th>
                       <th className="py-4 px-4 sm:px-6 text-left">
-                        <span className="text-gray-400 font-medium text-sm sm:text-base">
+                        <span className="text-[#7FA6C9] font-medium text-sm sm:text-base">
                           Price
                         </span>
                       </th>
                       <th className="py-4 px-4 sm:px-6 text-left">
-                        <span className="text-gray-400 font-medium text-sm sm:text-base">
+                        <span className="text-[#7FA6C9] font-medium text-sm sm:text-base">
                           24h Change
                         </span>
                       </th>
                       <th className="py-4 px-4 sm:px-6 text-left hidden md:table-cell">
-                        <span className="text-gray-400 font-medium text-sm sm:text-base">
+                        <span className="text-[#7FA6C9] font-medium text-sm sm:text-base">
                           Market Cap
                         </span>
                       </th>
                       <th className="py-4 px-4 sm:px-6 text-left hidden lg:table-cell">
-                        <span className="text-gray-400 font-medium text-sm sm:text-base">
+                        <span className="text-[#7FA6C9] font-medium text-sm sm:text-base">
                           7d Change
                         </span>
                       </th>
@@ -259,7 +242,7 @@ const CryptoTracker = () => {
                     {cryptoData.map((crypto) => (
                       <tr
                         key={crypto.id}
-                        className="border-b border-gray-800/50 hover:bg-gray-800/30 transition-all duration-200 cursor-pointer group"
+                        className="border-b border-[#163E63]/50 hover:bg-[#163E63]/20 transition-colors"
                         onClick={() =>
                           window.open(
                             `https://www.coingecko.com/en/coins/${crypto.id}`,
@@ -267,38 +250,35 @@ const CryptoTracker = () => {
                           )
                         }
                       >
-                        {/* Asset */}
                         <td className="py-4 px-4 sm:px-6">
                           <div className="flex items-center space-x-3 sm:space-x-4">
                             <div className="relative">
                               <img
                                 src={crypto.image}
                                 alt={crypto.name}
-                                className="h-8 w-8 sm:h-10 sm:w-10 rounded-full border-2 border-gray-700 group-hover:border-emerald-500/50 transition-colors"
+                                className="h-8 w-8 sm:h-10 sm:w-10 rounded-full border-2 border-[#163E63]"
                               />
-                              <div className="absolute -bottom-1 -right-1 h-3 w-3 sm:h-4 sm:w-4 rounded-full bg-gray-900 border border-gray-700 flex items-center justify-center">
-                                <CurrencyDollarIcon className="h-1.5 w-1.5 sm:h-2.5 sm:w-2.5 text-emerald-400" />
+                              <div className="absolute -bottom-1 -right-1 h-3 w-3 sm:h-4 sm:w-4 rounded-full bg-[#0B1F3A] border border-[#163E63] flex items-center justify-center">
+                                <CurrencyDollarIcon className="h-1.5 w-1.5 sm:h-2.5 sm:w-2.5 text-[#2F8CFF]" />
                               </div>
                             </div>
                             <div>
-                              <div className="font-semibold text-white text-sm sm:text-base group-hover:text-emerald-300 transition-colors">
+                              <div className="font-semibold text-white text-sm sm:text-base">
                                 {crypto.symbol.toUpperCase()}
                               </div>
-                              <div className="text-xs sm:text-sm text-gray-400">
+                              <div className="text-xs sm:text-sm text-[#7FA6C9]">
                                 {crypto.name}
                               </div>
                             </div>
                           </div>
                         </td>
 
-                        {/* Price */}
                         <td className="py-4 px-4 sm:px-6">
                           <div className="font-bold text-white text-sm sm:text-lg">
                             {formatCurrency(crypto.current_price)}
                           </div>
                         </td>
 
-                        {/* 24h Change */}
                         <td className="py-4 px-4 sm:px-6">
                           <div className="flex items-center">
                             {formatPercentage(
@@ -307,14 +287,12 @@ const CryptoTracker = () => {
                           </div>
                         </td>
 
-                        {/* Market Cap */}
                         <td className="py-4 px-4 sm:px-6 hidden md:table-cell">
-                          <div className="text-gray-300 text-sm sm:text-base">
+                          <div className="text-white text-sm sm:text-base">
                             {formatMarketCap(crypto.market_cap)}
                           </div>
                         </td>
 
-                        {/* 7d Change */}
                         <td className="py-4 px-4 sm:px-6 hidden lg:table-cell">
                           <div className="flex items-center">
                             {formatPercentage(
@@ -331,12 +309,12 @@ const CryptoTracker = () => {
           </>
         )}
 
-        {/* Stats Footer - Mobile Optimized */}
+        {/* Stats Footer */}
         <div className="mt-6 sm:mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-          <div className="bg-gray-900/30 backdrop-blur-sm rounded-xl p-4 sm:p-6 border border-gray-800">
+          <div className="bg-[#112E4A] rounded-xl p-4 sm:p-6 border border-[#163E63]">
             <div className="flex items-center justify-between">
               <div>
-                <div className="text-xs sm:text-sm text-gray-400">
+                <div className="text-xs sm:text-sm text-[#7FA6C9]">
                   Total Market Cap
                 </div>
                 <div className="text-lg sm:text-2xl font-bold text-white mt-1 sm:mt-2">
@@ -350,14 +328,14 @@ const CryptoTracker = () => {
                     : "Loading..."}
                 </div>
               </div>
-              <ChartBarIcon className="h-6 w-6 sm:h-8 sm:w-8 text-emerald-500/30 flex-shrink-0" />
+              <ChartBarIcon className="h-6 w-6 sm:h-8 sm:w-8 text-[#2F8CFF]/30" />
             </div>
           </div>
 
-          <div className="bg-gray-900/30 backdrop-blur-sm rounded-xl p-4 sm:p-6 border border-gray-800">
+          <div className="bg-[#112E4A] rounded-xl p-4 sm:p-6 border border-[#163E63]">
             <div className="flex items-center justify-between">
               <div>
-                <div className="text-xs sm:text-sm text-gray-400">
+                <div className="text-xs sm:text-sm text-[#7FA6C9]">
                   24h Volume
                 </div>
                 <div className="text-lg sm:text-2xl font-bold text-white mt-1 sm:mt-2">
@@ -371,14 +349,14 @@ const CryptoTracker = () => {
                     : "Loading..."}
                 </div>
               </div>
-              <ArrowTrendingUpIcon className="h-6 w-6 sm:h-8 sm:w-8 text-emerald-500/30 flex-shrink-0" />
+              <ArrowTrendingUpIcon className="h-6 w-6 sm:h-8 sm:w-8 text-[#2F8CFF]/30" />
             </div>
           </div>
 
-          <div className="bg-gray-900/30 backdrop-blur-sm rounded-xl p-4 sm:p-6 border border-gray-800 sm:col-span-2 lg:col-span-1">
+          <div className="bg-[#112E4A] rounded-xl p-4 sm:p-6 border border-[#163E63] sm:col-span-2 lg:col-span-1">
             <div className="flex items-center justify-between">
               <div className="min-w-0">
-                <div className="text-xs sm:text-sm text-gray-400">
+                <div className="text-xs sm:text-sm text-[#7FA6C9]">
                   Top Gainer
                 </div>
                 <div className="text-base sm:text-lg font-bold text-white mt-1 sm:mt-2 truncate">
@@ -394,7 +372,7 @@ const CryptoTracker = () => {
                     : "Loading..."}
                 </div>
                 {cryptoData.length > 0 && (
-                  <div className="text-xs sm:text-sm text-green-500 mt-1">
+                  <div className="text-xs sm:text-sm text-[#1EC9E8] mt-1">
                     +
                     {Math.max(
                       ...cryptoData.map((c) => c.price_change_percentage_24h)
@@ -403,7 +381,7 @@ const CryptoTracker = () => {
                   </div>
                 )}
               </div>
-              <FireIcon className="h-6 w-6 sm:h-8 sm:w-8 text-emerald-500/30 flex-shrink-0 ml-2" />
+              <FireIcon className="h-6 w-6 sm:h-8 sm:w-8 text-[#2F8CFF]/30 ml-2" />
             </div>
           </div>
         </div>

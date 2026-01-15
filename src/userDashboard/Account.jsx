@@ -66,21 +66,39 @@ const Account = () => {
     switch (status) {
       case "verified":
         return (
-          <div className="inline-flex items-center px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 text-sm font-medium">
+          <div
+            className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium"
+            style={{
+              backgroundColor: "rgba(107, 207, 61, 0.1)",
+              color: "#6BCF3D",
+            }}
+          >
             <CheckCircleIcon className="h-4 w-4 mr-1.5" />
             KYC Verified
           </div>
         );
       case "pending":
         return (
-          <div className="inline-flex items-center px-3 py-1 rounded-full bg-yellow-50 text-yellow-700 text-sm font-medium">
+          <div
+            className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium"
+            style={{
+              backgroundColor: "rgba(247, 147, 26, 0.1)",
+              color: "#F7931A",
+            }}
+          >
             <ClockIcon className="h-4 w-4 mr-1.5" />
             KYC Pending
           </div>
         );
       default:
         return (
-          <div className="inline-flex items-center px-3 py-1 rounded-full bg-red-50 text-red-700 text-sm font-medium">
+          <div
+            className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium"
+            style={{
+              backgroundColor: "rgba(231, 76, 60, 0.1)",
+              color: "#E74C3C",
+            }}
+          >
             <XCircleIcon className="h-4 w-4 mr-1.5" />
             KYC Required
           </div>
@@ -91,11 +109,22 @@ const Account = () => {
   const getKycIconColor = (status) => {
     switch (status) {
       case "verified":
-        return "text-emerald-600";
+        return "#6BCF3D";
       case "pending":
-        return "text-yellow-600";
+        return "#F7931A";
       default:
-        return "text-red-600";
+        return "#E74C3C";
+    }
+  };
+
+  const getKycBackgroundColor = (status) => {
+    switch (status) {
+      case "verified":
+        return "rgba(107, 207, 61, 0.1)";
+      case "pending":
+        return "rgba(247, 147, 26, 0.1)";
+      default:
+        return "rgba(231, 76, 60, 0.1)";
     }
   };
 
@@ -114,16 +143,31 @@ const Account = () => {
     return (
       <div className="flex items-center justify-center h-64">
         <div className="text-center">
-          <div className="relative h-16 w-16">
-            <div className="absolute h-full w-full rounded-full border-4 border-blue-200"></div>
-            <div className="absolute h-full w-full rounded-full border-4 border-transparent border-t-blue-600 animate-spin"></div>
+          <div className="relative h-16 w-16 mb-4 mx-auto">
             <div
-              className="absolute h-full w-full rounded-full border-4 border-transparent border-b-purple-600 animate-spin"
-              style={{ animationDuration: "1.5s" }}
+              className="absolute h-full w-full rounded-full border-4"
+              style={{ borderColor: "#E1E6EC" }}
             ></div>
-            <div className="absolute h-8 w-8 rounded-full bg-gradient-to-br from-blue-100 to-purple-100 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"></div>
+            <div
+              className="absolute h-full w-full rounded-full border-4 border-transparent animate-spin"
+              style={{ borderTopColor: "#2F80ED", animationDuration: "1s" }}
+            ></div>
+            <div
+              className="absolute h-full w-full rounded-full border-4 border-transparent animate-spin"
+              style={{
+                borderRightColor: "#5DA9E9",
+                animationDuration: "1.2s",
+                animationDelay: "0.1s",
+              }}
+            ></div>
+            <div
+              className="absolute h-8 w-8 rounded-full top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+              style={{ backgroundColor: "#F5F7FA" }}
+            ></div>
           </div>
-          <p className="text-gray-600 mt-4 animate-pulse">Loading ...</p>
+          <p className="text-gray-600 font-medium" style={{ color: "#6B7280" }}>
+            Loading...
+          </p>
         </div>
       </div>
     );
@@ -133,24 +177,30 @@ const Account = () => {
     <div className="max-w-6xl mx-auto px-4">
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">My Account</h1>
-        <p className="text-gray-600 mt-2">
+        <h1 className="text-3xl font-bold" style={{ color: "#1F2D3D" }}>
+          My Account
+        </h1>
+        <p className="text-gray-600 mt-2" style={{ color: "#6B7280" }}>
           Manage your wallet and account settings
         </p>
       </div>
 
       {/* User Profile Card */}
       <div
-        className="bg-gradient-to-br from-emerald-900 to-green-900 rounded-2xl border border-emerald-800 shadow-xl overflow-hidden mb-8 bg-cover bg-center"
-        style={{ backgroundImage: `url(${CardLogo})` }}
+        className="rounded-2xl border shadow-xl overflow-hidden mb-8 bg-cover bg-center"
+        style={{
+          backgroundColor: "#1F2D3D",
+          borderColor: "#2F80ED",
+          backgroundImage: `url(${CardLogo})`,
+        }}
       >
         <div className="p-6">
           <div className="flex flex-col md:flex-row md:items-center justify-between">
             <div className="mb-4 md:mb-0">
-              <h2 className="text-2xl font-bold text-white">
+              <h2 className="text-2xl font-bold" style={{ color: "#FFFFFF" }}>
                 {userData?.fullName || "User"}
               </h2>
-              <p className="text-emerald-300 mt-1 text-lg">
+              <p className="mt-1 text-lg" style={{ color: "#8FA6BF" }}>
                 {userData?.email || "user@example.com"}
               </p>
               <div className="mt-4">
@@ -163,7 +213,7 @@ const Account = () => {
 
       {/* Wallet Actions - Horizontal Scroll on Mobile */}
       <div className="mb-8">
-        <h2 className="text-xl font-semibold text-gray-900 mb-6">
+        <h2 className="text-xl font-semibold mb-6" style={{ color: "#1F2D3D" }}>
           Wallet Actions
         </h2>
 
@@ -173,33 +223,72 @@ const Account = () => {
             {/* Send */}
             <Link
               to="/deposit"
-              className="bg-white rounded-xl border border-emerald-100 p-5 hover:border-emerald-300 hover:shadow-lg transition-all duration-200 group min-w-[180px] flex-shrink-0"
+              className="rounded-xl border p-5 hover:shadow-lg transition-all duration-200 group min-w-[180px] flex-shrink-0"
+              style={{
+                backgroundColor: "#FFFFFF",
+                borderColor: "#E1E6EC",
+              }}
+              onMouseEnter={(e) =>
+                (e.currentTarget.style.borderColor = "#2F80ED")
+              }
+              onMouseLeave={(e) =>
+                (e.currentTarget.style.borderColor = "#E1E6EC")
+              }
             >
               <div className="flex flex-col items-center text-center">
-                <div className="h-14 w-14 rounded-full bg-emerald-100 flex items-center justify-center mb-4 group-hover:bg-emerald-200 transition-colors">
-                  <ArrowUpTrayIcon className="h-7 w-7 text-emerald-700" />
+                <div
+                  className="h-14 w-14 rounded-full flex items-center justify-center mb-4 transition-colors group-hover:scale-105"
+                  style={{ backgroundColor: "rgba(47, 128, 237, 0.1)" }}
+                >
+                  <ArrowUpTrayIcon
+                    className="h-7 w-7"
+                    style={{ color: "#2F80ED" }}
+                  />
                 </div>
-                <h3 className="font-semibold text-gray-900 text-lg mb-1">
+                <h3
+                  className="font-semibold text-lg mb-1"
+                  style={{ color: "#1F2D3D" }}
+                >
                   Send Funds
                 </h3>
-                <p className="text-sm text-gray-600">Deposit to your wallet</p>
+                <p className="text-sm" style={{ color: "#6B7280" }}>
+                  Deposit to your wallet
+                </p>
               </div>
             </Link>
 
             {/* Receive */}
             <Link
               to="/withdraw"
-              className="bg-white rounded-xl border border-emerald-100 p-5 hover:border-emerald-300 hover:shadow-lg transition-all duration-200 group min-w-[180px] flex-shrink-0"
+              className="rounded-xl border p-5 hover:shadow-lg transition-all duration-200 group min-w-[180px] flex-shrink-0"
+              style={{
+                backgroundColor: "#FFFFFF",
+                borderColor: "#E1E6EC",
+              }}
+              onMouseEnter={(e) =>
+                (e.currentTarget.style.borderColor = "#2F80ED")
+              }
+              onMouseLeave={(e) =>
+                (e.currentTarget.style.borderColor = "#E1E6EC")
+              }
             >
               <div className="flex flex-col items-center text-center">
-                <div className="h-14 w-14 rounded-full bg-emerald-100 flex items-center justify-center mb-4 group-hover:bg-emerald-200 transition-colors">
-                  <ArrowDownTrayIcon className="h-7 w-7 text-emerald-700" />
+                <div
+                  className="h-14 w-14 rounded-full flex items-center justify-center mb-4 transition-colors group-hover:scale-105"
+                  style={{ backgroundColor: "rgba(47, 128, 237, 0.1)" }}
+                >
+                  <ArrowDownTrayIcon
+                    className="h-7 w-7"
+                    style={{ color: "#2F80ED" }}
+                  />
                 </div>
-                <h3 className="font-semibold text-gray-900 text-lg mb-1">
+                <h3
+                  className="font-semibold text-lg mb-1"
+                  style={{ color: "#1F2D3D" }}
+                >
                   Withdraw Funds
                 </h3>
-                <p className="text-sm text-gray-600">
-                  {" "}
+                <p className="text-sm" style={{ color: "#6B7280" }}>
                   Withdraw to external wallet
                 </p>
               </div>
@@ -208,48 +297,111 @@ const Account = () => {
             {/* card */}
             <Link
               to="/card-creation"
-              className="bg-white rounded-xl border border-emerald-100 p-5 hover:border-emerald-300 hover:shadow-lg transition-all duration-200 group min-w-[180px] flex-shrink-0"
+              className="rounded-xl border p-5 hover:shadow-lg transition-all duration-200 group min-w-[180px] flex-shrink-0"
+              style={{
+                backgroundColor: "#FFFFFF",
+                borderColor: "#E1E6EC",
+              }}
+              onMouseEnter={(e) =>
+                (e.currentTarget.style.borderColor = "#2F80ED")
+              }
+              onMouseLeave={(e) =>
+                (e.currentTarget.style.borderColor = "#E1E6EC")
+              }
             >
               <div className="flex flex-col items-center text-center">
-                <div className="h-14 w-14 rounded-full bg-emerald-100 flex items-center justify-center mb-4 group-hover:bg-emerald-200 transition-colors">
-                  <CreditCardIcon className="h-7 w-7 text-emerald-700" />
+                <div
+                  className="h-14 w-14 rounded-full flex items-center justify-center mb-4 transition-colors group-hover:scale-105"
+                  style={{ backgroundColor: "rgba(47, 128, 237, 0.1)" }}
+                >
+                  <CreditCardIcon
+                    className="h-7 w-7"
+                    style={{ color: "#2F80ED" }}
+                  />
                 </div>
-                <h3 className="font-semibold text-gray-900 text-lg mb-1">
+                <h3
+                  className="font-semibold text-lg mb-1"
+                  style={{ color: "#1F2D3D" }}
+                >
                   Create Card
                 </h3>
-                <p className="text-sm text-gray-600"> Create a new card</p>
+                <p className="text-sm" style={{ color: "#6B7280" }}>
+                  {" "}
+                  Create a new card
+                </p>
               </div>
             </Link>
+
             {/* Buy & Sell */}
             <a
               href="https://www.moonpay.com/buy/xlm"
               target="_blank"
-              className="bg-white rounded-xl border border-emerald-100 p-5 hover:border-emerald-300 hover:shadow-lg transition-all duration-200 group min-w-[180px] flex-shrink-0"
+              className="rounded-xl border p-5 hover:shadow-lg transition-all duration-200 group min-w-[180px] flex-shrink-0"
+              style={{
+                backgroundColor: "#FFFFFF",
+                borderColor: "#E1E6EC",
+              }}
+              onMouseEnter={(e) =>
+                (e.currentTarget.style.borderColor = "#2F80ED")
+              }
+              onMouseLeave={(e) =>
+                (e.currentTarget.style.borderColor = "#E1E6EC")
+              }
             >
               <div className="flex flex-col items-center text-center">
-                <div className="h-14 w-14 rounded-full bg-emerald-100 flex items-center justify-center mb-4 group-hover:bg-emerald-200 transition-colors">
-                  <ShoppingCartIcon className="h-7 w-7 text-emerald-700" />
+                <div
+                  className="h-14 w-14 rounded-full flex items-center justify-center mb-4 transition-colors group-hover:scale-105"
+                  style={{ backgroundColor: "rgba(47, 128, 237, 0.1)" }}
+                >
+                  <ShoppingCartIcon
+                    className="h-7 w-7"
+                    style={{ color: "#2F80ED" }}
+                  />
                 </div>
-                <h3 className="font-semibold text-gray-900 text-lg mb-1">
+                <h3
+                  className="font-semibold text-lg mb-1"
+                  style={{ color: "#1F2D3D" }}
+                >
                   Buy & Sell Crypto
                 </h3>
-                <p className="text-sm text-gray-600">Trade cryptocurrencies</p>
+                <p className="text-sm" style={{ color: "#6B7280" }}>
+                  Trade cryptocurrencies
+                </p>
               </div>
             </a>
 
             {/* Swap */}
             <Link
               to="/swap"
-              className="bg-white rounded-xl border border-emerald-100 p-5 hover:border-emerald-300 hover:shadow-lg transition-all duration-200 group min-w-[180px] flex-shrink-0"
+              className="rounded-xl border p-5 hover:shadow-lg transition-all duration-200 group min-w-[180px] flex-shrink-0"
+              style={{
+                backgroundColor: "#FFFFFF",
+                borderColor: "#E1E6EC",
+              }}
+              onMouseEnter={(e) =>
+                (e.currentTarget.style.borderColor = "#2F80ED")
+              }
+              onMouseLeave={(e) =>
+                (e.currentTarget.style.borderColor = "#E1E6EC")
+              }
             >
               <div className="flex flex-col items-center text-center">
-                <div className="h-14 w-14 rounded-full bg-emerald-100 flex items-center justify-center mb-4 group-hover:bg-emerald-200 transition-colors">
-                  <ArrowsRightLeftIcon className="h-7 w-7 text-emerald-700" />
+                <div
+                  className="h-14 w-14 rounded-full flex items-center justify-center mb-4 transition-colors group-hover:scale-105"
+                  style={{ backgroundColor: "rgba(47, 128, 237, 0.1)" }}
+                >
+                  <ArrowsRightLeftIcon
+                    className="h-7 w-7"
+                    style={{ color: "#2F80ED" }}
+                  />
                 </div>
-                <h3 className="font-semibold text-gray-900 text-lg mb-1">
+                <h3
+                  className="font-semibold text-lg mb-1"
+                  style={{ color: "#1F2D3D" }}
+                >
                   Swap
                 </h3>
-                <p className="text-sm text-gray-600">
+                <p className="text-sm" style={{ color: "#6B7280" }}>
                   Exchange between cryptos
                 </p>
               </div>
@@ -258,61 +410,108 @@ const Account = () => {
             {/* History */}
             <Link
               to="/history"
-              className="bg-white rounded-xl border border-emerald-100 p-5 hover:border-emerald-300 hover:shadow-lg transition-all duration-200 group min-w-[180px] flex-shrink-0"
+              className="rounded-xl border p-5 hover:shadow-lg transition-all duration-200 group min-w-[180px] flex-shrink-0"
+              style={{
+                backgroundColor: "#FFFFFF",
+                borderColor: "#E1E6EC",
+              }}
+              onMouseEnter={(e) =>
+                (e.currentTarget.style.borderColor = "#2F80ED")
+              }
+              onMouseLeave={(e) =>
+                (e.currentTarget.style.borderColor = "#E1E6EC")
+              }
             >
               <div className="flex flex-col items-center text-center">
-                <div className="h-14 w-14 rounded-full bg-emerald-100 flex items-center justify-center mb-4 group-hover:bg-emerald-200 transition-colors">
-                  <ClockIcon className="h-7 w-7 text-emerald-700" />
+                <div
+                  className="h-14 w-14 rounded-full flex items-center justify-center mb-4 transition-colors group-hover:scale-105"
+                  style={{ backgroundColor: "rgba(47, 128, 237, 0.1)" }}
+                >
+                  <ClockIcon className="h-7 w-7" style={{ color: "#2F80ED" }} />
                 </div>
-                <h3 className="font-semibold text-gray-900 text-lg mb-1">
+                <h3
+                  className="font-semibold text-lg mb-1"
+                  style={{ color: "#1F2D3D" }}
+                >
                   History
                 </h3>
-                <p className="text-sm text-gray-600">
+                <p className="text-sm" style={{ color: "#6B7280" }}>
                   View Transaction History
                 </p>
               </div>
             </Link>
+
             {/* Link Wallet */}
             <Link
               to="/link"
-              className="bg-white rounded-xl border border-emerald-100 p-5 hover:border-emerald-300 hover:shadow-lg transition-all duration-200 group min-w-[180px] flex-shrink-0"
+              className="rounded-xl border p-5 hover:shadow-lg transition-all duration-200 group min-w-[180px] flex-shrink-0"
+              style={{
+                backgroundColor: "#FFFFFF",
+                borderColor: "#E1E6EC",
+              }}
+              onMouseEnter={(e) =>
+                (e.currentTarget.style.borderColor = "#2F80ED")
+              }
+              onMouseLeave={(e) =>
+                (e.currentTarget.style.borderColor = "#E1E6EC")
+              }
             >
               <div className="flex flex-col items-center text-center">
-                <div className="h-14 w-14 rounded-full bg-emerald-100 flex items-center justify-center mb-4 group-hover:bg-emerald-200 transition-colors">
-                  <Cog6ToothIcon className="h-7 w-7 text-emerald-700" />
+                <div
+                  className="h-14 w-14 rounded-full flex items-center justify-center mb-4 transition-colors group-hover:scale-105"
+                  style={{ backgroundColor: "rgba(47, 128, 237, 0.1)" }}
+                >
+                  <Cog6ToothIcon
+                    className="h-7 w-7"
+                    style={{ color: "#2F80ED" }}
+                  />
                 </div>
-                <h3 className="font-semibold text-gray-900 text-lg mb-1">
+                <h3
+                  className="font-semibold text-lg mb-1"
+                  style={{ color: "#1F2D3D" }}
+                >
                   Link Wallet
                 </h3>
-                <p className="text-sm text-gray-600">Connect external wallet</p>
+                <p className="text-sm" style={{ color: "#6B7280" }}>
+                  Connect external wallet
+                </p>
               </div>
             </Link>
 
             {/* KYC Verification */}
             <Link
               to="/kyc-verify"
-              className="bg-white rounded-xl border border-emerald-100 p-5 hover:border-emerald-300 hover:shadow-lg transition-all duration-200 group min-w-[180px] flex-shrink-0"
+              className="rounded-xl border p-5 hover:shadow-lg transition-all duration-200 group min-w-[180px] flex-shrink-0"
+              style={{
+                backgroundColor: "#FFFFFF",
+                borderColor: "#E1E6EC",
+              }}
+              onMouseEnter={(e) =>
+                (e.currentTarget.style.borderColor = "#2F80ED")
+              }
+              onMouseLeave={(e) =>
+                (e.currentTarget.style.borderColor = "#E1E6EC")
+              }
             >
               <div className="flex flex-col items-center text-center">
                 <div
-                  className={`h-14 w-14 rounded-full flex items-center justify-center mb-4 transition-colors ${
-                    userData?.kycStatus === "verified"
-                      ? "bg-emerald-100 group-hover:bg-emerald-200"
-                      : userData?.kycStatus === "pending"
-                      ? "bg-yellow-100 group-hover:bg-yellow-200"
-                      : "bg-red-100 group-hover:bg-red-200"
-                  }`}
+                  className="h-14 w-14 rounded-full flex items-center justify-center mb-4 transition-colors group-hover:scale-105"
+                  style={{
+                    backgroundColor: getKycBackgroundColor(userData?.kycStatus),
+                  }}
                 >
                   <ShieldCheckIcon
-                    className={`h-7 w-7 ${getKycIconColor(
-                      userData?.kycStatus
-                    )}`}
+                    className="h-7 w-7"
+                    style={{ color: getKycIconColor(userData?.kycStatus) }}
                   />
                 </div>
-                <h3 className="font-semibold text-gray-900 text-lg mb-1">
+                <h3
+                  className="font-semibold text-lg mb-1"
+                  style={{ color: "#1F2D3D" }}
+                >
                   KYC Verification
                 </h3>
-                <p className="text-sm text-gray-600">
+                <p className="text-sm" style={{ color: "#6B7280" }}>
                   {getKycActionText(userData?.kycStatus)}
                 </p>
               </div>
@@ -322,9 +521,21 @@ const Account = () => {
       </div>
 
       {/* Account Information */}
-      <div className="bg-white rounded-xl border border-emerald-100 shadow-sm overflow-hidden">
-        <div className="px-6 py-4 border-b border-emerald-100 bg-emerald-50">
-          <h2 className="text-lg font-semibold text-gray-900">
+      <div
+        className="rounded-xl border shadow-sm overflow-hidden"
+        style={{
+          backgroundColor: "#FFFFFF",
+          borderColor: "#E1E6EC",
+        }}
+      >
+        <div
+          className="px-6 py-4 border-b"
+          style={{
+            backgroundColor: "#F5F7FA",
+            borderColor: "#E1E6EC",
+          }}
+        >
+          <h2 className="text-lg font-semibold" style={{ color: "#1F2D3D" }}>
             Account Information
           </h2>
         </div>
@@ -333,10 +544,20 @@ const Account = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Member Since */}
             <div>
-              <label className="block text-sm text-gray-500 font-medium mb-2">
+              <label
+                className="block text-sm font-medium mb-2"
+                style={{ color: "#6B7280" }}
+              >
                 Member Since
               </label>
-              <div className="text-sm text-gray-900 p-3 bg-gray-50 rounded-lg border border-gray-100">
+              <div
+                className="text-sm p-3 rounded-lg border"
+                style={{
+                  backgroundColor: "#F5F7FA",
+                  borderColor: "#E1E6EC",
+                  color: "#1F2D3D",
+                }}
+              >
                 {userData?.createdAt
                   ? new Date(userData.createdAt).toLocaleDateString("en-US", {
                       year: "numeric",
@@ -349,10 +570,20 @@ const Account = () => {
 
             {/* Last Login */}
             <div>
-              <label className="block text-sm text-gray-500 font-medium mb-2">
+              <label
+                className="block text-sm font-medium mb-2"
+                style={{ color: "#6B7280" }}
+              >
                 Last Login
               </label>
-              <div className="text-sm text-gray-900 p-3 bg-gray-50 rounded-lg border border-gray-100">
+              <div
+                className="text-sm p-3 rounded-lg border"
+                style={{
+                  backgroundColor: "#F5F7FA",
+                  borderColor: "#E1E6EC",
+                  color: "#1F2D3D",
+                }}
+              >
                 {userData?.lastLogin
                   ? new Date(userData.lastLogin).toLocaleString("en-US", {
                       month: "short",
@@ -367,18 +598,45 @@ const Account = () => {
 
             {/* Account Status */}
             <div>
-              <label className="block text-sm text-gray-500 font-medium mb-2">
+              <label
+                className="block text-sm font-medium mb-2"
+                style={{ color: "#6B7280" }}
+              >
                 Account Status
               </label>
-              <div className="p-3 bg-gray-50 rounded-lg border border-gray-100">
+              <div
+                className="p-3 rounded-lg border"
+                style={{
+                  backgroundColor: "#F5F7FA",
+                  borderColor: "#E1E6EC",
+                }}
+              >
                 {userData?.isActive ? (
-                  <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-emerald-100 text-emerald-800">
-                    <div className="h-2 w-2 rounded-full bg-emerald-500 mr-2"></div>
+                  <span
+                    className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium"
+                    style={{
+                      backgroundColor: "rgba(107, 207, 61, 0.1)",
+                      color: "#6BCF3D",
+                    }}
+                  >
+                    <div
+                      className="h-2 w-2 rounded-full mr-2"
+                      style={{ backgroundColor: "#6BCF3D" }}
+                    ></div>
                     Active
                   </span>
                 ) : (
-                  <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-red-100 text-red-800">
-                    <div className="h-2 w-2 rounded-full bg-red-500 mr-2"></div>
+                  <span
+                    className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium"
+                    style={{
+                      backgroundColor: "rgba(231, 76, 60, 0.1)",
+                      color: "#E74C3C",
+                    }}
+                  >
+                    <div
+                      className="h-2 w-2 rounded-full mr-2"
+                      style={{ backgroundColor: "#E74C3C" }}
+                    ></div>
                     Inactive
                   </span>
                 )}
@@ -387,12 +645,21 @@ const Account = () => {
 
             {/* KYC Status Detail */}
             <div>
-              <label className="block text-sm text-gray-500 font-medium mb-2">
+              <label
+                className="block text-sm font-medium mb-2"
+                style={{ color: "#6B7280" }}
+              >
                 KYC Status
               </label>
-              <div className="p-3 bg-gray-50 rounded-lg border border-gray-100">
+              <div
+                className="p-3 rounded-lg border"
+                style={{
+                  backgroundColor: "#F5F7FA",
+                  borderColor: "#E1E6EC",
+                }}
+              >
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-gray-900">
+                  <span className="text-sm" style={{ color: "#1F2D3D" }}>
                     {userData?.kycStatus === "verified"
                       ? "Fully Verified"
                       : userData?.kycStatus === "pending"
@@ -401,7 +668,7 @@ const Account = () => {
                   </span>
                   {userData?.kycStatus === "verified" &&
                     userData?.kycVerifiedAt && (
-                      <span className="text-xs text-gray-500">
+                      <span className="text-xs" style={{ color: "#6B7280" }}>
                         Verified:{" "}
                         {new Date(userData.kycVerifiedAt).toLocaleDateString()}
                       </span>
@@ -412,11 +679,26 @@ const Account = () => {
           </div>
 
           {/* Support Info */}
-          <div className="mt-8 pt-6 border-t border-gray-100 mb-9">
-            <p className="text-sm text-gray-600">
+          <div
+            className="mt-8 pt-6 border-t mb-9"
+            style={{ borderColor: "#E1E6EC" }}
+          >
+            <p className="text-sm" style={{ color: "#6B7280" }}>
               Need help with your account?
             </p>
-            <button className="mt-2 w-full py-2 text-sm bg-gray-100 text-gray-700 rounded-lg font-medium hover:bg-gray-200 transition-colors">
+            <button
+              className="mt-2 w-full py-2 text-sm rounded-lg font-medium transition-colors"
+              style={{
+                backgroundColor: "#F5F7FA",
+                color: "#1F2D3D",
+              }}
+              onMouseEnter={(e) =>
+                (e.currentTarget.style.backgroundColor = "#E1E6EC")
+              }
+              onMouseLeave={(e) =>
+                (e.currentTarget.style.backgroundColor = "#F5F7FA")
+              }
+            >
               Contact Support
             </button>
           </div>
