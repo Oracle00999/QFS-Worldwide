@@ -7,17 +7,18 @@ import {
 } from "@heroicons/react/24/outline";
 import backgroundImage from "../assets/ledger.webp";
 import companyLogo from "../assets/logo.png";
+import { Link } from "react-router-dom";
 
 const Hero = () => {
   return (
     <section className="relative text-white py-12 md:py-24 mt-11 overflow-hidden">
-      {/* Background with gradient overlay */}
-      <div className="absolute inset-0 bg-[#0B1F3A]">
+      {/* Background with gradient overlay - Add pointer-events-none */}
+      <div className="absolute inset-0 bg-[#0B1F3A] pointer-events-none">
         <div className="absolute inset-0 bg-gradient-to-br from-[#0B1F3A] via-[#112E4A] to-[#163E63]"></div>
       </div>
 
-      {/* Subtle grid pattern */}
-      <div className="absolute inset-0 opacity-10">
+      {/* Subtle grid pattern - Add pointer-events-none */}
+      <div className="absolute inset-0 opacity-10 pointer-events-none">
         <div
           className="absolute inset-0"
           style={{
@@ -27,10 +28,10 @@ const Hero = () => {
         ></div>
       </div>
 
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           {/* Left: Text Content */}
-          <div className="space-y-8">
+          <div className="space-y-8 relative z-20">
             {/* Company Logo */}
             <div className="flex items-center">
               <img
@@ -85,40 +86,47 @@ const Hero = () => {
               </div>
             </div>
 
-            {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4 pt-6">
-              <button className="px-8 py-3.5 bg-gradient-to-r from-[#1EC9E8] to-[#2F8CFF] text-white font-medium rounded-xl hover:shadow-[0_0_30px_rgba(30,201,232,0.5)] transition-all duration-300 flex items-center justify-center group shadow-lg">
+            {/* CTA Buttons - Add z-10 to ensure they're clickable */}
+            <div className="flex flex-col sm:flex-row gap-4 pt-6 relative z-30">
+              <Link
+                to="/signup"
+                className="inline-flex items-center justify-center px-8 py-3.5 bg-gradient-to-r from-[#1EC9E8] to-[#2F8CFF] text-white font-medium rounded-xl hover:shadow-[0_0_30px_rgba(30,201,232,0.5)] transition-all duration-300 group shadow-lg relative z-30"
+              >
                 Get Started
                 <ArrowRightIcon className="h-5 w-5 ml-2 group-hover:translate-x-1 transition-transform" />
-              </button>
-              <button className="px-8 py-3.5 border-2 border-[#163E63] text-[#D1D9E0] font-medium rounded-xl hover:border-[#2F8CFF] hover:text-white hover:bg-[#112E4A]/50 transition-all duration-300">
-                Sign Up
-              </button>
+              </Link>
+
+              <Link
+                to="/login"
+                className="inline-flex items-center justify-center px-8 py-3.5 border-2 border-[#163E63] text-[#D1D9E0] font-medium rounded-xl hover:border-[#2F8CFF] hover:text-white hover:bg-[#112E4A]/50 transition-all duration-300 relative z-30"
+              >
+                Sign In
+              </Link>
             </div>
           </div>
 
           {/* Right: Image Card */}
           <div className="relative h-[400px] lg:h-[550px] rounded-2xl overflow-hidden group">
-            {/* Glow effect container */}
-            <div className="absolute -inset-1 bg-gradient-to-r from-[#1EC9E8] via-[#2F8CFF] to-[#1EC9E8] rounded-2xl opacity-30 group-hover:opacity-50 blur-xl transition-all duration-500"></div>
+            {/* Glow effect container - Add pointer-events-none */}
+            <div className="absolute -inset-1 bg-gradient-to-r from-[#1EC9E8] via-[#2F8CFF] to-[#1EC9E8] rounded-2xl opacity-30 group-hover:opacity-50 blur-xl transition-all duration-500 pointer-events-none"></div>
 
             {/* Main card */}
             <div className="relative h-full rounded-2xl overflow-hidden border border-[#112E4A] bg-[#0B1F3A]">
               {/* Background Image */}
               <div
-                className="absolute inset-0 bg-cover bg-center opacity-40"
+                className="absolute inset-0 bg-cover bg-center opacity-40 pointer-events-none"
                 style={{
                   backgroundImage: `url(${backgroundImage})`,
                 }}
               >
                 {/* Overlay gradient */}
-                <div className="absolute inset-0 bg-gradient-to-t from-[#0B1F3A] via-transparent to-transparent"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0B1F3A] via-transparent to-transparent pointer-events-none"></div>
               </div>
 
-              {/* Animated grid overlay */}
-              <div className="absolute inset-0">
+              {/* Animated grid overlay - Add pointer-events-none */}
+              <div className="absolute inset-0 pointer-events-none">
                 <div
-                  className="absolute inset-0 opacity-20"
+                  className="absolute inset-0 opacity-20 pointer-events-none"
                   style={{
                     backgroundImage: `linear-gradient(#2F8CFF 1px, transparent 1px), linear-gradient(90deg, #2F8CFF 1px, transparent 1px)`,
                     backgroundSize: "30px 30px",
@@ -127,7 +135,7 @@ const Hero = () => {
                 ></div>
               </div>
 
-              {/* Content */}
+              {/* Content - This should be clickable if needed */}
               <div className="absolute inset-0 p-8 flex flex-col justify-between">
                 {/* Top section - Security badge */}
                 <div className="flex justify-end">
