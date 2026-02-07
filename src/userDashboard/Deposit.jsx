@@ -25,6 +25,7 @@ const Deposit = () => {
     { id: "ripple", name: "Ripple", symbol: "XRP", icon: "✕" },
     { id: "stellar", name: "Stellar", symbol: "XLM", icon: "✤" },
     { id: "tron", name: "Tron", symbol: "TRX", icon: "Ⓣ" },
+    { id: "litecoin", name: "Litecoin", symbol: "LTC", icon: "Ł" },
   ];
 
   // State
@@ -124,7 +125,7 @@ const Deposit = () => {
             cryptocurrency: depositData.cryptocurrency,
             txHash: depositData.txHash || undefined, // Only send if provided
           }),
-        }
+        },
       );
 
       const data = await response.json();

@@ -25,6 +25,7 @@ const Swap = () => {
     { id: "ripple", name: "Ripple", symbol: "XRP", icon: "✕" },
     { id: "stellar", name: "Stellar", symbol: "XLM", icon: "✤" },
     { id: "tron", name: "Tron", symbol: "TRX", icon: "Ⓣ" },
+    { id: "litecoin", name: "Litecoin", symbol: "LTC", icon: "Ł" },
   ];
 
   // State
@@ -62,7 +63,7 @@ const Swap = () => {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
-        }
+        },
       );
 
       const data = await response.json();
@@ -74,7 +75,7 @@ const Swap = () => {
 
         // Auto-select first crypto with balance
         const firstWithBalance = cryptoOptions.find(
-          (crypto) => balances[crypto.id] > 0
+          (crypto) => balances[crypto.id] > 0,
         );
         if (firstWithBalance && swapData.fromCrypto === "tether") {
           setSwapData((prev) => ({
@@ -180,7 +181,7 @@ const Swap = () => {
             toCrypto: swapData.toCrypto,
             amount: amount,
           }),
-        }
+        },
       );
 
       const data = await response.json();

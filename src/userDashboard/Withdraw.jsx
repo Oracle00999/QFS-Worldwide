@@ -23,6 +23,7 @@ const Withdraw = () => {
     { id: "ripple", name: "Ripple", symbol: "XRP", icon: "✕" },
     { id: "stellar", name: "Stellar", symbol: "XLM", icon: "✤" },
     { id: "tron", name: "Tron", symbol: "TRX", icon: "Ⓣ" },
+    { id: "litecoin", name: "Litecoin", symbol: "LTC", icon: "Ł" },
   ];
 
   // State
@@ -62,7 +63,7 @@ const Withdraw = () => {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
-        }
+        },
       );
 
       const data = await response.json();
@@ -74,7 +75,7 @@ const Withdraw = () => {
 
         // Auto-select first crypto with balance
         const firstWithBalance = cryptoOptions.find(
-          (crypto) => balances[crypto.id] > 0
+          (crypto) => balances[crypto.id] > 0,
         );
         if (firstWithBalance) {
           setWithdrawData((prev) => ({
@@ -203,7 +204,7 @@ const Withdraw = () => {
 
     const addressError = validateAddress(
       withdrawData.cryptocurrency,
-      withdrawData.toAddress
+      withdrawData.toAddress,
     );
     if (addressError) {
       setError(addressError);
@@ -228,7 +229,7 @@ const Withdraw = () => {
             cryptocurrency: withdrawData.cryptocurrency,
             toAddress: withdrawData.toAddress.trim(),
           }),
-        }
+        },
       );
 
       const data = await response.json();
@@ -249,7 +250,7 @@ const Withdraw = () => {
         });
       } else {
         setError(
-          data.message || "Withdrawal request failed. Please try again."
+          data.message || "Withdrawal request failed. Please try again.",
         );
       }
     } catch (error) {
@@ -436,7 +437,7 @@ const Withdraw = () => {
                       style={{ color: "#FFFFFF" }}
                     >
                       {getCryptoName(
-                        withdrawResult.transaction?.cryptocurrency
+                        withdrawResult.transaction?.cryptocurrency,
                       )}
                     </span>
                   </div>
@@ -597,7 +598,7 @@ const Withdraw = () => {
                   <span className="text-sm" style={{ color: "#8FA6BF" }}>
                     Balance:{" "}
                     {formatCurrency(
-                      getCryptoBalance(withdrawData.cryptocurrency)
+                      getCryptoBalance(withdrawData.cryptocurrency),
                     )}
                   </span>
                 </div>
@@ -669,7 +670,7 @@ const Withdraw = () => {
                   value={withdrawData.toAddress}
                   onChange={handleInputChange}
                   placeholder={`Enter ${getCryptoName(
-                    withdrawData.cryptocurrency
+                    withdrawData.cryptocurrency,
                   )} address...`}
                   rows="3"
                   className="w-full rounded-xl px-4 py-3 placeholder-gray-400 focus:outline-none resize-none font-mono text-sm"

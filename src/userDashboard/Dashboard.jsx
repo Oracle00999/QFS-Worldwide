@@ -21,6 +21,7 @@ import DogeLogo from "../assets/doge.svg";
 import XrpLogo from "../assets/xrp.svg";
 import XlmLogo from "../assets/xlm.svg";
 import TrxLogo from "../assets/trx.svg";
+import LitecoinLogo from "../assets/ltc.svg";
 
 const UserDashboard = () => {
   const [userData, setUserData] = useState(null);
@@ -39,6 +40,7 @@ const UserDashboard = () => {
     ripple: "Ripple (XRP)",
     stellar: "Stellar (XLM)",
     tron: "Tron (TRX)",
+    litecoin: "Litecoin (LTC)",
   };
 
   // Only one notification - Welcome message
@@ -57,6 +59,7 @@ const UserDashboard = () => {
     ripple: XrpLogo,
     stellar: XlmLogo,
     tron: TrxLogo,
+    litecoin: LitecoinLogo,
   };
 
   useEffect(() => {
@@ -82,7 +85,7 @@ const UserDashboard = () => {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
-        }
+        },
       );
 
       const data = await response.json();
@@ -194,7 +197,7 @@ const UserDashboard = () => {
     (userData?.wallet?.balances
       ? Object.values(userData.wallet.balances).reduce(
           (sum, val) => sum + val,
-          0
+          0,
         )
       : 0);
 

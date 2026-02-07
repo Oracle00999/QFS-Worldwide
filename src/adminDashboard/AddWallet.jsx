@@ -94,6 +94,11 @@ const getCryptoDetails = (crypto) => {
       label: "Tether",
       short: "USDT",
     },
+    litecoin: {
+      color: "bg-gray-100 text-blue-800",
+      label: "Litecoin",
+      short: "LTC",
+    },
   };
 
   return (
@@ -128,6 +133,7 @@ const AddWalletAddresses = () => {
     "stellar",
     "dogecoin",
     "tron",
+    "litecoin",
   ];
 
   // Handle form input changes
@@ -192,7 +198,7 @@ const AddWalletAddresses = () => {
       if (!token) {
         showNotification(
           "error",
-          "No authentication token found. Please login again."
+          "No authentication token found. Please login again.",
         );
         return;
       }
@@ -210,7 +216,7 @@ const AddWalletAddresses = () => {
             address: formData.address.trim(),
             network: formData.network.trim(),
           }),
-        }
+        },
       );
 
       if (response.status === 401) {
@@ -233,7 +239,7 @@ const AddWalletAddresses = () => {
           "success",
           `${cryptoDetails.label} address ${
             data.data.cryptoAddress ? "updated" : "added"
-          } successfully`
+          } successfully`,
         );
       } else {
         showNotification("error", data.message || "Failed to save address");
