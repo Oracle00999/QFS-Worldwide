@@ -10,24 +10,32 @@ import {
   ClockIcon,
   XCircleIcon,
   BellIcon,
+  ArrowTrendingUpIcon,
+  ArrowTrendingDownIcon,
 } from "@heroicons/react/24/outline";
 import Cardlogo from "../assets/cardlogo1.jpg";
-import BtcLogo from "../assets/btc.svg";
-import EthLogo from "../assets/eth.svg";
-import UsdtLogo from "../assets/usdt.svg";
-import BnbLogo from "../assets/bnb.svg";
-import SolLogo from "../assets/sol.svg";
-import DogeLogo from "../assets/doge.svg";
-import XrpLogo from "../assets/xrp.svg";
-import XlmLogo from "../assets/xlm.svg";
-import TrxLogo from "../assets/trx.svg";
-import LitecoinLogo from "../assets/ltc.svg";
 
 const UserDashboard = () => {
   const [userData, setUserData] = useState(null);
+  const [cryptoPrices, setCryptoPrices] = useState({});
   const [loading, setLoading] = useState(true);
+  const [pricesLoading, setPricesLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showNotifications, setShowNotifications] = useState(false);
+
+  // Token mapping for CoinGecko IDs
+  const tokenToCoinGeckoId = {
+    bitcoin: "bitcoin",
+    ethereum: "ethereum",
+    tether: "tether",
+    "binance-coin": "binancecoin",
+    solana: "solana",
+    dogecoin: "dogecoin",
+    ripple: "ripple",
+    stellar: "stellar",
+    tron: "tron",
+    litecoin: "litecoin",
+  };
 
   // Token display names with symbols
   const tokenDisplayNames = {
@@ -48,25 +56,19 @@ const UserDashboard = () => {
     { id: 1, message: "Welcome to QFS Ledger!", read: false },
   ];
 
-  // Token logo mapping (add more as assets are added)
-  const tokenLogos = {
-    bitcoin: BtcLogo,
-    ethereum: EthLogo,
-    tether: UsdtLogo,
-    "binance-coin": BnbLogo,
-    solana: SolLogo,
-    dogecoin: DogeLogo,
-    ripple: XrpLogo,
-    stellar: XlmLogo,
-    tron: TrxLogo,
-    litecoin: LitecoinLogo,
-  };
-
   useEffect(() => {
     fetchUserData();
-    const interval = setInterval(fetchUserData, 30000);
-    return () => clearInterval(interval);
+    const userInterval = setInterval(fetchUserData, 30000);
+    return () => clearInterval(userInterval);
   }, []);
+
+  useEffect(() => {
+    if (userData?.wallet?.balances) {
+      fetchCryptoPrices();
+      const priceInterval = setInterval(fetchCryptoPrices, 30000);
+      return () => clearInterval(priceInterval);
+    }
+  }, [userData]);
 
   const fetchUserData = async () => {
     try {
@@ -103,6 +105,52 @@ const UserDashboard = () => {
     }
   };
 
+  const fetchCryptoPrices = async () => {
+    try {
+      setPricesLoading(true);
+      const userTokens = Object.keys(userData.wallet.balances);
+
+      // Map user tokens to CoinGecko IDs
+      const coinGeckoIds = userTokens
+        .map((token) => tokenToCoinGeckoId[token])
+        .filter((id) => id); // Remove any undefined IDs
+
+      if (coinGeckoIds.length === 0) return;
+
+      const ids = coinGeckoIds.join(",");
+      const response = await fetch(
+        `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=${ids}&order=market_cap_desc&per_page=100&page=1&sparkline=false&price_change_percentage=24h`,
+      );
+
+      if (!response.ok) throw new Error("Failed to fetch price data");
+
+      const data = await response.json();
+
+      // Create a map of token to price data
+      const priceMap = {};
+      data.forEach((coin) => {
+        // Find which token this coin corresponds to
+        const tokenKey = Object.keys(tokenToCoinGeckoId).find(
+          (key) => tokenToCoinGeckoId[key] === coin.id,
+        );
+        if (tokenKey) {
+          priceMap[tokenKey] = {
+            price: coin.current_price,
+            image: coin.image,
+            priceChange24h: coin.price_change_percentage_24h,
+            symbol: coin.symbol.toUpperCase(),
+          };
+        }
+      });
+
+      setCryptoPrices(priceMap);
+    } catch (error) {
+      console.error("Error fetching crypto prices:", error);
+    } finally {
+      setPricesLoading(false);
+    }
+  };
+
   const formatCurrency = (amount) => {
     return new Intl.NumberFormat("en-US", {
       style: "currency",
@@ -110,6 +158,50 @@ const UserDashboard = () => {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
     }).format(amount);
+  };
+
+  const formatCompactCurrency = (value) => {
+    if (value < 0.01) {
+      return new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "USD",
+        minimumFractionDigits: 4,
+        maximumFractionDigits: 4,
+      }).format(value);
+    } else if (value < 1) {
+      return new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "USD",
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      }).format(value);
+    } else {
+      return new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "USD",
+        notation: "compact",
+        maximumFractionDigits: 2,
+      }).format(value);
+    }
+  };
+
+  const formatPercentage = (value) => {
+    if (value === undefined || value === null) return null;
+    const isPositive = value > 0;
+    return (
+      <span
+        className={`inline-flex items-center text-xs ${
+          isPositive ? "text-[#1EC9E8]" : "text-[#FF6B6B]"
+        }`}
+      >
+        {isPositive ? (
+          <ArrowTrendingUpIcon className="h-3 w-3 mr-1" />
+        ) : (
+          <ArrowTrendingDownIcon className="h-3 w-3 mr-1" />
+        )}
+        {Math.abs(value).toFixed(2)}%
+      </span>
+    );
   };
 
   const getKycStatusBadge = (status) => {
@@ -160,7 +252,6 @@ const UserDashboard = () => {
     return (
       <div className="flex items-center justify-center h-64">
         <div className="text-center">
-          {/* Better Loading Spinner */}
           <div className="relative h-16 w-16 mb-4 mx-auto">
             <div
               className="absolute h-full w-full rounded-full border-4"
@@ -203,12 +294,12 @@ const UserDashboard = () => {
 
   // Sort balances by amount (highest first)
   const sortedBalances = userData?.wallet?.balances
-    ? Object.entries(userData.wallet.balances).sort(([, a], [, b]) => b - a) // Sort by value descending
+    ? Object.entries(userData.wallet.balances).sort(([, a], [, b]) => b - a)
     : [];
 
   return (
     <>
-      {/* User Card - Updated Colors */}
+      {/* User Card */}
       <div
         className="border rounded-2xl p-6 mb-9 shadow-xl relative"
         style={{
@@ -220,7 +311,7 @@ const UserDashboard = () => {
           backgroundBlendMode: "overlay",
         }}
       >
-        {/* Notification Icon - Top Right */}
+        {/* Notification Icon */}
         <div className="absolute top-4 right-4">
           <div className="relative">
             <button
@@ -468,87 +559,113 @@ const UserDashboard = () => {
           borderColor: "#E1E6EC",
         }}
       >
-        <div className="px-6 py-4 border-b" style={{ borderColor: "#E1E6EC" }}>
+        <div
+          className="px-6 py-4 border-b flex justify-between items-center"
+          style={{ borderColor: "#E1E6EC" }}
+        >
           <h2 className="text-lg font-semibold" style={{ color: "#1F2D3D" }}>
             Your Assets
           </h2>
+          {pricesLoading && (
+            <div className="text-xs" style={{ color: "#8FA6BF" }}>
+              Updating prices...
+            </div>
+          )}
         </div>
 
-        {/* Tokens with spacing */}
+        {/* Tokens with live prices and images */}
         <div className="p-4 space-y-3">
-          {sortedBalances.map(([token, balance]) => (
-            <div
-              key={token}
-              className="flex items-center justify-between p-4 rounded-xl border transition-all duration-200 shadow-sm"
-              style={{
-                backgroundColor: "rgba(245, 247, 250, 0.5)",
-                borderColor: "#E1E6EC",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = "#5DA9E9";
-                e.currentTarget.style.backgroundColor =
-                  "rgba(93, 169, 233, 0.05)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = "#E1E6EC";
-                e.currentTarget.style.backgroundColor =
-                  "rgba(245, 247, 250, 0.5)";
-              }}
-            >
-              <div className="flex items-center">
-                <div
-                  className="h-10 w-10 rounded-full flex items-center justify-center mr-3 overflow-hidden"
-                  style={{
-                    background:
-                      "linear-gradient(135deg, rgba(47, 128, 237, 0.1), rgba(93, 169, 233, 0.2))",
-                  }}
-                >
-                  {tokenLogos[token] ? (
-                    <img
-                      src={tokenLogos[token]}
-                      alt={`${token} logo`}
-                      className="h-8 w-8"
-                    />
-                  ) : (
-                    <span
-                      className="text-lg font-bold"
-                      style={{ color: "#2F80ED" }}
-                    >
-                      {token.charAt(0).toUpperCase()}
-                    </span>
-                  )}
-                </div>
-                <div>
-                  <div className="font-medium" style={{ color: "#1F2D3D" }}>
-                    {tokenDisplayNames[token] ||
-                      token.charAt(0).toUpperCase() +
-                        token.slice(1).replace("-", " ")}
-                  </div>
-                  <div className="text-sm" style={{ color: "#6B7280" }}>
-                    {token.toUpperCase()}
-                  </div>
-                </div>
-              </div>
+          {sortedBalances.map(([token, balance]) => {
+            const priceData = cryptoPrices[token];
+            const currentPrice = priceData?.price || 0;
+            const tokenValue = balance * currentPrice;
 
-              <div className="text-right">
-                <div className="font-semibold" style={{ color: "#1F2D3D" }}>
-                  {formatCurrency(balance)}
+            return (
+              <div
+                key={token}
+                className="flex items-center justify-between p-4 rounded-xl border transition-all duration-200 shadow-sm hover:shadow-md"
+                style={{
+                  backgroundColor: "rgba(245, 247, 250, 0.5)",
+                  borderColor: "#E1E6EC",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.borderColor = "#5DA9E9";
+                  e.currentTarget.style.backgroundColor =
+                    "rgba(93, 169, 233, 0.05)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.borderColor = "#E1E6EC";
+                  e.currentTarget.style.backgroundColor =
+                    "rgba(245, 247, 250, 0.5)";
+                }}
+              >
+                <div className="flex items-center flex-1">
+                  <div
+                    className="h-10 w-10 rounded-full flex items-center justify-center mr-3 overflow-hidden bg-white"
+                    style={{
+                      background: "rgba(255, 255, 255, 0.1)",
+                    }}
+                  >
+                    {priceData?.image ? (
+                      <img
+                        src={priceData.image}
+                        alt={tokenDisplayNames[token] || token}
+                        className="h-8 w-8 object-contain"
+                      />
+                    ) : (
+                      <div className="h-8 w-8 rounded-full bg-gradient-to-br from-[#2F80ED] to-[#5DA9E9] flex items-center justify-center">
+                        <span className="text-white text-sm font-bold">
+                          {token.charAt(0).toUpperCase()}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                  <div>
+                    <div className="font-medium" style={{ color: "#1F2D3D" }}>
+                      {tokenDisplayNames[token] ||
+                        token.charAt(0).toUpperCase() +
+                          token.slice(1).replace("-", " ")}
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm" style={{ color: "#6B7280" }}>
+                        {priceData?.symbol || token.toUpperCase()}
+                      </span>
+                      {priceData?.priceChange24h !== undefined && (
+                        <span className="text-xs">
+                          {formatPercentage(priceData.priceChange24h)}
+                        </span>
+                      )}
+                    </div>
+                  </div>
                 </div>
-                <div
-                  className="text-xs px-2 py-1 rounded-full mt-1"
-                  style={{
-                    backgroundColor:
-                      balance > 0
-                        ? "rgba(107, 207, 61, 0.1)"
-                        : "rgba(225, 230, 236, 0.5)",
-                    color: balance > 0 ? "#6BCF3D" : "#6B7280",
-                  }}
-                >
-                  {balance > 0 ? "Active" : "No Balance"}
+
+                <div className="text-right min-w-[140px]">
+                  <div className="font-semibold" style={{ color: "#1F2D3D" }}>
+                    {formatCurrency(balance)}
+                  </div>
+                  <div className="flex items-center justify-end gap-2 mt-1">
+                    {currentPrice > 0 && (
+                      <span className="text-xs" style={{ color: "#6B7280" }}>
+                        {formatCompactCurrency(currentPrice)}
+                      </span>
+                    )}
+                  </div>
+                  <div
+                    className="text-xs px-2 py-1 rounded-full mt-1 inline-block"
+                    style={{
+                      backgroundColor:
+                        balance > 0
+                          ? "rgba(107, 207, 61, 0.1)"
+                          : "rgba(225, 230, 236, 0.5)",
+                      color: balance > 0 ? "#6BCF3D" : "#6B7280",
+                    }}
+                  >
+                    {balance > 0 ? "Active" : "No Balance"}
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
 
