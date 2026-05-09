@@ -13,6 +13,23 @@ import {
 import Navbar from "../components/Navbar";
 import logoImage from "../assets/logo.png";
 
+const getApiErrorMessage = (data, fallback) => {
+  if (Array.isArray(data?.errors) && data.errors.length > 0) {
+    return data.errors
+      .map((error) => error.msg || error.message || error)
+      .join(", ");
+  }
+
+  if (data?.errors && typeof data.errors === "object") {
+    return Object.values(data.errors)
+      .flat()
+      .map((error) => error.msg || error.message || error)
+      .join(", ");
+  }
+
+  return data?.message || fallback;
+};
+
 const Login = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
@@ -36,6 +53,11 @@ const Login = () => {
     setNotification({ type: "", message: "" });
 
     try {
+      const loginData = {
+        email: formData.email.trim().toLowerCase(),
+        password: formData.password,
+      };
+
       const response = await fetch(
         "https://qfs-backend-ghuv.onrender.com/api/auth/login",
         {
@@ -43,11 +65,11 @@ const Login = () => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(formData),
+          body: JSON.stringify(loginData),
         }
       );
 
-      const data = await response.json();
+      const data = await response.json().catch(() => ({}));
 
       if (response.ok && data.success) {
         setNotification({
@@ -76,11 +98,13 @@ const Login = () => {
       } else {
         setNotification({
           type: "error",
-          message:
-            data.message || "Login failed. Please check your credentials.",
+          message: getApiErrorMessage(
+            data,
+            "Login failed. Please check your credentials."
+          ),
         });
       }
-    } catch (error) {
+    } catch {
       setNotification({
         type: "error",
         message: "Network error. Please check your connection.",

@@ -17,6 +17,23 @@ import {
 import Navbar from "../components/Navbar";
 import logoImage from "../assets/logo.png";
 
+const getApiErrorMessage = (data, fallback) => {
+  if (Array.isArray(data?.errors) && data.errors.length > 0) {
+    return data.errors
+      .map((error) => error.msg || error.message || error)
+      .join(", ");
+  }
+
+  if (data?.errors && typeof data.errors === "object") {
+    return Object.values(data.errors)
+      .flat()
+      .map((error) => error.msg || error.message || error)
+      .join(", ");
+  }
+
+  return data?.message || fallback;
+};
+
 const Signup = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
@@ -171,14 +188,16 @@ const Signup = () => {
 
     try {
       // Prepare data for backend - only send fields that backend expects
+      const firstName = formData.firstName.trim();
+      const lastName = formData.lastName.trim();
       const submissionData = {
-        email: formData.email,
+        email: formData.email.trim().toLowerCase(),
         password: formData.password,
-        firstName: formData.firstName,
-        lastName: formData.lastName,
+        firstName,
+        lastName,
         // Only include phone and country if your backend supports them
-        phone: formData.phone,
-        country: formData.country,
+        phone: formData.phone.trim(),
+        country: formData.country.trim(),
       };
 
       const response = await fetch(
@@ -192,7 +211,7 @@ const Signup = () => {
         }
       );
 
-      const data = await response.json();
+      const data = await response.json().catch(() => ({}));
 
       if (response.ok) {
         setNotification({
@@ -216,10 +235,13 @@ const Signup = () => {
       } else {
         setNotification({
           type: "error",
-          message: data.message || "Registration failed. Please try again.",
+          message: getApiErrorMessage(
+            data,
+            "Registration failed. Please try again."
+          ),
         });
       }
-    } catch (error) {
+    } catch {
       setNotification({
         type: "error",
         message: "Network error. Please check your connection.",
