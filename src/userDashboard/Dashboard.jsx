@@ -185,6 +185,15 @@ const UserDashboard = () => {
     }
   };
 
+  const formatTokenAmount = (amount, symbol) => {
+    if (!Number.isFinite(amount)) return `-- ${symbol}`;
+
+    return `${new Intl.NumberFormat("en-US", {
+      minimumFractionDigits: amount > 0 && amount < 1 ? 6 : 2,
+      maximumFractionDigits: amount > 0 && amount < 1 ? 8 : 4,
+    }).format(amount)} ${symbol}`;
+  };
+
   const formatPercentage = (value) => {
     if (value === undefined || value === null) return null;
     const isPositive = value > 0;
@@ -578,7 +587,10 @@ const UserDashboard = () => {
           {sortedBalances.map(([token, balance]) => {
             const priceData = cryptoPrices[token];
             const currentPrice = priceData?.price || 0;
-            const tokenValue = balance * currentPrice;
+            const usdBalance = Number(balance) || 0;
+            const tokenAmount =
+              currentPrice > 0 ? usdBalance / currentPrice : null;
+            const tokenSymbol = priceData?.symbol || token.toUpperCase();
 
             return (
               <div
@@ -641,7 +653,12 @@ const UserDashboard = () => {
 
                 <div className="text-right min-w-[140px]">
                   <div className="font-semibold" style={{ color: "#1F2D3D" }}>
-                    {formatCurrency(balance)}
+                    {formatCurrency(usdBalance)}
+                  </div>
+                  <div className="text-xs mt-1" style={{ color: "#6B7280" }}>
+                    {tokenAmount !== null
+                      ? formatTokenAmount(tokenAmount, tokenSymbol)
+                      : "Calculating..."}
                   </div>
                   <div className="flex items-center justify-end gap-2 mt-1">
                     {currentPrice > 0 && (
@@ -654,13 +671,13 @@ const UserDashboard = () => {
                     className="text-xs px-2 py-1 rounded-full mt-1 inline-block"
                     style={{
                       backgroundColor:
-                        balance > 0
+                        usdBalance > 0
                           ? "rgba(107, 207, 61, 0.1)"
                           : "rgba(225, 230, 236, 0.5)",
-                      color: balance > 0 ? "#6BCF3D" : "#6B7280",
+                      color: usdBalance > 0 ? "#6BCF3D" : "#6B7280",
                     }}
                   >
-                    {balance > 0 ? "Active" : "No Balance"}
+                    {usdBalance > 0 ? "Active" : "No Balance"}
                   </div>
                 </div>
               </div>
