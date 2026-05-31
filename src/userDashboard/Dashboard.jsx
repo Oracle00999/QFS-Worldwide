@@ -667,18 +667,6 @@ const UserDashboard = () => {
                       </span>
                     )}
                   </div>
-                  <div
-                    className="text-xs px-2 py-1 rounded-full mt-1 inline-block"
-                    style={{
-                      backgroundColor:
-                        usdBalance > 0
-                          ? "rgba(107, 207, 61, 0.1)"
-                          : "rgba(225, 230, 236, 0.5)",
-                      color: usdBalance > 0 ? "#6BCF3D" : "#6B7280",
-                    }}
-                  >
-                    {usdBalance > 0 ? "Active" : "No Balance"}
-                  </div>
                 </div>
               </div>
             );
