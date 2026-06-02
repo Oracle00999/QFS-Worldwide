@@ -2,14 +2,14 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
-  ArrowLeftIcon,
-  ArrowDownTrayIcon,
-  CheckCircleIcon,
-  XCircleIcon,
-  InformationCircleIcon,
-  ArrowDownIcon,
-  DocumentDuplicateIcon,
-} from "@heroicons/react/24/outline";
+  ArrowLeft as ArrowLeftIcon,
+  ChevronDown as ArrowDownIcon,
+  CircleCheck as CheckCircleIcon,
+  CircleX as XCircleIcon,
+  Copy as DocumentDuplicateIcon,
+  Download as ArrowDownTrayIcon,
+  Info as InformationCircleIcon,
+} from "lucide-react";
 
 const Deposit = () => {
   const navigate = useNavigate();

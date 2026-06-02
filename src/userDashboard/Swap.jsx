@@ -2,14 +2,14 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
-  ArrowsRightLeftIcon,
-  ArrowDownIcon,
-  ArrowUpIcon,
-  CheckCircleIcon,
-  XCircleIcon,
-  InformationCircleIcon,
-  ArrowLeftIcon,
-} from "@heroicons/react/24/outline";
+  ArrowLeft as ArrowLeftIcon,
+  ArrowUp as ArrowUpIcon,
+  ChevronDown as ArrowDownIcon,
+  CircleCheck as CheckCircleIcon,
+  CircleX as XCircleIcon,
+  Info as InformationCircleIcon,
+  Repeat2 as ArrowsRightLeftIcon,
+} from "lucide-react";
 
 const Swap = () => {
   const navigate = useNavigate();

@@ -2,12 +2,12 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
-  ArrowLeftIcon,
-  LinkIcon,
-  CheckCircleIcon,
-  XCircleIcon,
-  InformationCircleIcon,
-} from "@heroicons/react/24/outline";
+  ArrowLeft as ArrowLeftIcon,
+  CircleCheck as CheckCircleIcon,
+  CircleX as XCircleIcon,
+  Info as InformationCircleIcon,
+  Link2 as LinkIcon,
+} from "lucide-react";
 
 const LinkWallet = () => {
   const navigate = useNavigate();

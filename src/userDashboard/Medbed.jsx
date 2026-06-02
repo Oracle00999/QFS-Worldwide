@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
-  ArrowLeftIcon,
-  CheckCircleIcon,
-  DocumentDuplicateIcon,
-  EnvelopeIcon,
-  PaperAirplaneIcon,
-  PencilSquareIcon,
-  ShieldCheckIcon,
-  UserIcon,
-} from "@heroicons/react/24/outline";
+  ArrowLeft as ArrowLeftIcon,
+  CircleCheck as CheckCircleIcon,
+  Copy as DocumentDuplicateIcon,
+  Mail as EnvelopeIcon,
+  PencilLine as PencilSquareIcon,
+  SendHorizontal as PaperAirplaneIcon,
+  ShieldCheck as ShieldCheckIcon,
+  UserRound as UserIcon,
+} from "lucide-react";
 
 const MEDBED_DEPOSIT_AMOUNT = "$5,000";
 const MEDBED_PAYMENT_ASSET = "XRP";

@@ -1,12 +1,12 @@
 import React, { useState, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
-  ArrowLeftIcon,
-  CheckCircleIcon,
-  XCircleIcon,
-  DocumentTextIcon,
-  ArrowUpTrayIcon,
-} from "@heroicons/react/24/outline";
+  ArrowLeft as ArrowLeftIcon,
+  CircleCheck as CheckCircleIcon,
+  CircleX as XCircleIcon,
+  FileText as DocumentTextIcon,
+  Upload as ArrowUpTrayIcon,
+} from "lucide-react";
 
 const KycVerify = () => {
   const navigate = useNavigate();

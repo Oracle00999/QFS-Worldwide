@@ -2,11 +2,11 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import {
-  HomeIcon,
-  ArrowDownTrayIcon,
-  ArrowsRightLeftIcon,
-  UserCircleIcon,
-} from "@heroicons/react/24/outline";
+  CircleUserRound as UserCircleIcon,
+  Download as ArrowDownTrayIcon,
+  Home as HomeIcon,
+  Repeat2 as ArrowsRightLeftIcon,
+} from "lucide-react";
 
 const WalletNav = () => {
   const location = useLocation();

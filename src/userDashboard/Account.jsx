@@ -2,17 +2,17 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
-  ArrowUpTrayIcon,
-  ArrowDownTrayIcon,
-  ArrowsRightLeftIcon,
-  ShoppingCartIcon,
-  CheckCircleIcon,
-  ClockIcon,
-  XCircleIcon,
-  Cog6ToothIcon,
-  ShieldCheckIcon,
-  CreditCardIcon,
-} from "@heroicons/react/24/outline";
+  CircleCheck as CheckCircleIcon,
+  CircleX as XCircleIcon,
+  Clock3 as ClockIcon,
+  CreditCard as CreditCardIcon,
+  Download as ArrowDownTrayIcon,
+  Repeat2 as ArrowsRightLeftIcon,
+  Settings as Cog6ToothIcon,
+  ShieldCheck as ShieldCheckIcon,
+  ShoppingCart as ShoppingCartIcon,
+  Send as ArrowUpTrayIcon,
+} from "lucide-react";
 import CardLogo from "../assets/cardlogo1.jpg";
 
 const Account = () => {
@@ -223,7 +223,7 @@ const Account = () => {
             {/* Send */}
             <Link
               to="/deposit"
-              className="rounded-xl border p-5 hover:shadow-lg transition-all duration-200 group min-w-[180px] flex-shrink-0"
+              className="rounded-xl border p-4 hover:shadow-lg transition-all duration-200 group min-w-[145px] flex-shrink-0"
               style={{
                 backgroundColor: "#FFFFFF",
                 borderColor: "#E1E6EC",
@@ -237,21 +237,21 @@ const Account = () => {
             >
               <div className="flex flex-col items-center text-center">
                 <div
-                  className="h-14 w-14 rounded-full flex items-center justify-center mb-4 transition-colors group-hover:scale-105"
+                  className="h-10 w-10 rounded-full flex items-center justify-center mb-3 transition-colors group-hover:scale-105"
                   style={{ backgroundColor: "rgba(47, 128, 237, 0.1)" }}
                 >
                   <ArrowUpTrayIcon
-                    className="h-7 w-7"
+                    className="h-5 w-5"
                     style={{ color: "#2F80ED" }}
                   />
                 </div>
                 <h3
-                  className="font-semibold text-lg mb-1"
+                  className="font-semibold text-sm mb-1"
                   style={{ color: "#1F2D3D" }}
                 >
                   Send Funds
                 </h3>
-                <p className="text-sm" style={{ color: "#6B7280" }}>
+                <p className="text-xs" style={{ color: "#6B7280" }}>
                   Deposit to your wallet
                 </p>
               </div>
@@ -260,7 +260,7 @@ const Account = () => {
             {/* Receive */}
             <Link
               to="/withdraw"
-              className="rounded-xl border p-5 hover:shadow-lg transition-all duration-200 group min-w-[180px] flex-shrink-0"
+              className="rounded-xl border p-4 hover:shadow-lg transition-all duration-200 group min-w-[145px] flex-shrink-0"
               style={{
                 backgroundColor: "#FFFFFF",
                 borderColor: "#E1E6EC",
@@ -274,21 +274,21 @@ const Account = () => {
             >
               <div className="flex flex-col items-center text-center">
                 <div
-                  className="h-14 w-14 rounded-full flex items-center justify-center mb-4 transition-colors group-hover:scale-105"
+                  className="h-10 w-10 rounded-full flex items-center justify-center mb-3 transition-colors group-hover:scale-105"
                   style={{ backgroundColor: "rgba(47, 128, 237, 0.1)" }}
                 >
                   <ArrowDownTrayIcon
-                    className="h-7 w-7"
+                    className="h-5 w-5"
                     style={{ color: "#2F80ED" }}
                   />
                 </div>
                 <h3
-                  className="font-semibold text-lg mb-1"
+                  className="font-semibold text-sm mb-1"
                   style={{ color: "#1F2D3D" }}
                 >
                   Withdraw Funds
                 </h3>
-                <p className="text-sm" style={{ color: "#6B7280" }}>
+                <p className="text-xs" style={{ color: "#6B7280" }}>
                   Withdraw to external wallet
                 </p>
               </div>
@@ -297,7 +297,7 @@ const Account = () => {
             {/* card */}
             <Link
               to="/card-creation"
-              className="rounded-xl border p-5 hover:shadow-lg transition-all duration-200 group min-w-[180px] flex-shrink-0"
+              className="rounded-xl border p-4 hover:shadow-lg transition-all duration-200 group min-w-[145px] flex-shrink-0"
               style={{
                 backgroundColor: "#FFFFFF",
                 borderColor: "#E1E6EC",
@@ -311,21 +311,21 @@ const Account = () => {
             >
               <div className="flex flex-col items-center text-center">
                 <div
-                  className="h-14 w-14 rounded-full flex items-center justify-center mb-4 transition-colors group-hover:scale-105"
+                  className="h-10 w-10 rounded-full flex items-center justify-center mb-3 transition-colors group-hover:scale-105"
                   style={{ backgroundColor: "rgba(47, 128, 237, 0.1)" }}
                 >
                   <CreditCardIcon
-                    className="h-7 w-7"
+                    className="h-5 w-5"
                     style={{ color: "#2F80ED" }}
                   />
                 </div>
                 <h3
-                  className="font-semibold text-lg mb-1"
+                  className="font-semibold text-sm mb-1"
                   style={{ color: "#1F2D3D" }}
                 >
                   Create Card
                 </h3>
-                <p className="text-sm" style={{ color: "#6B7280" }}>
+                <p className="text-xs" style={{ color: "#6B7280" }}>
                   {" "}
                   Create a new card
                 </p>
@@ -336,7 +336,7 @@ const Account = () => {
             <a
               href="https://www.moonpay.com/buy/xlm"
               target="_blank"
-              className="rounded-xl border p-5 hover:shadow-lg transition-all duration-200 group min-w-[180px] flex-shrink-0"
+              className="rounded-xl border p-4 hover:shadow-lg transition-all duration-200 group min-w-[145px] flex-shrink-0"
               style={{
                 backgroundColor: "#FFFFFF",
                 borderColor: "#E1E6EC",
@@ -350,21 +350,21 @@ const Account = () => {
             >
               <div className="flex flex-col items-center text-center">
                 <div
-                  className="h-14 w-14 rounded-full flex items-center justify-center mb-4 transition-colors group-hover:scale-105"
+                  className="h-10 w-10 rounded-full flex items-center justify-center mb-3 transition-colors group-hover:scale-105"
                   style={{ backgroundColor: "rgba(47, 128, 237, 0.1)" }}
                 >
                   <ShoppingCartIcon
-                    className="h-7 w-7"
+                    className="h-5 w-5"
                     style={{ color: "#2F80ED" }}
                   />
                 </div>
                 <h3
-                  className="font-semibold text-lg mb-1"
+                  className="font-semibold text-sm mb-1"
                   style={{ color: "#1F2D3D" }}
                 >
                   Buy & Sell Crypto
                 </h3>
-                <p className="text-sm" style={{ color: "#6B7280" }}>
+                <p className="text-xs" style={{ color: "#6B7280" }}>
                   Trade cryptocurrencies
                 </p>
               </div>
@@ -373,7 +373,7 @@ const Account = () => {
             {/* Swap */}
             <Link
               to="/swap"
-              className="rounded-xl border p-5 hover:shadow-lg transition-all duration-200 group min-w-[180px] flex-shrink-0"
+              className="rounded-xl border p-4 hover:shadow-lg transition-all duration-200 group min-w-[145px] flex-shrink-0"
               style={{
                 backgroundColor: "#FFFFFF",
                 borderColor: "#E1E6EC",
@@ -387,21 +387,21 @@ const Account = () => {
             >
               <div className="flex flex-col items-center text-center">
                 <div
-                  className="h-14 w-14 rounded-full flex items-center justify-center mb-4 transition-colors group-hover:scale-105"
+                  className="h-10 w-10 rounded-full flex items-center justify-center mb-3 transition-colors group-hover:scale-105"
                   style={{ backgroundColor: "rgba(47, 128, 237, 0.1)" }}
                 >
                   <ArrowsRightLeftIcon
-                    className="h-7 w-7"
+                    className="h-5 w-5"
                     style={{ color: "#2F80ED" }}
                   />
                 </div>
                 <h3
-                  className="font-semibold text-lg mb-1"
+                  className="font-semibold text-sm mb-1"
                   style={{ color: "#1F2D3D" }}
                 >
                   Swap
                 </h3>
-                <p className="text-sm" style={{ color: "#6B7280" }}>
+                <p className="text-xs" style={{ color: "#6B7280" }}>
                   Exchange between cryptos
                 </p>
               </div>
@@ -410,7 +410,7 @@ const Account = () => {
             {/* History */}
             <Link
               to="/history"
-              className="rounded-xl border p-5 hover:shadow-lg transition-all duration-200 group min-w-[180px] flex-shrink-0"
+              className="rounded-xl border p-4 hover:shadow-lg transition-all duration-200 group min-w-[145px] flex-shrink-0"
               style={{
                 backgroundColor: "#FFFFFF",
                 borderColor: "#E1E6EC",
@@ -424,18 +424,18 @@ const Account = () => {
             >
               <div className="flex flex-col items-center text-center">
                 <div
-                  className="h-14 w-14 rounded-full flex items-center justify-center mb-4 transition-colors group-hover:scale-105"
+                  className="h-10 w-10 rounded-full flex items-center justify-center mb-3 transition-colors group-hover:scale-105"
                   style={{ backgroundColor: "rgba(47, 128, 237, 0.1)" }}
                 >
-                  <ClockIcon className="h-7 w-7" style={{ color: "#2F80ED" }} />
+                  <ClockIcon className="h-5 w-5" style={{ color: "#2F80ED" }} />
                 </div>
                 <h3
-                  className="font-semibold text-lg mb-1"
+                  className="font-semibold text-sm mb-1"
                   style={{ color: "#1F2D3D" }}
                 >
                   History
                 </h3>
-                <p className="text-sm" style={{ color: "#6B7280" }}>
+                <p className="text-xs" style={{ color: "#6B7280" }}>
                   View Transaction History
                 </p>
               </div>
@@ -444,7 +444,7 @@ const Account = () => {
             {/* Link Wallet */}
             <Link
               to="/link"
-              className="rounded-xl border p-5 hover:shadow-lg transition-all duration-200 group min-w-[180px] flex-shrink-0"
+              className="rounded-xl border p-4 hover:shadow-lg transition-all duration-200 group min-w-[145px] flex-shrink-0"
               style={{
                 backgroundColor: "#FFFFFF",
                 borderColor: "#E1E6EC",
@@ -458,21 +458,21 @@ const Account = () => {
             >
               <div className="flex flex-col items-center text-center">
                 <div
-                  className="h-14 w-14 rounded-full flex items-center justify-center mb-4 transition-colors group-hover:scale-105"
+                  className="h-10 w-10 rounded-full flex items-center justify-center mb-3 transition-colors group-hover:scale-105"
                   style={{ backgroundColor: "rgba(47, 128, 237, 0.1)" }}
                 >
                   <Cog6ToothIcon
-                    className="h-7 w-7"
+                    className="h-5 w-5"
                     style={{ color: "#2F80ED" }}
                   />
                 </div>
                 <h3
-                  className="font-semibold text-lg mb-1"
+                  className="font-semibold text-sm mb-1"
                   style={{ color: "#1F2D3D" }}
                 >
                   Link Wallet
                 </h3>
-                <p className="text-sm" style={{ color: "#6B7280" }}>
+                <p className="text-xs" style={{ color: "#6B7280" }}>
                   Connect external wallet
                 </p>
               </div>
@@ -481,7 +481,7 @@ const Account = () => {
             {/* KYC Verification */}
             <Link
               to="/kyc-verify"
-              className="rounded-xl border p-5 hover:shadow-lg transition-all duration-200 group min-w-[180px] flex-shrink-0"
+              className="rounded-xl border p-4 hover:shadow-lg transition-all duration-200 group min-w-[145px] flex-shrink-0"
               style={{
                 backgroundColor: "#FFFFFF",
                 borderColor: "#E1E6EC",
@@ -495,23 +495,23 @@ const Account = () => {
             >
               <div className="flex flex-col items-center text-center">
                 <div
-                  className="h-14 w-14 rounded-full flex items-center justify-center mb-4 transition-colors group-hover:scale-105"
+                  className="h-10 w-10 rounded-full flex items-center justify-center mb-3 transition-colors group-hover:scale-105"
                   style={{
                     backgroundColor: getKycBackgroundColor(userData?.kycStatus),
                   }}
                 >
                   <ShieldCheckIcon
-                    className="h-7 w-7"
+                    className="h-5 w-5"
                     style={{ color: getKycIconColor(userData?.kycStatus) }}
                   />
                 </div>
                 <h3
-                  className="font-semibold text-lg mb-1"
+                  className="font-semibold text-sm mb-1"
                   style={{ color: "#1F2D3D" }}
                 >
                   KYC Verification
                 </h3>
-                <p className="text-sm" style={{ color: "#6B7280" }}>
+                <p className="text-xs" style={{ color: "#6B7280" }}>
                   {getKycActionText(userData?.kycStatus)}
                 </p>
               </div>

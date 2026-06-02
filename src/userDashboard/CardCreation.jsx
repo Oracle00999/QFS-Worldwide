@@ -2,16 +2,16 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
-  CheckCircleIcon,
-  CreditCardIcon,
-  DocumentDuplicateIcon,
-  UserIcon,
-  MapPinIcon,
-  GlobeAltIcon,
-  ShieldCheckIcon,
-  ArrowLeftIcon,
-  LockClosedIcon,
-} from "@heroicons/react/24/outline";
+  ArrowLeft as ArrowLeftIcon,
+  CircleCheck as CheckCircleIcon,
+  Copy as DocumentDuplicateIcon,
+  CreditCard as CreditCardIcon,
+  Globe2 as GlobeAltIcon,
+  LockKeyhole as LockClosedIcon,
+  MapPin as MapPinIcon,
+  ShieldCheck as ShieldCheckIcon,
+  UserRound as UserIcon,
+} from "lucide-react";
 
 const CARD_DEPOSIT_AMOUNT = "$5,000";
 const CARD_DEPOSIT_CRYPTO = "XRP";

@@ -2,19 +2,19 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import {
-  ArrowUpTrayIcon,
-  ArrowDownTrayIcon,
-  ArrowsRightLeftIcon,
-  PlusCircleIcon,
-  CreditCardIcon,
-  HeartIcon,
-  CheckBadgeIcon,
-  ClockIcon,
-  XCircleIcon,
-  BellIcon,
-  ArrowTrendingUpIcon,
-  ArrowTrendingDownIcon,
-} from "@heroicons/react/24/outline";
+  BadgeCheck as CheckBadgeIcon,
+  Bell as BellIcon,
+  CircleX as XCircleIcon,
+  Clock3 as ClockIcon,
+  CreditCard as CreditCardIcon,
+  Download as ArrowDownTrayIcon,
+  HeartPulse as HeartIcon,
+  Plus as PlusCircleIcon,
+  Repeat2 as ArrowsRightLeftIcon,
+  Send as ArrowUpTrayIcon,
+  TrendingDown as ArrowTrendingDownIcon,
+  TrendingUp as ArrowTrendingUpIcon,
+} from "lucide-react";
 import Cardlogo from "../assets/cardlogo1.jpg";
 
 const UserDashboard = () => {
@@ -344,7 +344,7 @@ const UserDashboard = () => {
   const renderActionButton = (action) => {
     const Icon = action.icon;
     const className =
-      "flex min-h-[112px] flex-col items-center justify-center rounded-xl border p-4 text-center transition-all duration-200 group shadow-sm hover:shadow-md";
+      "flex min-h-[92px] flex-col items-center justify-center rounded-xl border p-3 text-center transition-all duration-200 group shadow-sm hover:shadow-md";
     const style = {
       backgroundColor: "#FFFFFF",
       borderColor: "#E1E6EC",
@@ -360,10 +360,10 @@ const UserDashboard = () => {
     const content = (
       <>
         <div
-          className="h-11 w-11 rounded-full flex items-center justify-center mb-3 transition-transform group-hover:scale-105"
+          className="h-9 w-9 rounded-full flex items-center justify-center mb-2 transition-transform group-hover:scale-105"
           style={{ backgroundColor: "rgba(47, 128, 237, 0.1)" }}
         >
-          <Icon className="h-5 w-5" style={{ color: "#2F80ED" }} />
+          <Icon className="h-4 w-4" style={{ color: "#2F80ED" }} />
         </div>
         <span
           className="text-sm font-semibold leading-tight"

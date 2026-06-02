@@ -2,11 +2,11 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import {
-  ArrowLeftIcon,
-  ArrowsRightLeftIcon,
-  ArrowUpTrayIcon,
-  ArrowDownTrayIcon,
-} from "@heroicons/react/24/outline";
+  ArrowLeft as ArrowLeftIcon,
+  Download as ArrowDownTrayIcon,
+  Repeat2 as ArrowsRightLeftIcon,
+  Send as ArrowUpTrayIcon,
+} from "lucide-react";
 
 const Transactions = () => {
   const [transactions, setTransactions] = useState([]);

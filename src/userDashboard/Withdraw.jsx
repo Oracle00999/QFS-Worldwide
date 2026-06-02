@@ -2,12 +2,12 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
-  ArrowLeftIcon,
-  ArrowUpTrayIcon,
-  CheckCircleIcon,
-  XCircleIcon,
-  InformationCircleIcon,
-} from "@heroicons/react/24/outline";
+  ArrowLeft as ArrowLeftIcon,
+  CircleCheck as CheckCircleIcon,
+  CircleX as XCircleIcon,
+  Info as InformationCircleIcon,
+  Send as ArrowUpTrayIcon,
+} from "lucide-react";
 
 const Withdraw = () => {
   const navigate = useNavigate();
