@@ -325,8 +325,8 @@ const CardCreation = () => {
                 Card Activation Deposit
               </h2>
               <p style={{ color: "#6B7280" }}>
-                Send {CARD_DEPOSIT_AMOUNT} worth of {CARD_DEPOSIT_CRYPTO} to
-                unlock the card request form.
+                Submit the required {CARD_DEPOSIT_CRYPTO} activation deposit of{" "}
+                {CARD_DEPOSIT_AMOUNT} before sending your card request.
               </p>
             </div>
             <div
@@ -487,7 +487,7 @@ const CardCreation = () => {
           <p className="text-gray-600" style={{ color: "#6B7280" }}>
             {paymentConfirmed
               ? "Enter your information to personalize your card"
-              : "Complete the XRP activation deposit to unlock this form"}
+              : "Complete the XRP activation deposit before submitting your request"}
           </p>
           {paymentConfirmed && (
             <div
