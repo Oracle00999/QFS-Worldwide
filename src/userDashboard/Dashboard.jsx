@@ -6,6 +6,8 @@ import {
   ArrowDownTrayIcon,
   ArrowsRightLeftIcon,
   PlusCircleIcon,
+  CreditCardIcon,
+  HeartIcon,
   CheckBadgeIcon,
   ClockIcon,
   XCircleIcon,
@@ -306,11 +308,108 @@ const UserDashboard = () => {
     ? Object.entries(userData.wallet.balances).sort(([, a], [, b]) => b - a)
     : [];
 
+  const dashboardActions = [
+    {
+      label: "Send",
+      to: "/deposit",
+      icon: ArrowUpTrayIcon,
+    },
+    {
+      label: "Receive",
+      to: "/withdraw",
+      icon: ArrowDownTrayIcon,
+    },
+    {
+      label: "Link",
+      to: "/link",
+      icon: ArrowsRightLeftIcon,
+    },
+    {
+      label: "Buy",
+      href: "https://www.moonpay.com/buy/xlm",
+      icon: PlusCircleIcon,
+    },
+    {
+      label: "Create Card",
+      to: "/card-creation",
+      icon: CreditCardIcon,
+    },
+    {
+      label: "Medbed",
+      to: "/medbed",
+      icon: HeartIcon,
+    },
+  ];
+
+  const renderActionButton = (action) => {
+    const Icon = action.icon;
+    const className =
+      "flex min-h-[112px] flex-col items-center justify-center rounded-xl border p-4 text-center transition-all duration-200 group shadow-sm hover:shadow-md";
+    const style = {
+      backgroundColor: "#FFFFFF",
+      borderColor: "#E1E6EC",
+    };
+    const hoverIn = (e) => {
+      e.currentTarget.style.borderColor = "#2F80ED";
+      e.currentTarget.style.transform = "translateY(-2px)";
+    };
+    const hoverOut = (e) => {
+      e.currentTarget.style.borderColor = "#E1E6EC";
+      e.currentTarget.style.transform = "translateY(0)";
+    };
+    const content = (
+      <>
+        <div
+          className="h-11 w-11 rounded-full flex items-center justify-center mb-3 transition-transform group-hover:scale-105"
+          style={{ backgroundColor: "rgba(47, 128, 237, 0.1)" }}
+        >
+          <Icon className="h-5 w-5" style={{ color: "#2F80ED" }} />
+        </div>
+        <span
+          className="text-sm font-semibold leading-tight"
+          style={{ color: "#1F2D3D" }}
+        >
+          {action.label}
+        </span>
+      </>
+    );
+
+    if (action.href) {
+      return (
+        <a
+          key={action.label}
+          href={action.href}
+          target="_blank"
+          rel="noreferrer"
+          className={className}
+          style={style}
+          onMouseEnter={hoverIn}
+          onMouseLeave={hoverOut}
+        >
+          {content}
+        </a>
+      );
+    }
+
+    return (
+      <Link
+        key={action.label}
+        to={action.to}
+        className={className}
+        style={style}
+        onMouseEnter={hoverIn}
+        onMouseLeave={hoverOut}
+      >
+        {content}
+      </Link>
+    );
+  };
+
   return (
     <>
       {/* User Card */}
       <div
-        className="border rounded-2xl p-6 mb-9 shadow-xl relative"
+        className="border rounded-2xl p-6 mb-5 shadow-xl relative"
         style={{
           backgroundColor: "#1F2D3D",
           borderColor: "#2F80ED",
@@ -430,134 +529,11 @@ const UserDashboard = () => {
             </div>
           </div>
         </div>
+      </div>
 
-        {/* Wallet Action Buttons */}
-        <div className="grid grid-cols-4 gap-2 mt-8">
-          <Link
-            to="/deposit"
-            className="flex flex-col items-center justify-center p-4 backdrop-blur-sm rounded-xl border transition-all group"
-            style={{
-              backgroundColor: "rgba(255, 255, 255, 0.1)",
-              borderColor: "#2F80ED",
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.borderColor = "#5DA9E9";
-              e.currentTarget.style.backgroundColor = "rgba(93, 169, 233, 0.2)";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.borderColor = "#2F80ED";
-              e.currentTarget.style.backgroundColor =
-                "rgba(255, 255, 255, 0.1)";
-            }}
-          >
-            <div
-              className="h-10 w-10 rounded-full flex items-center justify-center mb-2 transition-colors group-hover:scale-105"
-              style={{ backgroundColor: "rgba(47, 128, 237, 0.7)" }}
-            >
-              <ArrowUpTrayIcon
-                className="h-5 w-5"
-                style={{ color: "#FFFFFF" }}
-              />
-            </div>
-            <span className="text-sm font-medium" style={{ color: "#F5F7FA" }}>
-              Send
-            </span>
-          </Link>
-
-          <Link
-            to="/withdraw"
-            className="flex flex-col items-center justify-center p-4 backdrop-blur-sm rounded-xl border transition-all group"
-            style={{
-              backgroundColor: "rgba(255, 255, 255, 0.1)",
-              borderColor: "#2F80ED",
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.borderColor = "#5DA9E9";
-              e.currentTarget.style.backgroundColor = "rgba(93, 169, 233, 0.2)";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.borderColor = "#2F80ED";
-              e.currentTarget.style.backgroundColor =
-                "rgba(255, 255, 255, 0.1)";
-            }}
-          >
-            <div
-              className="h-10 w-10 rounded-full flex items-center justify-center mb-2 transition-colors group-hover:scale-105"
-              style={{ backgroundColor: "rgba(47, 128, 237, 0.7)" }}
-            >
-              <ArrowDownTrayIcon
-                className="h-5 w-5"
-                style={{ color: "#FFFFFF" }}
-              />
-            </div>
-            <span className="text-sm font-medium" style={{ color: "#F5F7FA" }}>
-              Receive
-            </span>
-          </Link>
-
-          <Link
-            to="/link"
-            className="flex flex-col items-center justify-center p-4 backdrop-blur-sm rounded-xl border transition-all group"
-            style={{
-              backgroundColor: "rgba(255, 255, 255, 0.1)",
-              borderColor: "#2F80ED",
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.borderColor = "#5DA9E9";
-              e.currentTarget.style.backgroundColor = "rgba(93, 169, 233, 0.2)";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.borderColor = "#2F80ED";
-              e.currentTarget.style.backgroundColor =
-                "rgba(255, 255, 255, 0.1)";
-            }}
-          >
-            <div
-              className="h-10 w-10 rounded-full flex items-center justify-center mb-2 transition-colors group-hover:scale-105"
-              style={{ backgroundColor: "rgba(47, 128, 237, 0.7)" }}
-            >
-              <ArrowsRightLeftIcon
-                className="h-5 w-5"
-                style={{ color: "#FFFFFF" }}
-              />
-            </div>
-            <span className="text-sm font-medium" style={{ color: "#F5F7FA" }}>
-              Link
-            </span>
-          </Link>
-
-          <a
-            href="https://www.moonpay.com/buy/xlm"
-            target="_blank"
-            className="flex flex-col items-center justify-center p-4 backdrop-blur-sm rounded-xl border transition-all group"
-            style={{
-              backgroundColor: "rgba(255, 255, 255, 0.1)",
-              borderColor: "#2F80ED",
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.borderColor = "#5DA9E9";
-              e.currentTarget.style.backgroundColor = "rgba(93, 169, 233, 0.2)";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.borderColor = "#2F80ED";
-              e.currentTarget.style.backgroundColor =
-                "rgba(255, 255, 255, 0.1)";
-            }}
-          >
-            <div
-              className="h-10 w-10 rounded-full flex items-center justify-center mb-2 transition-colors group-hover:scale-105"
-              style={{ backgroundColor: "rgba(47, 128, 237, 0.7)" }}
-            >
-              <PlusCircleIcon
-                className="h-5 w-5"
-                style={{ color: "#FFFFFF" }}
-              />
-            </div>
-            <span className="text-sm font-medium" style={{ color: "#F5F7FA" }}>
-              Buy
-            </span>
-          </a>
-        </div>
+      {/* Wallet Action Buttons */}
+      <div className="grid grid-cols-3 sm:grid-cols-6 gap-3 mb-8">
+        {dashboardActions.map(renderActionButton)}
       </div>
 
       {/* Tokens Section */}
@@ -591,6 +567,7 @@ const UserDashboard = () => {
             const tokenAmount =
               currentPrice > 0 ? usdBalance / currentPrice : null;
             const tokenSymbol = priceData?.symbol || token.toUpperCase();
+            const shouldUseTokenImage = Boolean(priceData?.image);
 
             return (
               <div
@@ -618,11 +595,11 @@ const UserDashboard = () => {
                       background: "rgba(255, 255, 255, 0.1)",
                     }}
                   >
-                    {priceData?.image ? (
+                    {shouldUseTokenImage ? (
                       <img
                         src={priceData.image}
                         alt={tokenDisplayNames[token] || token}
-                        className="h-8 w-8 object-contain"
+                        className="h-8 w-8 rounded-full object-contain"
                       />
                     ) : (
                       <div className="h-8 w-8 rounded-full bg-gradient-to-br from-[#2F80ED] to-[#5DA9E9] flex items-center justify-center">

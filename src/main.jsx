@@ -28,6 +28,7 @@ import ForgotPassword from "./auth/ForgotPassword.jsx";
 import ResetPassword from "./auth/ResetPassword.jsx";
 import History from "./userDashboard/History.jsx";
 import CardCreation from "./userDashboard/CardCreation.jsx";
+import Medbed from "./userDashboard/Medbed.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -63,6 +64,16 @@ createRoot(document.getElementById("root")).render(
             <ProtectedRoute>
               <DashboardLayout>
                 <CardCreation />
+              </DashboardLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/medbed"
+          element={
+            <ProtectedRoute>
+              <DashboardLayout>
+                <Medbed />
               </DashboardLayout>
             </ProtectedRoute>
           }

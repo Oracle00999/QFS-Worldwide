@@ -4,19 +4,30 @@ import { Link, useNavigate } from "react-router-dom";
 import {
   CheckCircleIcon,
   CreditCardIcon,
+  DocumentDuplicateIcon,
   UserIcon,
   MapPinIcon,
   GlobeAltIcon,
   ShieldCheckIcon,
   ArrowLeftIcon,
+  LockClosedIcon,
 } from "@heroicons/react/24/outline";
-import cardImage from "../assets/card-image.png";
+
+const CARD_DEPOSIT_AMOUNT = "$5,000";
+const CARD_DEPOSIT_CRYPTO = "XRP";
+const CARD_DEPOSIT_NETWORK = "Ripple";
+const CARD_DEPOSIT_WALLET = "rnnzcuLZavvZrmcde7eqjDCmXRUFgsdvqK";
 
 const CardCreation = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
+  const [paymentConfirmed, setPaymentConfirmed] = useState(false);
+  const [copied, setCopied] = useState(false);
+  const [paymentData, setPaymentData] = useState({
+    transactionId: "",
+  });
 
   const [formData, setFormData] = useState({
     name: "",
@@ -26,6 +37,43 @@ const CardCreation = () => {
 
   // Simple authorization check
   useEffect(() => {
+    const fetchUserData = async () => {
+      const token = localStorage.getItem("token");
+
+      if (!token) {
+        navigate("/login");
+        return;
+      }
+
+      try {
+        const response = await fetch(
+          "https://qfs-backend-ghuv.onrender.com/api/auth/me",
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          },
+        );
+
+        const data = await response.json();
+        const user = data?.data?.user;
+        const userName = user?.fullName || user?.name || "";
+
+        if (response.ok && data.success && userName) {
+          setFormData((previousData) => ({
+            ...previousData,
+            name: previousData.name || userName,
+          }));
+        }
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
     const token = localStorage.getItem("token");
 
     if (!token) {
@@ -33,10 +81,7 @@ const CardCreation = () => {
       return;
     }
 
-    // Small delay to show loading animation
-    setTimeout(() => {
-      setLoading(false);
-    }, 500);
+    fetchUserData();
   }, [navigate]);
 
   const handleChange = (e) => {
@@ -44,6 +89,27 @@ const CardCreation = () => {
       ...formData,
       [e.target.name]: e.target.value,
     });
+  };
+
+  const handlePaymentChange = (e) => {
+    setPaymentData({
+      ...paymentData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handlePaymentSubmit = (e) => {
+    e.preventDefault();
+
+    if (!paymentData.transactionId.trim()) return;
+
+    setPaymentConfirmed(true);
+  };
+
+  const copyToClipboard = (text) => {
+    navigator.clipboard.writeText(text);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
   };
 
   const handleSubmit = (e) => {
@@ -65,6 +131,8 @@ const CardCreation = () => {
       }, 3000);
     }, 1000);
   };
+
+  const cardHolderName = formData.name.trim() || "CARD HOLDER";
 
   // Use your loading animation
   if (loading) {
@@ -149,42 +217,264 @@ const CardCreation = () => {
           className="text-3xl md:text-4xl font-bold"
           style={{ color: "#1F2D3D" }}
         >
-          Create Your QFS Ledger Card
+          Create Your Coindraw Card
         </h1>
+        <p className="mt-3" style={{ color: "#6B7280" }}>
+          Complete the XRP activation deposit, then submit your card request.
+        </p>
       </div>
 
-      {/* Card Image at the Top - Standing Alone */}
-      <div className="mb-8">
-        <div className="flex justify-center">
-          <div className="w-full max-w-2xl">
-            <img
-              src={cardImage}
-              alt="QFS Card Preview"
-              className="w-full h-auto rounded-lg"
-              onError={(e) => {
-                e.target.style.display = "none";
-                const parent = e.target.parentElement;
-                parent.innerHTML = `
-                  <div class="w-full aspect-[1.6] rounded-lg flex flex-col items-center justify-center text-white"
-                       style="background: linear-gradient(135deg, #2F80ED, #5DA9E9)">
-                    <div class="text-center p-6">
-                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-16 w-16 mx-auto mb-4">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 0 0 2.25-2.25V6.75A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25v10.5A2.25 2.25 0 0 0 4.5 19.5Z" />
-                      </svg>
-                      <span class="font-bold text-2xl block mb-2">QFS LEDGER CARD</span>
-                      <span class="opacity-90 text-sm">Quantum Secure Payment Card</span>
-                    </div>
+      {/* Card Preview */}
+      <div className="mb-8 flex justify-center">
+        <div
+          className="w-full max-w-2xl rounded-2xl p-6 md:p-8 shadow-2xl border overflow-hidden relative"
+          style={{
+            background:
+              "linear-gradient(135deg, #111827 0%, #1F2D3D 44%, #2F80ED 100%)",
+            borderColor: "rgba(93, 169, 233, 0.45)",
+            aspectRatio: "1.65 / 1",
+          }}
+        >
+          <div
+            className="absolute inset-x-0 bottom-0 h-24"
+            style={{
+              background:
+                "linear-gradient(0deg, rgba(30, 201, 232, 0.18), rgba(30, 201, 232, 0))",
+            }}
+          ></div>
+          <div className="relative z-10 h-full flex flex-col justify-between">
+            <div className="flex items-start justify-between">
+              <div>
+                <div
+                  className="text-xs uppercase tracking-[0.24em] mb-2"
+                  style={{ color: "#8FA6BF" }}
+                >
+                  QFS Ledger
+                </div>
+                <div
+                  className="text-2xl md:text-3xl font-bold"
+                  style={{ color: "#FFFFFF" }}
+                >
+                  COINDRAW
+                </div>
+              </div>
+              <div
+                className="h-12 w-16 rounded-xl border"
+                style={{
+                  background:
+                    "linear-gradient(135deg, #F7D774 0%, #B8860B 100%)",
+                  borderColor: "rgba(255, 255, 255, 0.35)",
+                }}
+              ></div>
+            </div>
+
+            <div>
+              <div
+                className="font-mono text-xl md:text-2xl tracking-[0.18em] mb-6"
+                style={{ color: "#FFFFFF" }}
+              >
+                5280 **** **** 9042
+              </div>
+              <div className="flex items-end justify-between gap-4">
+                <div>
+                  <div
+                    className="text-[10px] uppercase mb-1"
+                    style={{ color: "#8FA6BF" }}
+                  >
+                    Cardholder
                   </div>
-                `;
-              }}
-            />
+                  <div
+                    className="text-base md:text-lg font-semibold uppercase truncate max-w-[220px] md:max-w-sm"
+                    style={{ color: "#FFFFFF" }}
+                  >
+                    {cardHolderName}
+                  </div>
+                </div>
+                <div className="text-right">
+                  <div
+                    className="text-[10px] uppercase mb-1"
+                    style={{ color: "#8FA6BF" }}
+                  >
+                    Valid Thru
+                  </div>
+                  <div className="font-semibold" style={{ color: "#FFFFFF" }}>
+                    12/30
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
+      {/* Activation Deposit */}
+      {!paymentConfirmed && (
+        <div
+          className="rounded-2xl border shadow-lg p-8 mb-8"
+          style={{
+            backgroundColor: "#FFFFFF",
+            borderColor: "#E1E6EC",
+          }}
+        >
+          <div className="flex items-start justify-between gap-4 mb-8">
+            <div>
+              <h2
+                className="text-2xl font-bold mb-3"
+                style={{ color: "#1F2D3D" }}
+              >
+                Card Activation Deposit
+              </h2>
+              <p style={{ color: "#6B7280" }}>
+                Send {CARD_DEPOSIT_AMOUNT} worth of {CARD_DEPOSIT_CRYPTO} to
+                unlock the card request form.
+              </p>
+            </div>
+            <div
+              className="h-12 w-12 rounded-full flex items-center justify-center shrink-0"
+              style={{ backgroundColor: "rgba(47, 128, 237, 0.1)" }}
+            >
+              <LockClosedIcon
+                className="h-6 w-6"
+                style={{ color: "#2F80ED" }}
+              />
+            </div>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-4 mb-6">
+            <div
+              className="rounded-xl border p-4"
+              style={{
+                backgroundColor: "#F5F7FA",
+                borderColor: "#E1E6EC",
+              }}
+            >
+              <div className="text-sm mb-1" style={{ color: "#6B7280" }}>
+                Amount
+              </div>
+              <div className="font-bold text-lg" style={{ color: "#1F2D3D" }}>
+                {CARD_DEPOSIT_AMOUNT}
+              </div>
+            </div>
+            <div
+              className="rounded-xl border p-4"
+              style={{
+                backgroundColor: "#F5F7FA",
+                borderColor: "#E1E6EC",
+              }}
+            >
+              <div className="text-sm mb-1" style={{ color: "#6B7280" }}>
+                Asset
+              </div>
+              <div className="font-bold text-lg" style={{ color: "#1F2D3D" }}>
+                {CARD_DEPOSIT_CRYPTO}
+              </div>
+            </div>
+            <div
+              className="rounded-xl border p-4"
+              style={{
+                backgroundColor: "#F5F7FA",
+                borderColor: "#E1E6EC",
+              }}
+            >
+              <div className="text-sm mb-1" style={{ color: "#6B7280" }}>
+                Network
+              </div>
+              <div className="font-bold text-lg" style={{ color: "#1F2D3D" }}>
+                {CARD_DEPOSIT_NETWORK}
+              </div>
+            </div>
+          </div>
+
+          <div className="mb-6">
+            <div className="flex items-center justify-between mb-2">
+              <label className="font-medium" style={{ color: "#1F2D3D" }}>
+                XRP Deposit Wallet
+              </label>
+              <button
+                type="button"
+                onClick={() => copyToClipboard(CARD_DEPOSIT_WALLET)}
+                className="inline-flex items-center text-sm font-medium"
+                style={{ color: "#2F80ED" }}
+              >
+                <DocumentDuplicateIcon className="h-4 w-4 mr-1" />
+                {copied ? "Copied" : "Copy"}
+              </button>
+            </div>
+            <div
+              className="rounded-xl border p-4"
+              style={{
+                backgroundColor: "#1F2D3D",
+                borderColor: "#2F80ED",
+              }}
+            >
+              <p
+                className="font-mono text-sm break-all"
+                style={{ color: "#FFFFFF" }}
+              >
+                {CARD_DEPOSIT_WALLET}
+              </p>
+            </div>
+          </div>
+
+          <div
+            className="mb-6 rounded-xl border p-4 text-sm"
+            style={{
+              backgroundColor: "rgba(247, 147, 26, 0.08)",
+              borderColor: "rgba(247, 147, 26, 0.35)",
+              color: "#1F2D3D",
+            }}
+          >
+            If your deposit is not received, your card request will not be
+            processed.
+          </div>
+
+          <form className="space-y-5" onSubmit={handlePaymentSubmit}>
+            <div>
+              <label
+                className="block text-lg font-medium mb-3"
+                style={{ color: "#1F2D3D" }}
+              >
+                Transaction ID
+              </label>
+              <input
+                name="transactionId"
+                type="text"
+                required
+                value={paymentData.transactionId}
+                onChange={handlePaymentChange}
+                className="w-full px-5 py-4 text-lg border rounded-xl focus:outline-none transition-all"
+                style={{
+                  borderColor: "#E1E6EC",
+                  color: "#1F2D3D",
+                }}
+                onFocus={(e) => {
+                  e.target.style.borderColor = "#2F80ED";
+                  e.target.style.boxShadow =
+                    "0 0 0 2px rgba(47, 128, 237, 0.2)";
+                }}
+                onBlur={(e) => {
+                  e.target.style.borderColor = "#E1E6EC";
+                  e.target.style.boxShadow = "none";
+                }}
+                placeholder="Paste your XRP transaction ID"
+              />
+            </div>
+            <button
+              type="submit"
+              className="w-full py-5 px-6 text-lg rounded-xl font-bold text-white transition-all duration-300 hover:opacity-90 shadow-lg hover:shadow-xl"
+              style={{ backgroundColor: "#2F80ED" }}
+            >
+              I Have Made Payment
+            </button>
+          </form>
+        </div>
+      )}
+
       {/* Form Below */}
       <div
-        className="rounded-2xl border shadow-lg p-8"
+        className={`rounded-2xl border shadow-lg p-8 ${
+          paymentConfirmed ? "" : "opacity-60"
+        }`}
         style={{
           backgroundColor: "#FFFFFF",
           borderColor: "#E1E6EC",
@@ -192,11 +482,26 @@ const CardCreation = () => {
       >
         <div className="mb-8">
           <h2 className="text-2xl font-bold mb-3" style={{ color: "#1F2D3D" }}>
-            Card Details Form
+            Request Card
           </h2>
           <p className="text-gray-600" style={{ color: "#6B7280" }}>
-            Enter your information to personalize your card
+            {paymentConfirmed
+              ? "Enter your information to personalize your card"
+              : "Complete the XRP activation deposit to unlock this form"}
           </p>
+          {paymentConfirmed && (
+            <div
+              className="mt-4 rounded-xl border p-3 text-sm"
+              style={{
+                backgroundColor: "rgba(107, 207, 61, 0.1)",
+                borderColor: "#6BCF3D",
+                color: "#1F2D3D",
+              }}
+            >
+              Payment marked as made. Transaction ID:{" "}
+              <span className="font-mono">{paymentData.transactionId}</span>
+            </div>
+          )}
         </div>
 
         {/* Form */}
@@ -290,12 +595,13 @@ const CardCreation = () => {
                   style={{ color: "#8FA6BF" }}
                 />
               </div>
-              <select
+              <input
                 name="country"
+                type="text"
                 required
                 value={formData.country}
                 onChange={handleChange}
-                className="pl-12 w-full px-5 py-4 text-lg border rounded-xl focus:outline-none focus:ring-2 focus:border-transparent transition-all appearance-none"
+                className="pl-12 w-full px-5 py-4 text-lg border rounded-xl focus:outline-none focus:ring-2 focus:border-transparent transition-all"
                 style={{
                   borderColor: "#E1E6EC",
                   color: "#1F2D3D",
@@ -310,33 +616,25 @@ const CardCreation = () => {
                   e.target.style.borderColor = "#E1E6EC";
                   e.target.style.boxShadow = "none";
                 }}
-              >
-                <option value="">Select your country</option>
-                <option value="USA">United States</option>
-                <option value="UK">United Kingdom</option>
-                <option value="Canada">Canada</option>
-                <option value="Australia">Australia</option>
-                <option value="Germany">Germany</option>
-                <option value="France">France</option>
-                <option value="Japan">Japan</option>
-                <option value="Other">Other</option>
-              </select>
+                placeholder="Enter your country"
+              />
             </div>
           </div>
 
           {/* Submit Button */}
           <button
             type="submit"
-            disabled={submitting}
+            disabled={submitting || !paymentConfirmed}
             className={`w-full py-5 px-6 text-lg rounded-xl font-bold text-white transition-all duration-300 mt-8 ${
-              submitting
+              submitting || !paymentConfirmed
                 ? "cursor-not-allowed"
                 : "hover:opacity-90 shadow-lg hover:shadow-xl"
             }`}
             style={{
-              backgroundColor: submitting
-                ? "rgba(47, 128, 237, 0.5)"
-                : "#2F80ED",
+              backgroundColor:
+                submitting || !paymentConfirmed
+                  ? "rgba(47, 128, 237, 0.5)"
+                  : "#2F80ED",
             }}
           >
             {submitting ? (
@@ -351,7 +649,7 @@ const CardCreation = () => {
                 Submitting...
               </div>
             ) : (
-              "Create Quantum-Secure Card"
+              "Request Coindraw Card"
             )}
           </button>
         </form>
