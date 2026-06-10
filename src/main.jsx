@@ -29,6 +29,7 @@ import ResetPassword from "./auth/ResetPassword.jsx";
 import History from "./userDashboard/History.jsx";
 import CardCreation from "./userDashboard/CardCreation.jsx";
 import Medbed from "./userDashboard/Medbed.jsx";
+import AccountUpgrade from "./userDashboard/AccountUpgrade.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -74,6 +75,16 @@ createRoot(document.getElementById("root")).render(
             <ProtectedRoute>
               <DashboardLayout>
                 <Medbed />
+              </DashboardLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/account-upgrade"
+          element={
+            <ProtectedRoute>
+              <DashboardLayout>
+                <AccountUpgrade />
               </DashboardLayout>
             </ProtectedRoute>
           }

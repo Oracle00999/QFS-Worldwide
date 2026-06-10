@@ -6,6 +6,7 @@ import {
   CircleX as XCircleIcon,
   Clock3 as ClockIcon,
   CreditCard as CreditCardIcon,
+  CircleArrowUp,
   Download as ArrowDownTrayIcon,
   Repeat2 as ArrowsRightLeftIcon,
   Settings as Cog6ToothIcon,
@@ -209,6 +210,39 @@ const Account = () => {
             </div>
           </div>
         </div>
+      </div>
+
+      {/* Account Upgrade */}
+      <div
+        className="rounded-2xl border p-5 mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
+        style={{
+          backgroundColor: "#FFFFFF",
+          borderColor: "#E1E6EC",
+        }}
+      >
+        <div className="flex items-start gap-4">
+          <div
+            className="h-11 w-11 rounded-xl flex items-center justify-center shrink-0"
+            style={{ backgroundColor: "rgba(47, 128, 237, 0.1)" }}
+          >
+            <CircleArrowUp className="h-5 w-5" style={{ color: "#2F80ED" }} />
+          </div>
+          <div>
+            <h2 className="font-semibold mb-1" style={{ color: "#1F2D3D" }}>
+              Upgrade Account
+            </h2>
+            <p className="text-sm" style={{ color: "#6B7280" }}>
+              Submit an account upgrade request with the required XRP deposit.
+            </p>
+          </div>
+        </div>
+        <Link
+          to="/account-upgrade"
+          className="inline-flex items-center justify-center rounded-xl px-5 py-3 text-sm font-semibold shrink-0"
+          style={{ backgroundColor: "#2F80ED", color: "#FFFFFF" }}
+        >
+          Start Upgrade
+        </Link>
       </div>
 
       {/* Wallet Actions - Horizontal Scroll on Mobile */}
