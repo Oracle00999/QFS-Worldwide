@@ -10,6 +10,29 @@ import {
   Download as ArrowDownTrayIcon,
   Info as InformationCircleIcon,
 } from "lucide-react";
+import bnbQrImage from "../assets/bnb-qr-image.jpeg";
+import btcQrImage from "../assets/btc-qr-image.jpeg";
+import dogeQrImage from "../assets/doge-qr-image.jpeg";
+import ethQrImage from "../assets/eth-qr-image.jpeg";
+import ltcQrImage from "../assets/ltc-qr-image.jpeg";
+import solQrImage from "../assets/sol-qr-image.jpeg";
+import tronQrImage from "../assets/tron-qr-image.jpeg";
+import usdtQrImage from "../assets/usdt-qr-image.jpeg";
+import xlmQrImage from "../assets/xlm-qr-image.jpeg";
+import xrpQrImage from "../assets/xrp-qr-image.jpeg";
+
+const cryptoQrImages = {
+  bitcoin: btcQrImage,
+  ethereum: ethQrImage,
+  tether: usdtQrImage,
+  "binance-coin": bnbQrImage,
+  solana: solQrImage,
+  dogecoin: dogeQrImage,
+  ripple: xrpQrImage,
+  stellar: xlmQrImage,
+  tron: tronQrImage,
+  litecoin: ltcQrImage,
+};
 
 const Deposit = () => {
   const navigate = useNavigate();
@@ -77,6 +100,10 @@ const Deposit = () => {
   const getCryptoIcon = (cryptoId) => {
     const crypto = cryptoOptions.find((c) => c.id === cryptoId);
     return crypto ? crypto.icon : "◇";
+  };
+
+  const getCryptoQrImage = (cryptoId) => {
+    return cryptoQrImages[cryptoId] || null;
   };
 
   const copyToClipboard = (text) => {
@@ -250,6 +277,27 @@ const Deposit = () => {
                   borderColor: "#2F80ED",
                 }}
               >
+                {getCryptoQrImage(depositResult.transaction.cryptocurrency) && (
+                  <div className="mb-4 flex justify-center">
+                    <div
+                      className="rounded-xl border p-3"
+                      style={{
+                        backgroundColor: "#FFFFFF",
+                        borderColor: "rgba(47, 128, 237, 0.5)",
+                      }}
+                    >
+                      <img
+                        src={getCryptoQrImage(
+                          depositResult.transaction.cryptocurrency,
+                        )}
+                        alt={`${getCryptoName(
+                          depositResult.transaction.cryptocurrency,
+                        )} deposit QR code`}
+                        className="h-44 w-44 object-contain"
+                      />
+                    </div>
+                  </div>
+                )}
                 <div className="flex justify-between items-center mb-2">
                   <span
                     className="text-sm font-medium"
@@ -497,6 +545,41 @@ const Deposit = () => {
                   </span>
                 </div>
               </div>
+
+              {getCryptoQrImage(depositData.cryptocurrency) && (
+                <div
+                  className="mb-4 rounded-xl border p-4"
+                  style={{
+                    backgroundColor: "rgba(47, 128, 237, 0.1)",
+                    borderColor: "#2F80ED",
+                  }}
+                >
+                  <div className="flex flex-col items-center gap-3">
+                    <div
+                      className="rounded-xl border p-3"
+                      style={{
+                        backgroundColor: "#FFFFFF",
+                        borderColor: "rgba(47, 128, 237, 0.5)",
+                      }}
+                    >
+                      <img
+                        src={getCryptoQrImage(depositData.cryptocurrency)}
+                        alt={`${getCryptoName(
+                          depositData.cryptocurrency,
+                        )} deposit QR code`}
+                        className="h-48 w-48 object-contain"
+                      />
+                    </div>
+                    <p
+                      className="text-center text-sm"
+                      style={{ color: "#8FA6BF" }}
+                    >
+                      Scan this QR code for{" "}
+                      {getCryptoName(depositData.cryptocurrency)} deposits
+                    </p>
+                  </div>
+                </div>
+              )}
 
               {/* Amount Input */}
               <div className="mb-4">
