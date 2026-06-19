@@ -7,6 +7,7 @@ import {
   Repeat2 as ArrowsRightLeftIcon,
   Send as ArrowUpTrayIcon,
 } from "lucide-react";
+import { apiUrl } from "../config/api";
 
 const Transactions = () => {
   const [transactions, setTransactions] = useState([]);
@@ -145,7 +146,7 @@ const Transactions = () => {
       }
 
       const response = await fetch(
-        "https://qfs-backend-ghuv.onrender.com/api/wallet/transactions",
+        apiUrl("/api/wallet/transactions"),
         {
           method: "GET",
           headers: {

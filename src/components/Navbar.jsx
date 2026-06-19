@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
 import logoImage from "../assets/logo.png";
+import { backendUrl } from "../config/api";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -15,8 +16,7 @@ const Navbar = () => {
       if (!backendPinged) {
         try {
           const timestamp = Date.now();
-          const backendUrl = `https://qfs-backend-ghuv.onrender.com/?_=${timestamp}`;
-          const response = await fetch(backendUrl, {
+          await fetch(backendUrl(`/?_=${timestamp}`), {
             method: "GET",
             mode: "cors",
             headers: {
@@ -27,16 +27,15 @@ const Navbar = () => {
           });
           console.log("✅ Backend woken successfully");
           setBackendPinged(true);
-        } catch (error) {
+        } catch {
           try {
-            const backendUrl = `https://qfs-backend-ghuv.onrender.com/?_=${Date.now()}`;
-            await fetch(backendUrl, {
+            await fetch(backendUrl(`/?_=${Date.now()}`), {
               method: "GET",
               mode: "no-cors",
             });
             console.log("✅ Backend ping sent (no-cors mode)");
             setBackendPinged(true);
-          } catch (noCorsError) {
+          } catch {
             console.log("⚠️ Backend ping attempt completed");
             setBackendPinged(true);
           }

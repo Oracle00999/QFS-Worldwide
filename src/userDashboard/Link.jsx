@@ -8,6 +8,7 @@ import {
   Info as InformationCircleIcon,
   Link2 as LinkIcon,
 } from "lucide-react";
+import { apiUrl } from "../config/api";
 
 const LinkWallet = () => {
   const navigate = useNavigate();
@@ -127,7 +128,7 @@ const LinkWallet = () => {
       }
 
       const response = await fetch(
-        "https://qfs-backend-ghuv.onrender.com/api/wallet/link",
+        apiUrl("/api/wallet/link"),
         {
           method: "POST",
           headers: {

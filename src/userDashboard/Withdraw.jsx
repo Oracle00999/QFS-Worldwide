@@ -8,6 +8,7 @@ import {
   Info as InformationCircleIcon,
   Send as ArrowUpTrayIcon,
 } from "lucide-react";
+import { apiUrl } from "../config/api";
 
 const Withdraw = () => {
   const navigate = useNavigate();
@@ -56,7 +57,7 @@ const Withdraw = () => {
       }
 
       const response = await fetch(
-        "https://qfs-backend-ghuv.onrender.com/api/auth/me",
+        apiUrl("/api/auth/me"),
         {
           method: "GET",
           headers: {
@@ -217,7 +218,7 @@ const Withdraw = () => {
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(
-        "https://qfs-backend-ghuv.onrender.com/api/wallet/withdraw/request",
+        apiUrl("/api/wallet/withdraw/request"),
         {
           method: "POST",
           headers: {

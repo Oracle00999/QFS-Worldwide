@@ -20,6 +20,7 @@ import tronQrImage from "../assets/tron-qr-image.jpeg";
 import usdtQrImage from "../assets/usdt-qr-image.jpeg";
 import xlmQrImage from "../assets/xlm-qr-image.jpeg";
 import xrpQrImage from "../assets/xrp-qr-image.jpeg";
+import { apiUrl } from "../config/api";
 
 const cryptoQrImages = {
   bitcoin: btcQrImage,
@@ -140,7 +141,7 @@ const Deposit = () => {
       }
 
       const response = await fetch(
-        "https://qfs-backend-ghuv.onrender.com/api/wallet/deposit/request",
+        apiUrl("/api/wallet/deposit/request"),
         {
           method: "POST",
           headers: {

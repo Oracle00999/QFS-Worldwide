@@ -12,6 +12,7 @@ import {
 } from "@heroicons/react/24/outline";
 import Navbar from "../components/Navbar";
 import logoImage from "../assets/logo.png";
+import { apiUrl } from "../config/api";
 
 const getApiErrorMessage = (data, fallback) => {
   if (Array.isArray(data?.errors) && data.errors.length > 0) {
@@ -59,7 +60,7 @@ const Login = () => {
       };
 
       const response = await fetch(
-        "https://qfs-backend-ghuv.onrender.com/api/auth/login",
+        apiUrl("/api/auth/login"),
         {
           method: "POST",
           headers: {

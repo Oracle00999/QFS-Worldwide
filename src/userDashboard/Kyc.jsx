@@ -7,6 +7,7 @@ import {
   FileText as DocumentTextIcon,
   Upload as ArrowUpTrayIcon,
 } from "lucide-react";
+import { apiUrl } from "../config/api";
 
 const KycVerify = () => {
   const navigate = useNavigate();
@@ -88,7 +89,7 @@ const KycVerify = () => {
       formDataToSend.append("document", selectedFile);
 
       const response = await fetch(
-        "https://qfs-backend-ghuv.onrender.com/api/kyc/upload",
+        apiUrl("/api/kyc/upload"),
         {
           method: "POST",
           headers: {

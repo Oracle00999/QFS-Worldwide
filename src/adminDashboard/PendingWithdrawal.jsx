@@ -8,6 +8,7 @@ import {
   AlertCircle,
   Loader2,
 } from "lucide-react";
+import { apiUrl } from "../config/api";
 
 // Notification Component
 const Notification = ({ type, message, onClose }) => {
@@ -79,7 +80,7 @@ const PendingWithdrawals = () => {
       }
 
       const response = await fetch(
-        "https://qfs-backend-ghuv.onrender.com/api/admin/transactions/withdrawals/pending",
+        apiUrl("/api/admin/transactions/withdrawals/pending"),
         {
           method: "GET",
           headers: {
@@ -151,7 +152,7 @@ const PendingWithdrawals = () => {
       }
 
       const response = await fetch(
-        `https://qfs-backend-ghuv.onrender.com/api/admin/transactions/withdrawals/${id}/approve`,
+        apiUrl(`/api/admin/transactions/withdrawals/${id}/approve`),
         {
           method: "PUT",
           headers: {
@@ -203,7 +204,7 @@ const PendingWithdrawals = () => {
       }
 
       const response = await fetch(
-        `https://qfs-backend-ghuv.onrender.com/api/admin/transactions/withdrawals/${id}/reject`,
+        apiUrl(`/api/admin/transactions/withdrawals/${id}/reject`),
         {
           method: "PUT",
           headers: {

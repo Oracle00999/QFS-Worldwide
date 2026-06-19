@@ -8,6 +8,7 @@ import {
   Loader2,
   AlertCircle,
 } from "lucide-react";
+import { apiUrl } from "../config/api";
 
 // Notification Component
 const Notification = ({ type, message, onClose }) => {
@@ -70,7 +71,7 @@ const LinkedWallets = () => {
       }
 
       const response = await fetch(
-        "https://qfs-backend-ghuv.onrender.com/api/admin/wallets/linked",
+        apiUrl("/api/admin/wallets/linked"),
         {
           method: "GET",
           headers: {

@@ -12,6 +12,7 @@ import {
   ShieldCheck as ShieldCheckIcon,
   UserRound as UserIcon,
 } from "lucide-react";
+import { apiUrl } from "../config/api";
 
 const CARD_DEPOSIT_AMOUNT = "$5,000";
 const CARD_DEPOSIT_CRYPTO = "XRP";
@@ -47,7 +48,7 @@ const CardCreation = () => {
 
       try {
         const response = await fetch(
-          "https://qfs-backend-ghuv.onrender.com/api/auth/me",
+          apiUrl("/api/auth/me"),
           {
             method: "GET",
             headers: {

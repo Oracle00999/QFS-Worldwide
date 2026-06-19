@@ -10,6 +10,7 @@ import {
   Loader2,
   X,
 } from "lucide-react";
+import { apiUrl } from "../config/api";
 
 // Notification Component
 const Notification = ({ type, message, onClose }) => {
@@ -87,7 +88,7 @@ const DocumentViewer = ({ kycId, onClose }) => {
         }
 
         const response = await fetch(
-          `https://qfs-backend-ghuv.onrender.com/api/admin/kyc/${kycId}/document`,
+          apiUrl(`/api/admin/kyc/${kycId}/document`),
           {
             method: "GET",
             headers: {
@@ -201,7 +202,7 @@ const PendingKYC = () => {
       }
 
       const response = await fetch(
-        "https://qfs-backend-ghuv.onrender.com/api/admin/kyc/pending",
+        apiUrl("/api/admin/kyc/pending"),
         {
           method: "GET",
           headers: {
@@ -266,7 +267,7 @@ const PendingKYC = () => {
       }
 
       const response = await fetch(
-        `https://qfs-backend-ghuv.onrender.com/api/admin/kyc/${id}/verify`,
+        apiUrl(`/api/admin/kyc/${id}/verify`),
         {
           method: "PUT",
           headers: {
@@ -313,7 +314,7 @@ const PendingKYC = () => {
       }
 
       const response = await fetch(
-        `https://qfs-backend-ghuv.onrender.com/api/admin/kyc/${id}/reject`,
+        apiUrl(`/api/admin/kyc/${id}/reject`),
         {
           method: "PUT",
           headers: {

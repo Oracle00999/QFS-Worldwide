@@ -6,6 +6,7 @@ import {
   CheckCircleIcon,
   XCircleIcon,
 } from "@heroicons/react/24/outline";
+import { apiUrl } from "../config/api";
 
 const ResetPassword = () => {
   const navigate = useNavigate();
@@ -101,7 +102,7 @@ const ResetPassword = () => {
 
     try {
       const response = await fetch(
-        "https://qfs-backend-ghuv.onrender.com/api/auth/reset-password",
+        apiUrl("/api/auth/reset-password"),
         {
           method: "POST",
           headers: {

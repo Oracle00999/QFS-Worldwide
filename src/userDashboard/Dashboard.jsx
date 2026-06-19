@@ -16,6 +16,7 @@ import {
   TrendingUp as ArrowTrendingUpIcon,
 } from "lucide-react";
 import Cardlogo from "../assets/cardlogo1.jpg";
+import { apiUrl } from "../config/api";
 
 const UserDashboard = () => {
   const [userData, setUserData] = useState(null);
@@ -82,7 +83,7 @@ const UserDashboard = () => {
       }
 
       const response = await fetch(
-        "https://qfs-backend-ghuv.onrender.com/api/auth/me",
+        apiUrl("/api/auth/me"),
         {
           method: "GET",
           headers: {

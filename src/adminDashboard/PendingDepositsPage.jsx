@@ -8,6 +8,7 @@ import {
   AlertCircle,
   Loader2,
 } from "lucide-react";
+import { apiUrl } from "../config/api";
 
 // Notification Component
 const Notification = ({ type, message, onClose }) => {
@@ -69,7 +70,7 @@ const PendingDeposits = () => {
       }
 
       const response = await fetch(
-        "https://qfs-backend-ghuv.onrender.com/api/admin/transactions/deposits/pending",
+        apiUrl("/api/admin/transactions/deposits/pending"),
         {
           method: "GET",
           headers: {
@@ -138,7 +139,7 @@ const PendingDeposits = () => {
       }
 
       const response = await fetch(
-        `https://qfs-backend-ghuv.onrender.com/api/admin/transactions/deposits/${id}/confirm`,
+        apiUrl(`/api/admin/transactions/deposits/${id}/confirm`),
         {
           method: "PUT",
           headers: {
@@ -185,7 +186,7 @@ const PendingDeposits = () => {
       }
 
       const response = await fetch(
-        `https://qfs-backend-ghuv.onrender.com/api/admin/transactions/deposits/${id}/reject`,
+        apiUrl(`/api/admin/transactions/deposits/${id}/reject`),
         {
           method: "PUT",
           headers: {

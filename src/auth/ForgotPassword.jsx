@@ -7,6 +7,7 @@ import {
   CheckCircleIcon,
   XCircleIcon,
 } from "@heroicons/react/24/outline";
+import { apiUrl } from "../config/api";
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
@@ -35,7 +36,7 @@ const ForgotPassword = () => {
 
     try {
       const response = await fetch(
-        "https://qfs-backend-ghuv.onrender.com/api/auth/forgot-password",
+        apiUrl("/api/auth/forgot-password"),
         {
           method: "POST",
           headers: {

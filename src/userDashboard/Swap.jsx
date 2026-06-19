@@ -10,6 +10,7 @@ import {
   Info as InformationCircleIcon,
   Repeat2 as ArrowsRightLeftIcon,
 } from "lucide-react";
+import { apiUrl } from "../config/api";
 
 const Swap = () => {
   const navigate = useNavigate();
@@ -56,7 +57,7 @@ const Swap = () => {
       }
 
       const response = await fetch(
-        "https://qfs-backend-ghuv.onrender.com/api/auth/me",
+        apiUrl("/api/auth/me"),
         {
           method: "GET",
           headers: {
@@ -169,7 +170,7 @@ const Swap = () => {
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(
-        "https://qfs-backend-ghuv.onrender.com/api/swap/execute",
+        apiUrl("/api/swap/execute"),
         {
           method: "POST",
           headers: {

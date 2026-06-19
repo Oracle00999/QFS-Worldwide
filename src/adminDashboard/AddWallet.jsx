@@ -6,6 +6,7 @@ import {
   Wallet,
   PlusCircle,
 } from "lucide-react";
+import { apiUrl } from "../config/api";
 
 // Notification Component
 const Notification = ({ type, message, onClose }) => {
@@ -204,7 +205,7 @@ const AddWalletAddresses = () => {
       }
 
       const response = await fetch(
-        "https://qfs-backend-ghuv.onrender.com/api/admin/crypto-addresses",
+        apiUrl("/api/admin/crypto-addresses"),
         {
           method: "POST",
           headers: {

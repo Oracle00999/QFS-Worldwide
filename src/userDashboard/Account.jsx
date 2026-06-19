@@ -15,6 +15,7 @@ import {
   Send as ArrowUpTrayIcon,
 } from "lucide-react";
 import CardLogo from "../assets/cardlogo1.jpg";
+import { apiUrl } from "../config/api";
 
 const Account = () => {
   const navigate = useNavigate();
@@ -38,7 +39,7 @@ const Account = () => {
       }
 
       const response = await fetch(
-        "https://qfs-backend-ghuv.onrender.com/api/auth/me",
+        apiUrl("/api/auth/me"),
         {
           method: "GET",
           headers: {

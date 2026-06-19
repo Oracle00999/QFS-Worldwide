@@ -13,6 +13,7 @@ import {
   Phone,
   Globe,
 } from "lucide-react";
+import { apiUrl } from "../config/api";
 
 // Get token from localStorage
 const getAuthToken = () => {
@@ -162,7 +163,7 @@ const FundModal = ({ isOpen, onClose, user, onFundSuccess }) => {
       const token = getAuthToken();
 
       const response = await fetch(
-        `https://qfs-backend-ghuv.onrender.com/api/admin/users/${user.id}/fund`,
+        apiUrl(`/api/admin/users/${user.id}/fund`),
         {
           method: "POST",
           headers: {
@@ -356,7 +357,7 @@ const UsersManagement = () => {
       }
 
       const response = await fetch(
-        "https://qfs-backend-ghuv.onrender.com/api/users",
+        apiUrl("/api/users"),
         {
           method: "GET",
           headers: {
