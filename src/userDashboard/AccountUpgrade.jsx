@@ -1,13 +1,8 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import {
-  ArrowLeft,
-  CheckCircle2,
-  Copy,
-  ShieldCheck,
-} from "lucide-react";
+import { ArrowLeft, CheckCircle2, Copy, ShieldCheck } from "lucide-react";
 
-const UPGRADE_DEPOSIT_AMOUNT = "$2,000";
+const UPGRADE_DEPOSIT_AMOUNT = "$500";
 const UPGRADE_DEPOSIT_ASSET = "XRP";
 const UPGRADE_DEPOSIT_NETWORK = "Ripple";
 const UPGRADE_DEPOSIT_WALLET = "rnnzcuLZavvZrmcde7eqjDCmXRUFgsdvqK";
@@ -113,7 +108,10 @@ const AccountUpgrade = () => {
           </div>
 
           <div className="mb-8">
-            <h1 className="text-3xl font-bold mb-2" style={{ color: "#1F2D3D" }}>
+            <h1
+              className="text-3xl font-bold mb-2"
+              style={{ color: "#1F2D3D" }}
+            >
               Account Upgrade
             </h1>
             <p style={{ color: "#6B7280" }}>
@@ -167,12 +165,17 @@ const AccountUpgrade = () => {
                     borderColor: "#E1E6EC",
                   }}
                 >
-                  <div className="text-xs uppercase mb-1" style={{ color: "#6B7280" }}>
+                  <div
+                    className="text-xs uppercase mb-1"
+                    style={{ color: "#6B7280" }}
+                  >
                     {label}
                   </div>
                   <div
                     className="text-lg font-bold"
-                    style={{ color: label === "Amount" ? "#2F80ED" : "#1F2D3D" }}
+                    style={{
+                      color: label === "Amount" ? "#2F80ED" : "#1F2D3D",
+                    }}
                   >
                     {value}
                   </div>
@@ -216,8 +219,8 @@ const AccountUpgrade = () => {
                 color: "#1F2D3D",
               }}
             >
-              Your account upgrade will not be processed if the required
-              deposit is not received.
+              Your account upgrade will not be processed if the required deposit
+              is not received.
             </div>
 
             <form className="space-y-5" onSubmit={handlePaymentSubmit}>
@@ -249,8 +252,9 @@ const AccountUpgrade = () => {
                   submitting ? "cursor-not-allowed" : "hover:opacity-90"
                 }`}
                 style={{
-                  backgroundColor:
-                    submitting ? "rgba(47, 128, 237, 0.5)" : "#2F80ED",
+                  backgroundColor: submitting
+                    ? "rgba(47, 128, 237, 0.5)"
+                    : "#2F80ED",
                 }}
               >
                 {submitting ? "Submitting..." : "I Have Made Payment"}

@@ -14,7 +14,7 @@ import {
 } from "lucide-react";
 import { apiUrl } from "../config/api";
 
-const CARD_DEPOSIT_AMOUNT = "$5,000";
+const CARD_DEPOSIT_AMOUNT = "$1,000";
 const CARD_DEPOSIT_CRYPTO = "XRP";
 const CARD_DEPOSIT_NETWORK = "Ripple";
 const CARD_DEPOSIT_WALLET = "rnnzcuLZavvZrmcde7eqjDCmXRUFgsdvqK";
@@ -47,16 +47,13 @@ const CardCreation = () => {
       }
 
       try {
-        const response = await fetch(
-          apiUrl("/api/auth/me"),
-          {
-            method: "GET",
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json",
-            },
+        const response = await fetch(apiUrl("/api/auth/me"), {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
           },
-        );
+        });
 
         const data = await response.json();
         const user = data?.data?.user;
