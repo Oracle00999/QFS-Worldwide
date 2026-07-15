@@ -185,7 +185,7 @@ const PendingKYC = () => {
   const [kycSubmissions, setKycSubmissions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [processingId, setProcessingId] = useState(null);
+  const [processingAction, setProcessingAction] = useState(null);
   const [notification, setNotification] = useState(null);
   const [viewingDocumentId, setViewingDocumentId] = useState(null);
 
@@ -254,7 +254,7 @@ const PendingKYC = () => {
   // Verify KYC - PUT request
   const verifyKYC = async (id) => {
     try {
-      setProcessingId(id);
+      setProcessingAction({ id, action: "verify" });
 
       const token = getAuthToken();
 
@@ -294,14 +294,14 @@ const PendingKYC = () => {
     } catch (err) {
       showNotification("error", err.message || "Failed to verify KYC");
     } finally {
-      setProcessingId(null);
+      setProcessingAction(null);
     }
   };
 
   // Reject KYC - PUT request
   const rejectKYC = async (id) => {
     try {
-      setProcessingId(id);
+      setProcessingAction({ id, action: "reject" });
 
       const token = getAuthToken();
 
@@ -341,7 +341,7 @@ const PendingKYC = () => {
     } catch (err) {
       showNotification("error", err.message || "Failed to reject KYC");
     } finally {
-      setProcessingId(null);
+      setProcessingAction(null);
     }
   };
 
@@ -514,27 +514,39 @@ const PendingKYC = () => {
                       <div className="flex items-center space-x-2">
                         <button
                           onClick={() => verifyKYC(kyc.id)}
-                          disabled={processingId === kyc.id}
-                          className="flex items-center px-3 py-1.5 bg-green-50 text-green-700 rounded-lg hover:bg-green-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                          disabled={processingAction?.id === kyc.id}
+                          className="inline-flex min-w-24 items-center justify-center rounded-lg border border-green-700 bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm transition-all hover:bg-green-700 hover:shadow disabled:cursor-not-allowed disabled:opacity-50"
                         >
-                          {processingId === kyc.id ? (
-                            <Loader2 className="h-4 w-4 animate-spin mr-1.5" />
+                          {processingAction?.id === kyc.id &&
+                          processingAction.action === "verify" ? (
+                            <>
+                              <Loader2 className="h-4 w-4 animate-spin mr-1.5" />
+                              Verifying...
+                            </>
                           ) : (
-                            <CheckCircle className="h-4 w-4 mr-1.5" />
+                            <>
+                              <CheckCircle className="h-4 w-4 mr-1.5" />
+                              Verify
+                            </>
                           )}
-                          Verify
                         </button>
                         <button
                           onClick={() => rejectKYC(kyc.id)}
-                          disabled={processingId === kyc.id}
-                          className="flex items-center px-3 py-1.5 bg-red-50 text-red-700 rounded-lg hover:bg-red-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                          disabled={processingAction?.id === kyc.id}
+                          className="inline-flex min-w-24 items-center justify-center rounded-lg border border-red-700 bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm transition-all hover:bg-red-700 hover:shadow disabled:cursor-not-allowed disabled:opacity-50"
                         >
-                          {processingId === kyc.id ? (
-                            <Loader2 className="h-4 w-4 animate-spin mr-1.5" />
+                          {processingAction?.id === kyc.id &&
+                          processingAction.action === "reject" ? (
+                            <>
+                              <Loader2 className="h-4 w-4 animate-spin mr-1.5" />
+                              Rejecting...
+                            </>
                           ) : (
-                            <XCircle className="h-4 w-4 mr-1.5" />
+                            <>
+                              <XCircle className="h-4 w-4 mr-1.5" />
+                              Reject
+                            </>
                           )}
-                          Reject
                         </button>
                       </div>
                     </td>

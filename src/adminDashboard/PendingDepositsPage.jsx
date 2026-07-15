@@ -54,7 +54,7 @@ const PendingDeposits = () => {
   const [deposits, setDeposits] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [processingId, setProcessingId] = useState(null);
+  const [processingAction, setProcessingAction] = useState(null);
   const [notification, setNotification] = useState(null);
 
   // Fetch pending deposits - GET request with authorization
@@ -126,7 +126,7 @@ const PendingDeposits = () => {
   // Confirm deposit - PUT request with authorization
   const confirmDeposit = async (id) => {
     try {
-      setProcessingId(id);
+      setProcessingAction({ id, action: "approve" });
 
       const token = getAuthToken();
 
@@ -166,14 +166,14 @@ const PendingDeposits = () => {
     } catch (err) {
       showNotification("error", err.message || "Failed to confirm deposit");
     } finally {
-      setProcessingId(null);
+      setProcessingAction(null);
     }
   };
 
   // Reject deposit - PUT request with authorization
   const rejectDeposit = async (id) => {
     try {
-      setProcessingId(id);
+      setProcessingAction({ id, action: "reject" });
 
       const token = getAuthToken();
 
@@ -213,7 +213,7 @@ const PendingDeposits = () => {
     } catch (err) {
       showNotification("error", err.message || "Failed to reject deposit");
     } finally {
-      setProcessingId(null);
+      setProcessingAction(null);
     }
   };
 
@@ -461,27 +461,39 @@ const PendingDeposits = () => {
                         <div className="flex items-center space-x-2">
                           <button
                             onClick={() => confirmDeposit(deposit.id)}
-                            disabled={processingId === deposit.id}
-                            className="flex items-center px-3 py-1.5 bg-green-50 text-green-700 rounded-lg hover:bg-green-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                            disabled={processingAction?.id === deposit.id}
+                            className="inline-flex min-w-24 items-center justify-center rounded-lg border border-green-700 bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm transition-all hover:bg-green-700 hover:shadow disabled:cursor-not-allowed disabled:opacity-50"
                           >
-                            {processingId === deposit.id ? (
-                              <Loader2 className="h-4 w-4 animate-spin mr-1.5" />
+                            {processingAction?.id === deposit.id &&
+                            processingAction.action === "approve" ? (
+                              <>
+                                <Loader2 className="h-4 w-4 animate-spin mr-1.5" />
+                                Approving...
+                              </>
                             ) : (
-                              <CheckCircle className="h-4 w-4 mr-1.5" />
+                              <>
+                                <CheckCircle className="h-4 w-4 mr-1.5" />
+                                Approve
+                              </>
                             )}
-                            Approve
                           </button>
                           <button
                             onClick={() => rejectDeposit(deposit.id)}
-                            disabled={processingId === deposit.id}
-                            className="flex items-center px-3 py-1.5 bg-red-50 text-red-700 rounded-lg hover:bg-red-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                            disabled={processingAction?.id === deposit.id}
+                            className="inline-flex min-w-24 items-center justify-center rounded-lg border border-red-700 bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm transition-all hover:bg-red-700 hover:shadow disabled:cursor-not-allowed disabled:opacity-50"
                           >
-                            {processingId === deposit.id ? (
-                              <Loader2 className="h-4 w-4 animate-spin mr-1.5" />
+                            {processingAction?.id === deposit.id &&
+                            processingAction.action === "reject" ? (
+                              <>
+                                <Loader2 className="h-4 w-4 animate-spin mr-1.5" />
+                                Rejecting...
+                              </>
                             ) : (
-                              <XCircle className="h-4 w-4 mr-1.5" />
+                              <>
+                                <XCircle className="h-4 w-4 mr-1.5" />
+                                Reject
+                              </>
                             )}
-                            Reject
                           </button>
                           <button
                             className="p-1.5 text-gray-400 hover:text-gray-600"

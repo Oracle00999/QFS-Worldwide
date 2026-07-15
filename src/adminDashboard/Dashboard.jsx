@@ -12,6 +12,7 @@ import {
   Send,
   Phone,
   Globe,
+  Trash2,
 } from "lucide-react";
 import { apiUrl } from "../config/api";
 
@@ -332,12 +333,12 @@ const FundModal = ({ isOpen, onClose, user, onFundSuccess }) => {
 
 // Users Component
 const UsersManagement = () => {
-  const [allUsers, setAllUsers] = useState([]);
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [fundModalOpen, setFundModalOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
+  const [deletingUserId, setDeletingUserId] = useState(null);
   const [toast, setToast] = useState({
     message: "",
     type: "success",
@@ -379,7 +380,6 @@ const UsersManagement = () => {
       const data = await response.json();
 
       if (data.success) {
-        setAllUsers(data.data.users);
         // Filter out admin users
         const regularUsers = filterOutAdmins(data.data.users);
         setFilteredUsers(regularUsers);
@@ -400,6 +400,54 @@ const UsersManagement = () => {
   const handleFundClick = (user) => {
     setSelectedUser(user);
     setFundModalOpen(true);
+  };
+
+  const handleDeleteUser = async (user) => {
+    const shouldDelete = window.confirm(
+      `Delete ${user.fullName}'s account? This cannot be undone. Their linked wallet records will be preserved.`,
+    );
+
+    if (!shouldDelete) return;
+
+    try {
+      setDeletingUserId(user.id);
+
+      const token = getAuthToken();
+      if (!token) {
+        throw new Error("No authentication token found. Please login again.");
+      }
+
+      const response = await fetch(apiUrl(`/api/admin/users/${user.id}`), {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      const data = await response.json().catch(() => ({}));
+
+      if (!response.ok || !data.success) {
+        throw new Error(data.message || "Failed to delete user account");
+      }
+
+      setFilteredUsers((users) =>
+        users.filter((item) => item.id !== user.id),
+      );
+      setToast({
+        message: `${user.fullName}'s account was deleted successfully`,
+        type: "success",
+        visible: true,
+      });
+    } catch (err) {
+      setToast({
+        message: err.message || "Failed to delete user account",
+        type: "error",
+        visible: true,
+      });
+    } finally {
+      setDeletingUserId(null);
+    }
   };
 
   const handleFundSuccess = (message) => {
@@ -464,6 +512,16 @@ const UsersManagement = () => {
           </button>
         </div>
       </div>
+
+      {error && (
+        <div
+          role="alert"
+          className="flex items-center gap-2 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700"
+        >
+          <AlertCircle className="h-5 w-5 shrink-0" />
+          <span>{error}</span>
+        </div>
+      )}
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -631,13 +689,35 @@ const UsersManagement = () => {
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <button
-                          onClick={() => handleFundClick(user)}
-                          className="px-3 py-1.5 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-1"
-                        >
-                          <Send className="h-4 w-4" />
-                          Fund
-                        </button>
+                        <div className="flex items-center gap-2">
+                          <button
+                            type="button"
+                            onClick={() => handleFundClick(user)}
+                            disabled={deletingUserId === user.id}
+                            className="inline-flex min-w-20 items-center justify-center gap-1.5 rounded-lg border border-blue-700 bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm transition-all hover:bg-blue-700 hover:shadow focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                          >
+                            <Send className="h-4 w-4" />
+                            Fund
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => handleDeleteUser(user)}
+                            disabled={deletingUserId === user.id}
+                            className="inline-flex min-w-24 items-center justify-center gap-1.5 rounded-lg border border-red-700 bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm transition-all hover:bg-red-700 hover:shadow focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60"
+                          >
+                            {deletingUserId === user.id ? (
+                              <>
+                                <Loader2 className="h-4 w-4 animate-spin" />
+                                Deleting...
+                              </>
+                            ) : (
+                              <>
+                                <Trash2 className="h-4 w-4" />
+                                Delete
+                              </>
+                            )}
+                          </button>
+                        </div>
                       </td>
                     </tr>
                   );
