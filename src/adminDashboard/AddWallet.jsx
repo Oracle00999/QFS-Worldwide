@@ -1,435 +1,271 @@
-import React, { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
-  CheckCircle,
   AlertCircle,
+  Check,
+  Copy,
   Loader2,
+  Plus,
+  RefreshCw,
   Wallet,
-  PlusCircle,
+  X,
 } from "lucide-react";
 import { apiUrl } from "../config/api";
 
-// Notification Component
-const Notification = ({ type, message, onClose }) => {
-  const bgColor = {
-    success: "bg-green-50 border-green-200 text-green-800",
-    error: "bg-red-50 border-red-200 text-red-800",
-    info: "bg-blue-50 border-blue-200 text-blue-800",
-  };
+const getAuthToken = () =>
+  localStorage.getItem("token") || sessionStorage.getItem("token");
 
-  const icon = {
-    success: <CheckCircle className="h-5 w-5 text-green-600" />,
-    error: <AlertCircle className="h-5 w-5 text-red-600" />,
-    info: <AlertCircle className="h-5 w-5 text-blue-600" />,
-  };
+const cryptoOptions = [
+  "bitcoin",
+  "ethereum",
+  "tether",
+  "binance-coin",
+  "solana",
+  "ripple",
+  "stellar",
+  "dogecoin",
+  "tron",
+  "litecoin",
+];
 
-  return (
-    <div
-      className={`fixed top-4 right-4 z-50 ${bgColor[type]} border rounded-lg shadow-lg p-4 max-w-md transition-transform duration-300`}
-    >
-      <div className="flex items-start">
-        <div className="flex-shrink-0">{icon[type]}</div>
-        <div className="ml-3 flex-1">
-          <p className="text-sm font-medium">{message}</p>
-        </div>
-        <button
-          onClick={onClose}
-          className="ml-4 flex-shrink-0 text-gray-400 hover:text-gray-600"
-        >
-          <AlertCircle className="h-4 w-4" />
-        </button>
-      </div>
-    </div>
-  );
-};
+const formatName = (name = "") =>
+  name
+    .split("-")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
 
-// Get token from localStorage
-const getAuthToken = () => {
-  return localStorage.getItem("token") || sessionStorage.getItem("token");
-};
+const emptyForm = { cryptocurrency: "", address: "", network: "" };
 
-// Get crypto details function
-const getCryptoDetails = (crypto) => {
-  const details = {
-    bitcoin: {
-      color: "bg-orange-100 text-orange-800",
-      label: "Bitcoin",
-      short: "BTC",
-    },
-    ethereum: {
-      color: "bg-purple-100 text-purple-800",
-      label: "Ethereum",
-      short: "ETH",
-    },
-    "binance-coin": {
-      color: "bg-yellow-100 text-yellow-800",
-      label: "Binance Coin",
-      short: "BNB",
-    },
-    solana: {
-      color: "bg-pink-100 text-pink-800",
-      label: "Solana",
-      short: "SOL",
-    },
-    ripple: {
-      color: "bg-gray-100 text-gray-800",
-      label: "Ripple",
-      short: "XRP",
-    },
-    stellar: {
-      color: "bg-blue-100 text-blue-800",
-      label: "Stellar",
-      short: "XLM",
-    },
-    dogecoin: {
-      color: "bg-yellow-100 text-yellow-800",
-      label: "Dogecoin",
-      short: "DOGE",
-    },
-    tron: {
-      color: "bg-red-100 text-red-800",
-      label: "TRON",
-      short: "TRX",
-    },
-    tether: {
-      color: "bg-green-100 text-green-800",
-      label: "Tether",
-      short: "USDT",
-    },
-    litecoin: {
-      color: "bg-gray-100 text-blue-800",
-      label: "Litecoin",
-      short: "LTC",
-    },
-  };
-
-  return (
-    details[crypto.toLowerCase()] || {
-      color: "bg-gray-100 text-gray-800",
-      label: crypto,
-      short: crypto,
-    }
-  );
-};
-
-// Add/Update Wallet Component
-const AddWalletAddresses = () => {
-  const [formData, setFormData] = useState({
-    cryptocurrency: "",
-    address: "",
-    network: "",
-  });
-
-  const [loading, setLoading] = useState(false);
-  const [notification, setNotification] = useState(null);
+const AddWallet = () => {
+  const [addresses, setAddresses] = useState([]);
+  const [loadingAddresses, setLoadingAddresses] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState("");
+  const [notice, setNotice] = useState(null);
+  const [copiedAddress, setCopiedAddress] = useState("");
+  const [formOpen, setFormOpen] = useState(false);
+  const [formData, setFormData] = useState(emptyForm);
   const [errors, setErrors] = useState({});
 
-  // Available cryptocurrencies
-  const cryptoOptions = [
-    "bitcoin",
-    "ethereum",
-    "tether",
-    "binance-coin",
-    "solana",
-    "ripple",
-    "stellar",
-    "dogecoin",
-    "tron",
-    "litecoin",
-  ];
+  const fetchAddresses = useCallback(async () => {
+    try {
+      setLoadingAddresses(true);
+      setError("");
+      const token = getAuthToken();
+      const response = await fetch(apiUrl("/api/wallet/deposit/addresses"), {
+        headers: {
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+          "Content-Type": "application/json",
+        },
+      });
+      const payload = await response.json().catch(() => null);
+      if (!response.ok || !payload?.success) {
+        throw new Error(payload?.message || "Failed to retrieve wallet addresses");
+      }
+      setAddresses(Array.isArray(payload.data?.addresses) ? payload.data.addresses : []);
+    } catch (err) {
+      setError(err.message || "Failed to retrieve wallet addresses");
+    } finally {
+      setLoadingAddresses(false);
+    }
+  }, []);
 
-  // Handle form input changes
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+  useEffect(() => {
+    fetchAddresses();
+  }, [fetchAddresses]);
 
-    // Clear error for this field
-    if (errors[name]) {
-      setErrors((prev) => ({
-        ...prev,
-        [name]: "",
-      }));
+  const showNotice = (type, message) => {
+    setNotice({ type, message });
+    window.setTimeout(() => setNotice(null), 3000);
+  };
+
+  const copyAddress = async (address) => {
+    try {
+      await navigator.clipboard.writeText(address);
+      setCopiedAddress(address);
+      window.setTimeout(() => setCopiedAddress(""), 2000);
+    } catch {
+      showNotice("error", "Could not copy the wallet address");
     }
   };
 
-  // Show notification
-  const showNotification = (type, message) => {
-    setNotification({ type, message });
-    setTimeout(() => setNotification(null), 3000);
+  const closeForm = () => {
+    setFormOpen(false);
+    setFormData(emptyForm);
+    setErrors({});
   };
 
-  // Validate form
+  const handleChange = ({ target: { name, value } }) => {
+    setFormData((current) => ({ ...current, [name]: value }));
+    setErrors((current) => ({ ...current, [name]: "" }));
+  };
+
   const validateForm = () => {
-    const newErrors = {};
-
-    if (!formData.cryptocurrency) {
-      newErrors.cryptocurrency = "Please select a cryptocurrency";
-    }
-
-    if (!formData.address.trim()) {
-      newErrors.address = "Wallet address is required";
-    } else if (formData.address.trim().length < 10) {
-      newErrors.address = "Address seems too short";
-    }
-
-    if (!formData.network.trim()) {
-      newErrors.network = "Network type is required";
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+    const nextErrors = {};
+    if (!formData.cryptocurrency) nextErrors.cryptocurrency = "Select a cryptocurrency";
+    if (!formData.address.trim()) nextErrors.address = "Wallet address is required";
+    else if (formData.address.trim().length < 10) nextErrors.address = "Address seems too short";
+    if (!formData.network.trim()) nextErrors.network = "Network is required";
+    setErrors(nextErrors);
+    return Object.keys(nextErrors).length === 0;
   };
 
-  // Handle form submission
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    if (!validateForm()) {
-      showNotification("error", "Please fix the errors in the form");
-      return;
-    }
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    if (!validateForm()) return;
 
     try {
-      setLoading(true);
-
+      setSaving(true);
       const token = getAuthToken();
-
-      if (!token) {
-        showNotification(
-          "error",
-          "No authentication token found. Please login again.",
-        );
-        return;
+      if (!token) throw new Error("No authentication token found. Please login again.");
+      const response = await fetch(apiUrl("/api/admin/crypto-addresses"), {
+        method: "POST",
+        headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
+        body: JSON.stringify({
+          cryptocurrency: formData.cryptocurrency,
+          address: formData.address.trim(),
+          network: formData.network.trim(),
+        }),
+      });
+      const payload = await response.json().catch(() => null);
+      if (!response.ok || !payload?.success) {
+        throw new Error(payload?.message || "Failed to save wallet address");
       }
-
-      const response = await fetch(
-        apiUrl("/api/admin/crypto-addresses"),
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            cryptocurrency: formData.cryptocurrency,
-            address: formData.address.trim(),
-            network: formData.network.trim(),
-          }),
-        },
-      );
-
-      if (response.status === 401) {
-        showNotification("error", "Session expired. Please login again.");
-        return;
-      }
-
-      const data = await response.json();
-
-      if (data.success) {
-        // Reset form on success
-        setFormData({
-          cryptocurrency: "",
-          address: "",
-          network: "",
-        });
-
-        const cryptoDetails = getCryptoDetails(formData.cryptocurrency);
-        showNotification(
-          "success",
-          `${cryptoDetails.label} address ${
-            data.data.cryptoAddress ? "updated" : "added"
-          } successfully`,
-        );
-      } else {
-        showNotification("error", data.message || "Failed to save address");
-      }
+      closeForm();
+      showNotice("success", "Wallet address saved successfully");
+      await fetchAddresses();
     } catch (err) {
-      showNotification("error", err.message || "Failed to save address");
+      showNotice("error", err.message || "Failed to save wallet address");
     } finally {
-      setLoading(false);
+      setSaving(false);
     }
   };
 
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">
-            Add/Update Wallet Addresses
-          </h1>
-          <p className="text-gray-600 mt-1">
-            Add new cryptocurrency addresses or update existing ones
-          </p>
+          <h1 className="text-2xl font-bold text-gray-900">Wallet Addresses</h1>
+          <p className="mt-1 text-gray-600">View and manage customer deposit addresses</p>
+        </div>
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={fetchAddresses}
+            disabled={loadingAddresses}
+            className="inline-flex items-center rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50"
+          >
+            <RefreshCw size={16} className={`mr-2 ${loadingAddresses ? "animate-spin" : ""}`} />
+            Refresh
+          </button>
+          <button
+            type="button"
+            onClick={() => setFormOpen(true)}
+            className="inline-flex items-center rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
+          >
+            <Plus size={18} className="mr-2" />
+            Add Wallet
+          </button>
         </div>
       </div>
 
-      {/* Form */}
-      <div className="bg-white rounded-xl border border-gray-200 p-6">
-        <form onSubmit={handleSubmit} className="space-y-6 max-w-2xl">
-          {/* Cryptocurrency Selection */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Cryptocurrency <span className="text-red-500">*</span>
-            </label>
-            <select
-              name="cryptocurrency"
-              value={formData.cryptocurrency}
-              onChange={handleChange}
-              className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
-                errors.cryptocurrency ? "border-red-300" : "border-gray-300"
-              }`}
-            >
-              <option value="">Select a cryptocurrency</option>
-              {cryptoOptions.map((crypto) => {
-                const details = getCryptoDetails(crypto);
-                return (
-                  <option key={crypto} value={crypto}>
-                    {details.label} ({details.short})
-                  </option>
-                );
-              })}
-            </select>
-            {errors.cryptocurrency && (
-              <p className="mt-1 text-sm text-red-600">
-                {errors.cryptocurrency}
-              </p>
-            )}
-            {formData.cryptocurrency && (
-              <div className="mt-2">
-                <span
-                  className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${
-                    getCryptoDetails(formData.cryptocurrency).color
-                  }`}
-                >
-                  {getCryptoDetails(formData.cryptocurrency).label}
-                </span>
-                <p className="text-xs text-gray-500 mt-1">
-                  Selecting an existing cryptocurrency will update its address
-                </p>
+      {loadingAddresses ? (
+        <div className="flex min-h-64 items-center justify-center rounded-xl border border-gray-200 bg-white">
+          <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
+        </div>
+      ) : error ? (
+        <div className="rounded-xl border border-red-200 bg-red-50 p-6 text-center">
+          <AlertCircle className="mx-auto mb-3 h-10 w-10 text-red-500" />
+          <p className="font-medium text-red-900">{error}</p>
+          <button type="button" onClick={fetchAddresses} className="mt-4 rounded-lg bg-red-600 px-4 py-2 text-sm text-white">Try again</button>
+        </div>
+      ) : addresses.length === 0 ? (
+        <div className="rounded-xl border border-gray-200 bg-white p-12 text-center">
+          <Wallet className="mx-auto mb-3 h-12 w-12 text-gray-300" />
+          <p className="font-medium text-gray-900">No wallet addresses</p>
+        </div>
+      ) : (
+        <div className="overflow-hidden rounded-xl border border-gray-200 bg-white">
+          <div className="overflow-x-auto">
+            <table className="min-w-full divide-y divide-gray-200">
+              <thead className="bg-gray-50">
+                <tr>
+                  {['Cryptocurrency', 'Network', 'Wallet address', 'Action'].map((heading) => (
+                    <th key={heading} className={`px-6 py-3 text-xs font-medium uppercase tracking-wider text-gray-500 ${heading === 'Action' ? 'text-right' : 'text-left'}`}>{heading}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-200">
+                {addresses.map((item) => (
+                  <tr key={`${item.cryptocurrency}-${item.network}-${item.address}`} className="hover:bg-gray-50">
+                    <td className="whitespace-nowrap px-6 py-4">
+                      <div className="flex items-center gap-3">
+                        <span className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-50 text-xs font-bold text-blue-700">{item.symbol}</span>
+                        <div><p className="font-medium text-gray-900">{formatName(item.cryptocurrency)}</p><p className="text-sm text-gray-500">{item.symbol}</p></div>
+                      </div>
+                    </td>
+                    <td className="whitespace-nowrap px-6 py-4"><span className="rounded-full bg-gray-100 px-2.5 py-1 text-xs font-medium text-gray-700">{item.network}</span></td>
+                    <td className="max-w-md px-6 py-4"><code className="block break-all text-sm text-gray-700">{item.address}</code></td>
+                    <td className="whitespace-nowrap px-6 py-4 text-right">
+                      <button type="button" onClick={() => copyAddress(item.address)} className="inline-flex items-center rounded-lg px-3 py-2 text-sm font-medium text-blue-600 hover:bg-blue-50">
+                        {copiedAddress === item.address ? <Check size={16} className="mr-2" /> : <Copy size={16} className="mr-2" />}
+                        {copiedAddress === item.address ? "Copied" : "Copy"}
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+
+      {formOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4" onMouseDown={(event) => event.target === event.currentTarget && closeForm()}>
+          <div className="w-full max-w-2xl rounded-xl bg-white shadow-xl">
+            <div className="flex items-center justify-between border-b border-gray-200 px-6 py-4">
+              <div><h2 className="text-xl font-semibold text-gray-900">Add or update wallet</h2><p className="text-sm text-gray-500">Enter the deposit address details</p></div>
+              <button type="button" onClick={closeForm} className="rounded-lg p-2 text-gray-500 hover:bg-gray-100" aria-label="Close form"><X size={20} /></button>
+            </div>
+            <form onSubmit={handleSubmit} className="space-y-5 p-6">
+              <div>
+                <label className="mb-2 block text-sm font-medium text-gray-700">Cryptocurrency</label>
+                <select name="cryptocurrency" value={formData.cryptocurrency} onChange={handleChange} className={`w-full rounded-lg border px-4 py-3 ${errors.cryptocurrency ? "border-red-300" : "border-gray-300"}`}>
+                  <option value="">Select a cryptocurrency</option>
+                  {cryptoOptions.map((crypto) => <option key={crypto} value={crypto}>{formatName(crypto)}</option>)}
+                </select>
+                {errors.cryptocurrency && <p className="mt-1 text-sm text-red-600">{errors.cryptocurrency}</p>}
               </div>
-            )}
-          </div>
-
-          {/* Wallet Address */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Wallet Address <span className="text-red-500">*</span>
-            </label>
-            <textarea
-              name="address"
-              value={formData.address}
-              onChange={handleChange}
-              rows="3"
-              placeholder="Enter the full wallet address..."
-              className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 font-mono text-sm ${
-                errors.address ? "border-red-300" : "border-gray-300"
-              }`}
-            />
-            {errors.address && (
-              <p className="mt-1 text-sm text-red-600">{errors.address}</p>
-            )}
-            <p className="mt-1 text-xs text-gray-500">
-              Enter the complete wallet address. Make sure to double-check for
-              accuracy.
-            </p>
-          </div>
-
-          {/* Network */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Network <span className="text-red-500">*</span>
-            </label>
-            <input
-              type="text"
-              name="network"
-              value={formData.network}
-              onChange={handleChange}
-              placeholder="e.g., BEP 20, ERC-20, TRC-20, Mainnet, etc."
-              className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
-                errors.network ? "border-red-300" : "border-gray-300"
-              }`}
-            />
-            {errors.network && (
-              <p className="mt-1 text-sm text-red-600">{errors.network}</p>
-            )}
-            <p className="mt-1 text-xs text-gray-500">
-              Specify the network type (e.g., BEP 20, ERC-20, TRC-20, Mainnet)
-            </p>
-          </div>
-
-          {/* Submit Button */}
-          <div className="pt-4">
-            <button
-              type="submit"
-              disabled={loading}
-              className="flex items-center justify-center w-full md:w-auto px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {loading ? (
-                <>
-                  <Loader2 className="h-5 w-5 mr-2 animate-spin" />
-                  Saving...
-                </>
-              ) : (
-                <>
-                  <PlusCircle className="h-5 w-5 mr-2" />
-                  Save Address
-                </>
-              )}
-            </button>
-            <p className="mt-2 text-sm text-gray-500">
-              This will add a new address or update the existing one for the
-              selected cryptocurrency
-            </p>
-          </div>
-        </form>
-      </div>
-
-      {/* Info Card */}
-      <div className="bg-blue-50 border border-blue-200 rounded-xl p-6">
-        <div className="flex items-start">
-          <div className="flex-shrink-0">
-            <Wallet className="h-6 w-6 text-blue-600" />
-          </div>
-          <div className="ml-4">
-            <h3 className="text-lg font-medium text-blue-900">How it works</h3>
-            <ul className="mt-2 text-sm text-blue-800 space-y-2">
-              <li className="flex items-start">
-                <CheckCircle className="h-5 w-5 text-blue-600 mr-2 flex-shrink-0" />
-                <span>Select a cryptocurrency from the dropdown</span>
-              </li>
-              <li className="flex items-start">
-                <CheckCircle className="h-5 w-5 text-blue-600 mr-2 flex-shrink-0" />
-                <span>Enter the wallet address and network type</span>
-              </li>
-              <li className="flex items-start">
-                <CheckCircle className="h-5 w-5 text-blue-600 mr-2 flex-shrink-0" />
-                <span>
-                  If the cryptocurrency already exists, its address will be
-                  updated
-                </span>
-              </li>
-              <li className="flex items-start">
-                <CheckCircle className="h-5 w-5 text-blue-600 mr-2 flex-shrink-0" />
-                <span>If it doesn't exist, a new entry will be created</span>
-              </li>
-            </ul>
+              <div>
+                <label className="mb-2 block text-sm font-medium text-gray-700">Wallet address</label>
+                <textarea name="address" value={formData.address} onChange={handleChange} rows="3" placeholder="Enter the full wallet address" className={`w-full rounded-lg border px-4 py-3 font-mono text-sm ${errors.address ? "border-red-300" : "border-gray-300"}`} />
+                {errors.address && <p className="mt-1 text-sm text-red-600">{errors.address}</p>}
+              </div>
+              <div>
+                <label className="mb-2 block text-sm font-medium text-gray-700">Network</label>
+                <input name="network" value={formData.network} onChange={handleChange} placeholder="e.g. ERC-20, TRC-20 or Mainnet" className={`w-full rounded-lg border px-4 py-3 ${errors.network ? "border-red-300" : "border-gray-300"}`} />
+                {errors.network && <p className="mt-1 text-sm text-red-600">{errors.network}</p>}
+              </div>
+              <div className="flex justify-end gap-3 border-t border-gray-100 pt-5">
+                <button type="button" onClick={closeForm} className="rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">Cancel</button>
+                <button type="submit" disabled={saving} className="inline-flex items-center rounded-lg bg-blue-600 px-5 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50">
+                  {saving ? <Loader2 size={16} className="mr-2 animate-spin" /> : <Plus size={16} className="mr-2" />}
+                  {saving ? "Saving..." : "Save address"}
+                </button>
+              </div>
+            </form>
           </div>
         </div>
-      </div>
+      )}
 
-      {/* Notification */}
-      {notification && (
-        <Notification
-          type={notification.type}
-          message={notification.message}
-          onClose={() => setNotification(null)}
-        />
+      {notice && (
+        <div className={`fixed right-4 top-4 z-[60] flex items-center rounded-lg border p-4 shadow-lg ${notice.type === "success" ? "border-green-200 bg-green-50 text-green-800" : "border-red-200 bg-red-50 text-red-800"}`}>
+          {notice.type === "success" ? <Check size={18} className="mr-2" /> : <AlertCircle size={18} className="mr-2" />}
+          <span className="text-sm font-medium">{notice.message}</span>
+          <button type="button" onClick={() => setNotice(null)} className="ml-4" aria-label="Dismiss notification"><X size={16} /></button>
+        </div>
       )}
     </div>
   );
 };
 
-export default AddWalletAddresses;
+export default AddWallet;

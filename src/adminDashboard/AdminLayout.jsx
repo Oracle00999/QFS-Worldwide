@@ -67,7 +67,7 @@ const AdminLayout = ({ children }) => {
     },
     {
       id: "add-wallet",
-      label: "Add Wallet Addresses",
+      label: "Wallet Addresses",
       icon: <PlusCircle size={20} />,
       path: "/admin/add-wallet",
     },
