@@ -3,6 +3,7 @@ import {
   AlertCircle,
   Check,
   Copy,
+  Edit3,
   Loader2,
   Plus,
   RefreshCw,
@@ -44,6 +45,7 @@ const AddWallet = () => {
   const [copiedAddress, setCopiedAddress] = useState("");
   const [formOpen, setFormOpen] = useState(false);
   const [formData, setFormData] = useState(emptyForm);
+  const [editingAddress, setEditingAddress] = useState(null);
   const [errors, setErrors] = useState({});
 
   const fetchAddresses = useCallback(async () => {
@@ -95,7 +97,26 @@ const AddWallet = () => {
   const closeForm = () => {
     setFormOpen(false);
     setFormData(emptyForm);
+    setEditingAddress(null);
     setErrors({});
+  };
+
+  const openAddForm = () => {
+    setEditingAddress(null);
+    setFormData(emptyForm);
+    setErrors({});
+    setFormOpen(true);
+  };
+
+  const openEditForm = (address) => {
+    setEditingAddress(address);
+    setFormData({
+      cryptocurrency: address.cryptocurrency || "",
+      address: address.address || "",
+      network: address.network || "",
+    });
+    setErrors({});
+    setFormOpen(true);
   };
 
   const handleChange = ({ target: { name, value } }) => {
@@ -142,7 +163,12 @@ const AddWallet = () => {
         throw new Error(payload?.message || "Failed to save wallet address");
       }
       closeForm();
-      showNotice("success", "Wallet address saved successfully");
+      showNotice(
+        "success",
+        editingAddress
+          ? "Wallet address updated successfully"
+          : "Wallet address saved successfully",
+      );
       await fetchAddresses();
     } catch (err) {
       showNotice("error", err.message || "Failed to save wallet address");
@@ -175,7 +201,7 @@ const AddWallet = () => {
           </button>
           <button
             type="button"
-            onClick={() => setFormOpen(true)}
+            onClick={openAddForm}
             className="inline-flex items-center rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
           >
             <Plus size={18} className="mr-2" />
@@ -215,11 +241,11 @@ const AddWallet = () => {
                     "Cryptocurrency",
                     "Network",
                     "Wallet address",
-                    "Action",
+                    "Actions",
                   ].map((heading) => (
                     <th
                       key={heading}
-                      className={`px-6 py-3 text-xs font-medium uppercase tracking-wider text-gray-500 ${heading === "Action" ? "text-right" : "text-left"}`}
+                      className={`px-6 py-3 text-xs font-medium uppercase tracking-wider text-gray-500 ${heading === "Actions" ? "text-right" : "text-left"}`}
                     >
                       {heading}
                     </th>
@@ -258,6 +284,14 @@ const AddWallet = () => {
                     <td className="whitespace-nowrap px-6 py-4 text-right">
                       <button
                         type="button"
+                        onClick={() => openEditForm(item)}
+                        className="mr-2 inline-flex items-center rounded-lg px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100"
+                      >
+                        <Edit3 size={16} className="mr-2" />
+                        Edit
+                      </button>
+                      <button
+                        type="button"
                         onClick={() => copyAddress(item.address)}
                         className="inline-flex items-center rounded-lg px-3 py-2 text-sm font-medium text-blue-600 hover:bg-blue-50"
                       >
@@ -288,10 +322,12 @@ const AddWallet = () => {
             <div className="flex items-center justify-between border-b border-gray-200 px-6 py-4">
               <div>
                 <h2 className="text-xl font-semibold text-gray-900">
-                  Add or update wallet
+                  {editingAddress ? "Edit wallet address" : "Add wallet address"}
                 </h2>
                 <p className="text-sm text-gray-500">
-                  Enter the deposit address details
+                  {editingAddress
+                    ? "Update the deposit address details"
+                    : "Enter the deposit address details"}
                 </p>
               </div>
               <button
@@ -373,10 +409,16 @@ const AddWallet = () => {
                 >
                   {saving ? (
                     <Loader2 size={16} className="mr-2 animate-spin" />
+                  ) : editingAddress ? (
+                    <Edit3 size={16} className="mr-2" />
                   ) : (
                     <Plus size={16} className="mr-2" />
                   )}
-                  {saving ? "Saving..." : "Save address"}
+                  {saving
+                    ? "Saving..."
+                    : editingAddress
+                      ? "Update address"
+                      : "Save address"}
                 </button>
               </div>
             </form>

@@ -49,6 +49,11 @@ const getAuthToken = () => {
   return localStorage.getItem("token") || sessionStorage.getItem("token");
 };
 
+const normalizeWallets = (data) => {
+  const linkedWallets = data?.data?.linkedWallets ?? data?.linkedWallets ?? [];
+  return Array.isArray(linkedWallets) ? linkedWallets : [];
+};
+
 // Linked Wallets Component
 const LinkedWallets = () => {
   const [wallets, setWallets] = useState([]);
@@ -93,12 +98,14 @@ const LinkedWallets = () => {
       const data = await response.json();
 
       if (data.success) {
-        setWallets(data.data.linkedWallets);
+        setWallets(normalizeWallets(data));
       } else {
         setError(data.message || "Failed to fetch wallets");
+        setWallets([]);
       }
     } catch (err) {
       setError(err.message);
+      setWallets([]);
       showNotification("error", err.message || "Failed to fetch wallets");
     } finally {
       setLoading(false);
@@ -141,7 +148,10 @@ const LinkedWallets = () => {
 
   // Format date
   const formatDate = (dateString) => {
+    if (!dateString) return "N/A";
     const date = new Date(dateString);
+    if (Number.isNaN(date.getTime())) return "Invalid date";
+
     return date.toLocaleDateString("en-US", {
       year: "numeric",
       month: "short",
@@ -151,7 +161,8 @@ const LinkedWallets = () => {
 
   // Mask phrase
   const maskPhrase = (phrase) => {
-    const words = phrase.split(" ");
+    if (!phrase) return "N/A";
+    const words = String(phrase).split(" ");
     return words.map((word) => "•".repeat(word.length)).join(" ");
   };
 
@@ -214,6 +225,18 @@ const LinkedWallets = () => {
         </div>
       </div>
 
+      {error && (
+        <div className="bg-red-50 border border-red-200 rounded-lg p-4 text-red-700">
+          <div className="flex items-start">
+            <AlertCircle className="h-5 w-5 mr-3 mt-0.5 flex-shrink-0" />
+            <div>
+              <p className="font-medium">Failed to load linked wallets</p>
+              <p className="text-sm mt-1">{error}</p>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Table */}
       <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
         <div className="overflow-x-auto">
@@ -274,10 +297,10 @@ const LinkedWallets = () => {
                       <td className="px-6 py-4">
                         <div>
                           <p className="text-sm font-medium text-gray-900">
-                            {wallet.user.name}
+                            {wallet.user?.name || "Unknown user"}
                           </p>
                           <p className="text-sm text-gray-500 truncate max-w-[180px]">
-                            {wallet.user.email}
+                            {wallet.user?.email || "No email available"}
                           </p>
                         </div>
                       </td>
@@ -287,7 +310,7 @@ const LinkedWallets = () => {
                             <div className="bg-gray-50 rounded-lg px-3 py-2 font-mono text-sm">
                               {isPhraseVisible ? (
                                 <span className="text-gray-900">
-                                  {wallet.phrase}
+                                  {wallet.phrase || "N/A"}
                                 </span>
                               ) : (
                                 <span className="text-gray-500">
@@ -312,11 +335,14 @@ const LinkedWallets = () => {
                             </button>
                             <button
                               onClick={() =>
-                                copyPhrase(wallet.id, wallet.phrase)
+                                copyPhrase(wallet.id, wallet.phrase || "")
                               }
+                              disabled={!wallet.phrase}
                               className={`p-2 rounded transition-colors ${
                                 isCopied
                                   ? "bg-green-100 text-green-600"
+                                  : !wallet.phrase
+                                  ? "text-gray-300 cursor-not-allowed"
                                   : "text-gray-400 hover:text-gray-600 hover:bg-gray-100"
                               }`}
                               title={isCopied ? "Copied!" : "Copy phrase"}
